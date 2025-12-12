@@ -23,8 +23,8 @@ export default function AuthSimpleLayout({
                             href={home()}
                             className="flex flex-col items-center gap-2 font-medium"
                         >
-                            <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
+                            <div className="mb-1 flex h-16 w-16 items-center justify-center rounded-md">
+                                <img src="/images/palmco-logo.png" alt="Palmco Logo" className="size-16" />
                             </div>
                             <span className="sr-only">{title}</span>
                         </Link>
