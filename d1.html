@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HC Dashboard Wireframe - PTPN IV Palmco</title>
+    <style>
+        /* ===================================
+   CSS Variables - Design System
+   =================================== */
+:root {
+  /* Colors */
+  --primary-dark: #0f766e;
+  --primary-medium: #0d9488;
+  --primary-light: #14b8a6;
+  --secondary-dark: #17a2b8;
+  --accent-yellow: #fbbf24;
+  --accent-orange: #f59e0b;
+  --accent-green: #34d399;
+  --accent-blue: #3b82f6;
+  --accent-red: #dc2626;
+  --text-white: #ffffff;
+  --text-gray: #374151;
+  --bg-light: #f9fafb;
+  --border-gray: #d1d5db;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+  --gradient-header: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 50%, var(--primary-light) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+  --gradient-logo: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 25px;
+  --spacing-xxl: 30px;
+  --spacing-xxxl: 35px;
+  --spacing-xxxxl: 40px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 50px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-md: 0 8px 15px rgba(0,0,0,0.2);
+  --shadow-lg: 0 8px 20px rgba(0,0,0,0.15);
+  --shadow-xl: 0 12px 30px rgba(0,0,0,0.25);
+
+  /* Transitions */
+  --transition-fast: all 0.3s ease;
+  --transition-slow: all 0.5s ease;
+}
+
+/* ===================================
+   Base Styles
+   =================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: var(--gradient-primary);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* ===================================
+   Header Section
+   =================================== */
+.header {
+  background: var(--gradient-header);
+  padding: var(--spacing-xxxxl) var(--spacing-xxl);
+  color: var(--text-white);
+  position: relative;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xxxxl);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logo-box {
+  width: 60px;
+  height: 60px;
+  background: var(--text-white);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--primary-dark);
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.header-title {
+  text-align: center;
+}
+
+.header-title h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-lg);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.header-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-size: 20px;
+  font-style: italic;
+  opacity: 0.95;
+}
+
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+/* ===================================
+   Value Creation Section
+   =================================== */
+.value-creation {
+  background: rgba(15, 118, 110, 0.9);
+  padding: var(--spacing-xxxl) var(--spacing-xxl);
+  color: var(--text-white);
+}
+
+.value-creation h2 {
+  text-align: center;
+  font-size: 32px;
+  font-style: italic;
+  margin-bottom: var(--spacing-xl);
+  font-weight: 700;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-md);
+}
+
+.value-box {
+  background: rgba(20, 184, 166, 0.8);
+  padding: var(--spacing-xl) var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  transition: var(--transition-fast);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.value-box:last-child {
+  background: rgba(15, 118, 110, 0.9);
+}
+
+.value-box:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===================================
+   Vision Section
+   =================================== */
+.vision {
+  background: rgba(17, 94, 89, 0.95);
+  padding: var(--spacing-xl) var(--spacing-xxl);
+  color: var(--text-white);
+  text-align: center;
+  border-top: 2px solid rgba(255,255,255,0.1);
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.vision h3 {
+  font-size: 24px;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 700;
+}
+
+.vision p {
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.8;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.highlight {
+  color: var(--accent-yellow);
+  font-weight: 600;
+}
+
+/* ===================================
+   Initiatives Section
+   =================================== */
+.initiatives {
+  padding: var(--spacing-xxxxl) var(--spacing-xxl);
+  background: var(--gradient-primary);
+}
+
+.initiatives-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.initiative-card {
+  background: rgba(15, 118, 110, 0.8);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  color: var(--text-white);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+
+.initiative-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.initiative-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+.initiative-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--accent-yellow);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--primary-dark);
+  font-size: 16px;
+}
+
+.initiative-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.initiative-card ul {
+  list-style: none;
+}
+
+.initiative-card li {
+  margin-bottom: var(--spacing-sm);
+  padding-left: 18px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.initiative-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-yellow);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* ===================================
+   Pillars Section
+   =================================== */
+.pillars {
+  background: rgba(17, 94, 89, 0.95);
+  padding: 45px var(--spacing-xxl);
+}
+
+.pillars h2 {
+  text-align: center;
+  color: var(--text-white);
+  font-size: 32px;
+  margin-bottom: var(--spacing-xxxl);
+  font-weight: 800;
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.pillar-card {
+  background: var(--text-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition-fast);
+}
+
+.pillar-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+}
+
+.pillar-header {
+  background: var(--gradient-accent);
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+  color: var(--primary-dark);
+}
+
+.pillar-header h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-sm);
+}
+
+.pillar-header p {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.pillar-body {
+  padding: var(--spacing-lg) var(--spacing-md);
+  background: var(--bg-light);
+}
+
+.pillar-item {
+  background: var(--text-white);
+  border: 2px solid var(--border-gray);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  transition: var(--transition-fast);
+}
+
+.pillar-item:last-child {
+  margin-bottom: 0;
+}
+
+.pillar-item:hover {
+  border-color: var(--primary-light);
+  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.2);
+}
+
+.pillar-item-code {
+  font-weight: 700;
+  color: var(--accent-red);
+  font-size: 11px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.pillar-item-title {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-gray);
+  line-height: 1.4;
+}
+
+/* ===================================
+   Footer
+   =================================== */
+.footer {
+  background: var(--primary-dark);
+  color: var(--text-white);
+  text-align: center;
+  padding: var(--spacing-lg);
+  font-size: 14px;
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+@media (max-width: 1200px) {
+  .value-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .initiatives-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pillars-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .header-title h1 {
+    font-size: 28px;
+  }
+  .value-grid,
+  .initiatives-grid,
+  .pillars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+    </style>
+</head>
+<body>
+    <div>
+        <!-- Header Section -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-box">Danantara Indonesia</div>
+                    <div class="logo-text">Corporate Vision</div>
+                </div>
+                <div class="logo">
+                    <div class="logo-text">Perkebunan Nusantara</div>
+                    <div class="logo-box" style="background: linear-gradient(135deg, #34d399 0%, #3b82f6 100%); color: white;">LOGO</div>
+                </div>
+            </div>
+
+            <div class="header-title">
+                <h1>5 Pilar Pondasi Human Capital PTPN IV Palmco</h1>
+                <div class="header-subtitle">
+                    <div class="icon-circle">🏢</div>
+                    <span>Well Diversified & Sustainable Agro-Industri Company</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Value Creation Section -->
+        <div class="value-creation">
+            <h2>Value Creation</h2>
+            <div class="value-grid">
+                <div class="value-box">Strengthening Feedstock & Upstream Expansion</div>
+                <div class="value-box">Smallholders Enterprise Integration</div>
+                <div class="value-box">Downstream Establishment</div>
+                <div class="value-box">Green Businesses Acceleration</div>
+                <div class="value-box">Next Level Transformation</div>
+            </div>
+        </div>
+
+        <!-- Vision Section -->
+        <div class="vision">
+            <h3>Human Capital Vision</h3>
+            <p>"Empower a <span class="highlight">skilled, growth-oriented workforce</span> to drive <span class="highlight">sustainable value creation</span>, support <span class="highlight">business expansion</span>, and enable <span class="highlight">agile transformation</span> through <span class="highlight">digitalization</span>."</p>
+        </div>
+
+        <!-- Initiatives Section -->
+        <div class="initiatives">
+            <div class="initiatives-grid">
+                <div class="initiative-card">
+                    <div class="initiative-header">
+                        <div class="initiative-icon">📋</div>
+                        <h4>Kebijakan & Standar Proses</h4>
+                    </div>
+                    <ul>
+                        <li>Peraturan Direksi</li>
+                        <li>Dokumen Tata Kelola</li>
+                        <li>Standar Formasi</li>
+                        <li>SOP</li>
+                    </ul>
+                </div>
+
+                <div class="initiative-card">
+                    <div class="initiative-header">
+                        <div class="initiative-icon">⚙️</div>
+                        <h4>Sistem Implementasi Proses</h4>
+                    </div>
+                    <ul>
+                        <li>Workflow Chart</li>
+                        <li>Pedoman/Petunjuk Teknis</li>
+                    </ul>
+                </div>
+
+                <div class="initiative-card">
+                    <div class="initiative-header">
+                        <div class="initiative-icon">💻</div>
+                        <h4>Infrastruktur Pendukung & Teknologi</h4>
+                    </div>
+                    <ul>
+                        <li>PalmCo Learning Management System</li>
+                        <li>Agro Performance Management System (APMS)</li>
+                        <li>Agro Talent Management System (ATMS)</li>
+                        <li>Agro Culture Management System (ACMS)</li>
+                    </ul>
+                </div>
+
+                <div class="initiative-card">
+                    <div class="initiative-header">
+                        <div class="initiative-icon">📊</div>
+                        <h4>Mekanisme Kontrol, Monitoring & Review Efektivitas</h4>
+                    </div>
+                    <ul>
+                        <li>HC Initiatives Project</li>
+                        <li>Evaluasi Bulanan Regional dan HO</li>
+                        <li>Rapat Gabungan (RAGAB)</li>
+                        <li>Management Review Cycle (MRC)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5 Pillars Section -->
+        <div class="pillars">
+            <h2>5 Pilar HC PTPN III (Persero)</h2>
+            <div class="pillars-grid">
+                <!-- Pillar 1 -->
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <h3>PILAR 1</h3>
+                        <p>HC Strategy & Corporate Culture</p>
+                    </div>
+                    <div class="pillar-body">
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">1.1</div>
+                            <div class="pillar-item-title">Advanced HC Operating Model</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">1.2</div>
+                            <div class="pillar-item-title">Agile Organization Design</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">1.3</div>
+                            <div class="pillar-item-title">Excellence Corporate Culture</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <h3>PILAR 2</h3>
+                        <p>Learning & Leadership Development</p>
+                    </div>
+                    <div class="pillar-body">
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">2.1</div>
+                            <div class="pillar-item-title">Holistic Learning & Capability Development</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">2.2</div>
+                            <div class="pillar-item-title">Learning Technology Acceleration</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">2.3</div>
+                            <div class="pillar-item-title">HC Team Capability Mastery</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <h3>PILAR 3</h3>
+                        <p>Talent Management</p>
+                    </div>
+                    <div class="pillar-body">
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">3.1</div>
+                            <div class="pillar-item-title">Strategic Workforce Planning & Capability Alignment</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">3.2</div>
+                            <div class="pillar-item-title">Integrated Talent Management System</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">3.3</div>
+                            <div class="pillar-item-title">High-Impact Talent Mobility & Leadership Acceleration</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 4 -->
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <h3>PILAR 4</h3>
+                        <p>Performance Management & Reward</p>
+                    </div>
+                    <div class="pillar-body">
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">4.1</div>
+                            <div class="pillar-item-title">Integrated Performance Management System</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">4.2</div>
+                            <div class="pillar-item-title">Excellence Performance Driven Culture</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">4.3</div>
+                            <div class="pillar-item-title">Competitive Remuneration & Total Reward</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 5 -->
+                <div class="pillar-card">
+                    <div class="pillar-header">
+                        <h3>PILAR 5</h3>
+                        <p>HC Governance, IR & Policy</p>
+                    </div>
+                    <div class="pillar-body">
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">5.1</div>
+                            <div class="pillar-item-title">Integrated HCIS</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">5.2</div>
+                            <div class="pillar-item-title">Employee & Industrial Relations (Harmonized Professional Productive)</div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-item-code">5.3</div>
+                            <div class="pillar-item-title">HC Good Governance & Policy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 PTPN IV Palmco - Human Capital Dashboard | All Rights Reserved</p>
+        </div>
+</body>
+</html>
