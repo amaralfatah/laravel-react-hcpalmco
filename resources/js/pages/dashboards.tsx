@@ -3,7 +3,7 @@ import AppLayoutFull from '@/layouts/app-layout-full';
 import HcHeader from '@/components/hc-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Users, BookOpen, TrendingUp, Target, Settings, Database, BarChart3, Sprout, CheckCircle2, Shield, Award, Zap, BookOpenCheck } from 'lucide-react';
+import { Sprout, Users, Target, TrendingUp, Settings } from 'lucide-react';
 
 export default function Dashboards() {
     const navigation = [
@@ -130,46 +130,43 @@ export default function Dashboards() {
     return (
         <AppLayoutFull title="Dashboard Human Capital PalmCo" description="Corporate Vision and Human Capital Strategy Dashboard">
             <Head title="Dashboard Human Capital PalmCo" />
-            <div className="min-h-screen w-full bg-white">
+            <main className="min-h-screen w-full bg-white">
                 <HcHeader
                     logo="/images/danantara-logo.png"
                     rightLogo="/images/holding-logo.png"
                     navigation={navigation}
                 />
 
-                {/* Corporate Vision Header - Dark Teal */}
-                <section id="corporate-vision" className="bg-[#0A5F6F] text-white py-3">
+                <header id="corporate-vision" className="bg-[#0A5F6F] text-white py-3">
                     <div className="container mx-auto px-8">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold uppercase tracking-wide">Corporate Vision</span>
+                            <h2 className="text-sm font-semibold uppercase tracking-wide">Corporate Vision</h2>
                         </div>
                     </div>
-                </section>
+                </header>
 
-                {/* Hero Section with Palm Tree Icon */}
-                <section className="bg-gradient-to-b from-[#0A5F6F] to-[#0D7589] text-white py-12">
+                <section className="bg-gradient-to-b from-[#0A5F6F] to-[#0D7589] text-white py-12" aria-labelledby="hero-title">
                     <div className="container mx-auto px-8">
                         <div className="text-center">
                             <div className="flex items-center justify-center mb-4">
                                 <div className="w-20 h-20 flex items-center justify-center">
-                                   <img src="/images/palmco-logo.png" alt="Palmco Logo" className="w-full h-full object-contain brightness-0 invert" />
+                                   <img src="/images/palmco-logo.png" alt="PalmCo - Well Diversified & Sustainable Agro-Industri Company Logo" className="w-full h-full object-contain brightness-0 invert" />
                                 </div>
                             </div>
-                            <h1 className="text-2xl font-bold italic mb-2">
+                            <h1 id="hero-title" className="text-2xl font-bold italic mb-2">
                                 Well Diversified & Sustainable Agro-Industri Company
                             </h1>
                         </div>
                     </div>
                 </section>
 
-                {/* Business Prior Header */}
-                <section className="bg-[#0A5F6F] text-white py-3">
+                <header className="bg-[#0A5F6F] text-white py-3">
                     <div className="container mx-auto px-8">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold uppercase tracking-wide">Business Prior</span>
+                            <h2 className="text-sm font-semibold uppercase tracking-wide">Business Prior</h2>
                         </div>
                     </div>
-                </section>
+                </header>
 
                 {/* Value Creation Section */}
                 <section id="value-creation" className="bg-[#0D7589] py-8">
@@ -179,132 +176,122 @@ export default function Dashboards() {
                         </div>
                         <div className="grid grid-cols-5 gap-4">
                             {valueCreationItems.map((item, index) => (
-                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/30 p-6 text-center">
-                                    <div className="text-white">
-                                        <p className="text-sm font-semibold leading-tight">{item.title}</p>
-                                    </div>
+                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/30 p-6 flex items-center justify-center">
+                                    <p className="text-sm font-semibold leading-tight text-white text-center">{item.title}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* HC Vision Header */}
-                <section id="hc-vision" className="bg-[#0A5F6F] text-white py-3">
+                <header id="hc-vision" className="bg-[#0A5F6F] text-white py-3">
                     <div className="container mx-auto px-8">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold uppercase tracking-wide">HC Vision</span>
+                            <h2 className="text-sm font-semibold uppercase tracking-wide">HC Vision</h2>
                         </div>
                     </div>
-                </section>
+                </header>
 
-                {/* Vision Statement */}
-                <section className="bg-[#0D7589] py-10">
+                <section className="bg-[#0D7589] py-10" aria-labelledby="hc-vision-title">
                     <div className="container mx-auto px-8">
                         <div className="text-center mb-6">
-                            <h3 className="text-2xl font-bold text-white mb-4">Human Capital Vision</h3>
+                            <h2 id="hc-vision-title" className="text-2xl font-bold text-white mb-4">Human Capital Vision</h2>
                         </div>
                         <div className="max-w-5xl mx-auto">
-                            <p className="text-center text-lg text-white leading-relaxed italic">
-                                "Empower a <span className="text-yellow-300 font-semibold">skilled, growth-oriented workforce</span> to drive{' '}
-                                <span className="text-yellow-300 font-semibold">sustainable value creation</span>, support{' '}
-                                <span className="text-yellow-300 font-semibold">business expansion</span>, and enable{' '}
-                                <span className="text-yellow-300 font-semibold">agile transformation</span> through{' '}
-                                <span className="text-yellow-300 font-semibold">digitalization</span>."
-                            </p>
+                            <blockquote className="text-center text-lg text-white leading-relaxed italic">
+                                "Empower a <span className="text-white font-bold underline decoration-2 decoration-yellow-400">skilled, growth-oriented workforce</span> to drive{' '}
+                                <span className="text-white font-bold underline decoration-2 decoration-yellow-400">sustainable value creation</span>, support{' '}
+                                <span className="text-white font-bold underline decoration-2 decoration-yellow-400">business expansion</span>, and enable{' '}
+                                <span className="text-white font-bold underline decoration-2 decoration-yellow-400">agile transformation</span> through{' '}
+                                <span className="text-white font-bold underline decoration-2 decoration-yellow-400">digitalization</span>."
+                            </blockquote>
                         </div>
                     </div>
                 </section>
 
-                {/* HC Attribute Header */}
-                <section id="hc-attribute" className="bg-[#0A5F6F] text-white py-3">
+                <header id="hc-attribute" className="bg-[#0A5F6F] text-white py-3">
                     <div className="container mx-auto px-8">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold uppercase tracking-wide">HC Attribute</span>
+                            <h2 className="text-sm font-semibold uppercase tracking-wide">HC Attribute</h2>
                         </div>
                     </div>
-                </section>
+                </header>
 
-                {/* Implementation Initiatives */}
-                <section className="bg-[#0D7589] py-10">
+                <section className="bg-[#0D7589] py-10" aria-labelledby="implementation-title">
                     <div className="container mx-auto px-8">
+                        <h2 id="implementation-title" className="sr-only">Implementation Initiatives</h2>
                         <div className="grid grid-cols-4 gap-6">
                             {implementationInitiatives.map((initiative, index) => (
-                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/20 p-6">
+                                <article key={index} className="bg-[#0A5F6F] border-2 border-white/20 p-6">
                                     <h3 className="text-white font-bold text-sm mb-4 pb-3 border-b border-yellow-400">
                                         {initiative.title}
                                     </h3>
                                     <ul className="space-y-2">
                                         {initiative.items.map((item, itemIndex) => (
                                             <li key={itemIndex} className="flex items-start gap-2 text-xs text-white">
-                                                <span className="text-yellow-400 font-bold mt-0.5">•</span>
+                                                <span className="text-yellow-400 font-bold mt-0.5" aria-hidden="true">•</span>
                                                 <span>{item}</span>
                                             </li>
                                         ))}
                                     </ul>
-                                </div>
+                                </article>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* HC Pillars Header */}
-                <section id="hc-pillars" className="bg-[#0A5F6F] text-white py-3">
+                <header id="hc-pillars" className="bg-[#0A5F6F] text-white py-3">
                     <div className="container mx-auto px-8">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold uppercase tracking-wide">HC Pillars</span>
+                            <h2 className="text-sm font-semibold uppercase tracking-wide">HC Pillars</h2>
                         </div>
                     </div>
-                </section>
+                </header>
 
-                {/* 5 Pillars Section */}
-                <section className="bg-[#0D7589] py-12">
+                <section className="bg-[#0D7589] py-12" aria-labelledby="pillars-title">
                     <div className="container mx-auto px-8">
                         <div className="text-center mb-10">
-                            <h2 className="text-4xl font-bold text-white mb-2">5 Pilar HC PTPN III (Persero)</h2>
+                            <h2 id="pillars-title" className="text-4xl font-bold text-white mb-2">5 Pilar HC PTPN III (Persero)</h2>
                         </div>
 
                         <div className="grid grid-cols-5 gap-6">
                             {pillars.map((pillar) => (
-                                <div key={pillar.number} className="bg-white overflow-hidden">
-                                    {/* Header dengan gradient kuning-orange */}
-                                    <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-center py-5 px-4">
-                                        <div className="text-[#0A5F6F] font-black text-3xl mb-2">
+                                <article key={pillar.number} className="bg-white overflow-hidden">
+                                    <header className="bg-[#0A5F6F] text-center py-5 px-4">
+                                        <h3 className="text-2xl font-bold text-white mb-2">
                                             PILAR {pillar.number}
-                                        </div>
-                                        <div className="text-[#0A5F6F] font-bold text-xs leading-tight uppercase">
+                                        </h3>
+                                        <div className="text-white text-xs leading-tight ">
                                             {pillar.title}
                                         </div>
-                                    </div>
+                                    </header>
 
-                                    {/* Content items */}
                                     <div className="p-4 space-y-3 bg-gray-50">
                                         {pillar.items.map((item) => (
                                             <div key={item.code} className="bg-white border border-gray-200 p-3">
-                                                <div className="text-red-600 font-bold text-xs mb-1">
+                                                <h4 className="text-red-600 font-bold text-xs mb-1">
                                                     {item.code}
-                                                </div>
-                                                <div className="text-gray-800 text-xs italic font-medium leading-tight">
+                                                </h4>
+                                                <p className="text-gray-800 text-xs italic font-medium leading-tight">
                                                     {item.title}
-                                                </div>
+                                                </p>
                                             </div>
                                         ))}
                                     </div>
-                                </div>
+                                </article>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Footer */}
-                <section className="bg-[#0A5F6F] py-6">
+                <footer className="bg-[#0A5F6F] py-6">
                     <div className="container mx-auto px-8">
                         <div className="text-center text-white text-sm">
                             <p>© 2024 PTPN IV PALMCO - Human Capital Division</p>
                         </div>
                     </div>
-                </section>
-            </div>
+                </footer>
+            </main>
         </AppLayoutFull>
     );
 }
