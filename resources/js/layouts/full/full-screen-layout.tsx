@@ -7,8 +7,6 @@ interface FullScreenLayoutProps {
 
 export default function FullScreenLayout({
     children,
-    title,
-    description,
 }: PropsWithChildren<FullScreenLayoutProps>) {
     return (
         <div className="min-h-screen w-full bg-background text-foreground">
