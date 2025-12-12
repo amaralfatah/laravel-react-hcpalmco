@@ -5,17 +5,13 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
-    return Inertia::render('welcome', [
+    return Inertia::render('dashboards', [
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-
-    Route::get('dashboards', [App\Http\Controllers\DashboardsController::class, 'index'])->name('dashboards');
+    Route::get('dashboard', [App\Http\Controllers\DashboardsController::class, 'index'])->name('dashboard');
 });
 
 require __DIR__ . '/settings.php';
