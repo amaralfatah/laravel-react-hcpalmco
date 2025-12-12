@@ -137,68 +137,68 @@ export default function Dashboards() {
                     navigation={navigation}
                 />
 
-                <header id="corporate-vision" className="bg-[#0A5F6F] text-white py-3">
-                    <div className="container mx-auto px-8">
+                <header id="corporate-vision" className="bg-[#0A5F6F] text-white py-2 sm:py-3">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-semibold uppercase tracking-wide">Corporate Vision</h2>
+                            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wide">Corporate Vision</h2>
                         </div>
                     </div>
                 </header>
 
-                <section className="bg-gradient-to-b from-[#0A5F6F] to-[#0D7589] text-white py-12" aria-labelledby="hero-title">
-                    <div className="container mx-auto px-8">
+                <section className="bg-gradient-to-b from-[#0A5F6F] to-[#0D7589] text-white py-8 sm:py-12" aria-labelledby="hero-title">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center">
-                            <div className="flex items-center justify-center mb-4">
-                                <div className="w-20 h-20 flex items-center justify-center">
+                            <div className="flex items-center justify-center mb-3 sm:mb-4">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
                                    <img src="/images/palmco-logo.png" alt="PalmCo - Well Diversified & Sustainable Agro-Industri Company Logo" className="w-full h-full object-contain brightness-0 invert" />
                                 </div>
                             </div>
-                            <h1 id="hero-title" className="text-2xl font-bold italic mb-2">
+                            <h1 id="hero-title" className="text-lg sm:text-xl lg:text-2xl font-bold italic mb-2 px-2">
                                 Well Diversified & Sustainable Agro-Industri Company
                             </h1>
                         </div>
                     </div>
                 </section>
 
-                <header className="bg-[#0A5F6F] text-white py-3">
-                    <div className="container mx-auto px-8">
+                <header className="bg-[#0A5F6F] text-white py-2 sm:py-3">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-semibold uppercase tracking-wide">Business Prior</h2>
+                            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wide">Business Prior</h2>
                         </div>
                     </div>
                 </header>
 
                 {/* Value Creation Section */}
-                <section id="value-creation" className="bg-[#0D7589] py-8">
-                    <div className="container mx-auto px-8">
-                        <div className="text-center mb-6">
-                            <h2 className="text-3xl font-bold text-white italic">Value Creation</h2>
+                <section id="value-creation" className="bg-[#0D7589] py-6 sm:py-8">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-4 sm:mb-6">
+                            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white italic">Value Creation</h2>
                         </div>
-                        <div className="grid grid-cols-5 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                             {valueCreationItems.map((item, index) => (
-                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/30 p-6 flex items-center justify-center">
-                                    <p className="text-sm font-semibold leading-tight text-white text-center">{item.title}</p>
+                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/30 p-4 sm:p-6 flex items-center justify-center min-h-[80px]">
+                                    <p className="text-xs sm:text-sm font-semibold leading-tight text-white text-center">{item.title}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                <header id="hc-vision" className="bg-[#0A5F6F] text-white py-3">
-                    <div className="container mx-auto px-8">
+                <header id="hc-vision" className="bg-[#0A5F6F] text-white py-2 sm:py-3">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-semibold uppercase tracking-wide">HC Vision</h2>
+                            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wide">HC Vision</h2>
                         </div>
                     </div>
                 </header>
 
-                <section className="bg-[#0D7589] py-10" aria-labelledby="hc-vision-title">
-                    <div className="container mx-auto px-8">
-                        <div className="text-center mb-6">
-                            <h2 id="hc-vision-title" className="text-2xl font-bold text-white mb-4">Human Capital Vision</h2>
+                <section className="bg-[#0D7589] py-8 sm:py-10" aria-labelledby="hc-vision-title">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-4 sm:mb-6">
+                            <h2 id="hc-vision-title" className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Human Capital Vision</h2>
                         </div>
-                        <div className="max-w-5xl mx-auto">
-                            <blockquote className="text-center text-lg text-white leading-relaxed italic">
+                        <div className="max-w-4xl lg:max-w-5xl mx-auto px-2 sm:px-0">
+                            <blockquote className="text-center text-sm sm:text-base lg:text-lg text-white leading-relaxed italic">
                                 "Empower a <span className="text-white font-bold underline decoration-2 decoration-yellow-400">skilled, growth-oriented workforce</span> to drive{' '}
                                 <span className="text-white font-bold underline decoration-2 decoration-yellow-400">sustainable value creation</span>, support{' '}
                                 <span className="text-white font-bold underline decoration-2 decoration-yellow-400">business expansion</span>, and enable{' '}
@@ -209,28 +209,28 @@ export default function Dashboards() {
                     </div>
                 </section>
 
-                <header id="hc-attribute" className="bg-[#0A5F6F] text-white py-3">
-                    <div className="container mx-auto px-8">
+                <header id="hc-attribute" className="bg-[#0A5F6F] text-white py-2 sm:py-3">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-semibold uppercase tracking-wide">HC Attribute</h2>
+                            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wide">HC Attribute</h2>
                         </div>
                     </div>
                 </header>
 
-                <section className="bg-[#0D7589] py-10" aria-labelledby="implementation-title">
-                    <div className="container mx-auto px-8">
+                <section className="bg-[#0D7589] py-8 sm:py-10" aria-labelledby="implementation-title">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <h2 id="implementation-title" className="sr-only">Implementation Initiatives</h2>
-                        <div className="grid grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                             {implementationInitiatives.map((initiative, index) => (
-                                <article key={index} className="bg-[#0A5F6F] border-2 border-white/20 p-6">
-                                    <h3 className="text-white font-bold text-sm mb-4 pb-3 border-b border-yellow-400">
+                                <article key={index} className="bg-[#0A5F6F] border-2 border-white/20 p-4 sm:p-6">
+                                    <h3 className="text-white font-bold text-xs sm:text-sm mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-yellow-400">
                                         {initiative.title}
                                     </h3>
-                                    <ul className="space-y-2">
+                                    <ul className="space-y-1 sm:space-y-2">
                                         {initiative.items.map((item, itemIndex) => (
                                             <li key={itemIndex} className="flex items-start gap-2 text-xs text-white">
                                                 <span className="text-yellow-400 font-bold mt-0.5" aria-hidden="true">•</span>
-                                                <span>{item}</span>
+                                                <span className="text-xs leading-tight">{item}</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -240,35 +240,35 @@ export default function Dashboards() {
                     </div>
                 </section>
 
-                <header id="hc-pillars" className="bg-[#0A5F6F] text-white py-3">
-                    <div className="container mx-auto px-8">
+                <header id="hc-pillars" className="bg-[#0A5F6F] text-white py-2 sm:py-3">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-sm font-semibold uppercase tracking-wide">HC Pillars</h2>
+                            <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wide">HC Pillars</h2>
                         </div>
                     </div>
                 </header>
 
-                <section className="bg-[#0D7589] py-12" aria-labelledby="pillars-title">
-                    <div className="container mx-auto px-8">
-                        <div className="text-center mb-10">
-                            <h2 id="pillars-title" className="text-4xl font-bold text-white mb-2">5 Pilar HC PTPN III (Persero)</h2>
+                <section className="bg-[#0D7589] py-8 sm:py-12" aria-labelledby="pillars-title">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+                            <h2 id="pillars-title" className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 px-2">5 Pilar HC PTPN III (Persero)</h2>
                         </div>
 
-                        <div className="grid grid-cols-5 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6">
                             {pillars.map((pillar) => (
                                 <article key={pillar.number} className="bg-white overflow-hidden">
-                                    <header className="bg-[#0A5F6F] text-center py-5 px-4">
-                                        <h3 className="text-2xl font-bold text-white mb-2">
+                                    <header className="bg-[#0A5F6F] text-center py-3 sm:py-4 lg:py-5 px-3 sm:px-4">
+                                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2">
                                             PILAR {pillar.number}
                                         </h3>
-                                        <div className="text-white text-xs leading-tight ">
+                                        <div className="text-white text-xs leading-tight">
                                             {pillar.title}
                                         </div>
                                     </header>
 
-                                    <div className="p-4 space-y-3 bg-gray-50">
+                                    <div className="p-3 sm:p-4 space-y-2 sm:space-y-3 bg-gray-50">
                                         {pillar.items.map((item) => (
-                                            <div key={item.code} className="bg-white border border-gray-200 p-3">
+                                            <div key={item.code} className="bg-white border border-gray-200 p-2 sm:p-3">
                                                 <h4 className="text-red-600 font-bold text-xs mb-1">
                                                     {item.code}
                                                 </h4>
@@ -284,9 +284,9 @@ export default function Dashboards() {
                     </div>
                 </section>
 
-                <footer className="bg-[#0A5F6F] py-6">
-                    <div className="container mx-auto px-8">
-                        <div className="text-center text-white text-sm">
+                <footer className="bg-[#0A5F6F] py-4 sm:py-6">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center text-white text-xs sm:text-sm">
                             <p>© 2024 PTPN IV PALMCO - Human Capital Division</p>
                         </div>
                     </div>
