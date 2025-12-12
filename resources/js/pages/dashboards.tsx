@@ -1,322 +1,309 @@
 import { Head } from '@inertiajs/react';
 import AppLayoutFull from '@/layouts/app-layout-full';
-import CompanyHeader from '@/components/company-header';
+import HcHeader from '@/components/hc-header';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Building2, Users, BookOpen, TrendingUp, Target, Settings, Database, BarChart3, Sprout, CheckCircle2, Shield, Award, Zap, BookOpenCheck } from 'lucide-react';
 
 export default function Dashboards() {
     const navigation = [
-        { title: 'Beranda', href: '/' },
-        { title: 'Dashboard', href: '/dashboards' },
-        { title: 'Tentang Kami', href: '/about' },
-        { title: 'Layanan', href: '/services' },
-        { title: 'Kontak', href: '/contact' }
+        { title: 'Corporate Vision', href: '#corporate-vision' },
+        { title: 'Value Creation', href: '#value-creation' },
+        { title: 'HC Vision', href: '#hc-vision' },
+        { title: 'HC Attribute', href: '#hc-attribute' },
+        { title: 'HC Pillars', href: '#hc-pillars' }
     ];
 
-    const contact = {
-        phone: '+62 21 1234 5678',
-        email: 'info@ptpnpalmco.com',
-        address: 'Jakarta, Indonesia'
-    };
+    const valueCreationItems = [
+        {
+            title: 'Strengthening Feedstock & Upstream Expansion',
+            icon: Sprout,
+        },
+        {
+            title: 'Smallholders Enterprise Integration',
+            icon: Users,
+        },
+        {
+            title: 'Downstream Establishment',
+            icon: Target,
+        },
+        {
+            title: 'Green Businesses Acceleration',
+            icon: TrendingUp,
+        },
+        {
+            title: 'Next Level Transformation',
+            icon: Settings,
+        }
+    ];
+
+    const implementationInitiatives = [
+        {
+            title: 'Kebijakan & Standar Proses',
+            items: [
+                'Peraturan Direksi',
+                'Dokumen Tata Kelola',
+                'Standar Formasi',
+                'SOP'
+            ]
+        },
+        {
+            title: 'Sistem Implementasi Proses',
+            items: [
+                'Workflow Chart',
+                'Pedoman/Petunjuk Teknis'
+            ]
+        },
+        {
+            title: 'Infrastruktur Pendukung & Teknologi',
+            items: [
+                'PalmCo Learning Management System',
+                'Agro Performance Management System (APMS)',
+                'Agro Talent Management System (ATMS)',
+                'Agro Culture Management System (ACMS)'
+            ]
+        },
+        {
+            title: 'Mekanisme Kontrol, Monitoring & Review Efektivitas',
+            items: [
+                'HC Initiatives Project',
+                'Evaluasi Bulanan Regional dan HO',
+                'Rapat Gabungan (RAGAB)',
+                'Management Review Cycle (MRC)'
+            ]
+        }
+    ];
+
+    const pillars = [
+        {
+            number: 1,
+            title: 'HC Strategy & Corporate Culture',
+            color: 'bg-[#0A5F6F]',
+            items: [
+                { code: '1.1', title: 'Advanced HC Operating Model' },
+                { code: '1.2', title: 'Agile Organization Design' },
+                { code: '1.3', title: 'Excellence Corporate Culture' }
+            ]
+        },
+        {
+            number: 2,
+            title: 'Learning & Leadership Development',
+            color: 'bg-[#0A5F6F]',
+            items: [
+                { code: '2.1', title: 'Holistic Learning & Capability Development' },
+                { code: '2.2', title: 'Learning Technology Acceleration' },
+                { code: '2.3', title: 'HC Team Capability Mastery' }
+            ]
+        },
+        {
+            number: 3,
+            title: 'Talent Management',
+            color: 'bg-[#0A5F6F]',
+            items: [
+                { code: '3.1', title: 'Strategic Workforce Planning & Capability Alignment' },
+                { code: '3.2', title: 'Integrated Talent Management System' },
+                { code: '3.3', title: 'High-Impact Talent Mobility & Leadership Acceleration' }
+            ]
+        },
+        {
+            number: 4,
+            title: 'Performance & Reward Management',
+            color: 'bg-[#0A5F6F]',
+            items: [
+                { code: '4.1', title: 'Integrated Performance Management System' },
+                { code: '4.2', title: 'Excellence Performance Driven Culture' },
+                { code: '4.3', title: 'Competitive Remuneration & Total Reward' }
+            ]
+        },
+        {
+            number: 5,
+            title: 'HC Governance, IR & Policy',
+            color: 'bg-[#0A5F6F]',
+            items: [
+                { code: '5.1', title: 'Integrated HCIS' },
+                { code: '5.2', title: 'Employee & Industrial Relations (Harmonized Professional Productive)' },
+                { code: '5.3', title: 'HC Good Governance & Policy' }
+            ]
+        }
+    ];
 
     return (
         <AppLayoutFull title="Dashboard Human Capital PalmCo" description="Corporate Vision and Human Capital Strategy Dashboard">
             <Head title="Dashboard Human Capital PalmCo" />
-            <div className="min-h-screen w-full">
-                <CompanyHeader
-                    companyName="PTPN IV Palmco"
+            <div className="min-h-screen w-full bg-white">
+                <HcHeader
                     logo="/images/danantara-logo.png"
+                    rightLogo="/images/holding-logo.png"
                     navigation={navigation}
-                    contact={contact}
                 />
-                <div className="bg-gradient-to-br from-teal-800 via-teal-700 to-teal-600">
-                    {/* Header Section */}
-                    <div className="bg-gradient-to-r from-teal-900 via-teal-800 to-teal-700 text-white px-8 py-10 shadow-2xl">
-                        <div className="flex justify-between items-center mb-8">
-                            <div className="flex items-center gap-4">
-                                <img src="/images/danantara-logo.png" alt="Danantara Indonesia" className="h-12 rounded-lg shadow-lg" />
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <img src="/images/holding-logo.png" alt="Perkebunan Nusantara" className="h-14 rounded-lg shadow-lg" />
-                            </div>
-                        </div>
-                        </div>
 
-                    <div className="text-center">
-                        <h1 className="text-5xl font-extrabold mb-4 drop-shadow-lg">
-                            5 Pilar Pondasi Human Capital PTPN IV Palmco
-                        </h1>
-                        <div className="flex items-center justify-center gap-3 text-xl italic">
-                            <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd"/>
-                                </svg>
-                            </div>
-                            <span>Well Diversified & Sustainable Agro-Industri Company</span>
+                {/* Corporate Vision Header - Dark Teal */}
+                <section id="corporate-vision" className="bg-[#0A5F6F] text-white py-3">
+                    <div className="container mx-auto px-8">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold uppercase tracking-wide">Corporate Vision</span>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                {/* Value Creation */}
-                <div className="bg-teal-800/90 backdrop-blur-sm px-8 py-8 shadow-xl">
-                    <h2 className="text-white text-3xl font-bold text-center mb-6 italic">Value Creation</h2>
-                    <div className="grid grid-cols-5 gap-4">
-                        <div className="bg-teal-600/80 backdrop-blur-sm text-white p-5 rounded-xl text-center font-semibold text-sm shadow-lg hover:bg-teal-500 hover:scale-105 transform transition-all duration-300 cursor-pointer">
-                            Strengthening Feedstock & Upstream Expansion
-                        </div>
-                        <div className="bg-teal-600/80 backdrop-blur-sm text-white p-5 rounded-xl text-center font-semibold text-sm shadow-lg hover:bg-teal-500 hover:scale-105 transform transition-all duration-300 cursor-pointer">
-                            Smallholders Enterprise Integration
-                        </div>
-                        <div className="bg-teal-600/80 backdrop-blur-sm text-white p-5 rounded-xl text-center font-semibold text-sm shadow-lg hover:bg-teal-500 hover:scale-105 transform transition-all duration-300 cursor-pointer">
-                            Downstream Establishment
-                        </div>
-                        <div className="bg-teal-600/80 backdrop-blur-sm text-white p-5 rounded-xl text-center font-semibold text-sm shadow-lg hover:bg-teal-500 hover:scale-105 transform transition-all duration-300 cursor-pointer">
-                            Green Businesses Acceleration
-                        </div>
-                        <div className="bg-teal-800/90 backdrop-blur-sm text-white p-5 rounded-xl text-center font-semibold text-sm shadow-lg hover:bg-teal-700 hover:scale-105 transform transition-all duration-300 cursor-pointer">
-                            Next Level Transformation
+                {/* Hero Section with Palm Tree Icon */}
+                <section className="bg-gradient-to-b from-[#0A5F6F] to-[#0D7589] text-white py-12">
+                    <div className="container mx-auto px-8">
+                        <div className="text-center">
+                            <div className="flex items-center justify-center mb-4">
+                                <div className="w-20 h-20 flex items-center justify-center">
+                                   <img src="/images/palmco-logo.png" alt="Palmco Logo" className="w-full h-full object-contain brightness-0 invert" />
+                                </div>
+                            </div>
+                            <h1 className="text-2xl font-bold italic mb-2">
+                                Well Diversified & Sustainable Agro-Industri Company
+                            </h1>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                {/* Business Prior Header */}
+                <section className="bg-[#0A5F6F] text-white py-3">
+                    <div className="container mx-auto px-8">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold uppercase tracking-wide">Business Prior</span>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Value Creation Section */}
+                <section id="value-creation" className="bg-[#0D7589] py-8">
+                    <div className="container mx-auto px-8">
+                        <div className="text-center mb-6">
+                            <h2 className="text-3xl font-bold text-white italic">Value Creation</h2>
+                        </div>
+                        <div className="grid grid-cols-5 gap-4">
+                            {valueCreationItems.map((item, index) => (
+                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/30 p-6 text-center">
+                                    <div className="text-white">
+                                        <p className="text-sm font-semibold leading-tight">{item.title}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* HC Vision Header */}
+                <section id="hc-vision" className="bg-[#0A5F6F] text-white py-3">
+                    <div className="container mx-auto px-8">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold uppercase tracking-wide">HC Vision</span>
+                        </div>
+                    </div>
+                </section>
 
                 {/* Vision Statement */}
-                <div className="bg-teal-900/90 backdrop-blur-sm text-white px-8 py-6 border-t-2 border-b-2 border-white/20">
-                    <h3 className="text-center font-bold text-2xl mb-3">Human Capital Vision</h3>
-                    <p className="text-center text-lg italic max-w-6xl mx-auto leading-relaxed">
-                        "Empower a <span className="text-yellow-300 font-semibold">skilled, growth-oriented workforce</span> to drive
-                        <span className="text-yellow-300 font-semibold">sustainable value creation</span>, support
-                        <span className="text-yellow-300 font-semibold">business expansion</span>, and enable
-                        <span className="text-yellow-300 font-semibold">agile transformation</span> through
-                        <span className="text-yellow-300 font-semibold">digitalization</span>."
-                    </p>
-                </div>
+                <section className="bg-[#0D7589] py-10">
+                    <div className="container mx-auto px-8">
+                        <div className="text-center mb-6">
+                            <h3 className="text-2xl font-bold text-white mb-4">Human Capital Vision</h3>
+                        </div>
+                        <div className="max-w-5xl mx-auto">
+                            <p className="text-center text-lg text-white leading-relaxed italic">
+                                "Empower a <span className="text-yellow-300 font-semibold">skilled, growth-oriented workforce</span> to drive{' '}
+                                <span className="text-yellow-300 font-semibold">sustainable value creation</span>, support{' '}
+                                <span className="text-yellow-300 font-semibold">business expansion</span>, and enable{' '}
+                                <span className="text-yellow-300 font-semibold">agile transformation</span> through{' '}
+                                <span className="text-yellow-300 font-semibold">digitalization</span>."
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* HC Attribute Header */}
+                <section id="hc-attribute" className="bg-[#0A5F6F] text-white py-3">
+                    <div className="container mx-auto px-8">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold uppercase tracking-wide">HC Attribute</span>
+                        </div>
+                    </div>
+                </section>
 
                 {/* Implementation Initiatives */}
-                <div className="bg-gradient-to-b from-teal-700 to-teal-600 px-8 py-10">
-                    <div className="grid grid-cols-4 gap-6">
-                        {/* Kebijakan */}
-                        <div className="bg-teal-800/80 backdrop-blur-sm text-white p-6 rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-white/20">
-                                <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center text-teal-900 font-bold text-lg">
-                                    📋
+                <section className="bg-[#0D7589] py-10">
+                    <div className="container mx-auto px-8">
+                        <div className="grid grid-cols-4 gap-6">
+                            {implementationInitiatives.map((initiative, index) => (
+                                <div key={index} className="bg-[#0A5F6F] border-2 border-white/20 p-6">
+                                    <h3 className="text-white font-bold text-sm mb-4 pb-3 border-b border-yellow-400">
+                                        {initiative.title}
+                                    </h3>
+                                    <ul className="space-y-2">
+                                        {initiative.items.map((item, itemIndex) => (
+                                            <li key={itemIndex} className="flex items-start gap-2 text-xs text-white">
+                                                <span className="text-yellow-400 font-bold mt-0.5">•</span>
+                                                <span>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                                <h4 className="font-bold text-base flex-1">Kebijakan & Standar Proses</h4>
-                            </div>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Peraturan Direksi</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Dokumen Tata Kelola</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Standar Formasi</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>SOP</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Sistem */}
-                        <div className="bg-teal-800/80 backdrop-blur-sm text-white p-6 rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-white/20">
-                                <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center text-teal-900 font-bold text-lg">
-                                    ⚙️
-                                </div>
-                                <h4 className="font-bold text-base flex-1">Sistem Implementasi Proses</h4>
-                            </div>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Workflow Chart</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Pedoman/Petunjuk Teknis</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Infrastruktur */}
-                        <div className="bg-teal-800/80 backdrop-blur-sm text-white p-6 rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-white/20">
-                                <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center text-teal-900 font-bold text-lg">
-                                    💻
-                                </div>
-                                <h4 className="font-bold text-base flex-1">Infrastruktur Pendukung & Teknologi</h4>
-                            </div>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>PalmCo Learning Management System</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Agro Performance Management System (APMS)</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Agro Talent Management System (ATMS)</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Agro Culture Management System (ACMS)</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Kontrol */}
-                        <div className="bg-teal-800/80 backdrop-blur-sm text-white p-6 rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-white/20">
-                                <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center text-teal-900 font-bold text-lg">
-                                    📊
-                                </div>
-                                <h4 className="font-bold text-base flex-1">Mekanisme Kontrol, Monitoring & Review Efektivitas</h4>
-                            </div>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>HC Initiatives Project</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Evaluasi Bulanan Regional dan HO</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Rapat Gabungan (RAGAB)</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-yellow-400 font-bold">•</span>
-                                    <span>Management Review Cycle (MRC)</span>
-                                </li>
-                            </ul>
+                            ))}
                         </div>
                     </div>
-                </div>
+                </section>
 
-                {/* 5 Pillars Title */}
-                <div className="bg-teal-900/95 backdrop-blur-sm text-white py-8 px-8 shadow-xl">
-                    <h2 className="text-center text-4xl font-extrabold">5 Pilar HC PTPN III (Persero)</h2>
-                </div>
-
-                {/* 5 Pillars */}
-                <div className="bg-gradient-to-b from-teal-800 to-teal-700 px-8 py-12">
-                    <div className="grid grid-cols-5 gap-6">
-                        {/* Pilar 1 */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-teal-900 p-5 text-center">
-                                <h3 className="font-extrabold text-2xl mb-2">PILAR 1</h3>
-                                <p className="text-sm font-bold leading-tight">HC Strategy & Corporate Culture</p>
-                            </div>
-                            <div className="p-5 space-y-3 bg-gray-50">
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">1.1</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Advanced HC Operating Model</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">1.2</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Agile Organization Design</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">1.3</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Excellence Corporate Culture</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pilar 2 */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-teal-900 p-5 text-center">
-                                <h3 className="font-extrabold text-2xl mb-2">PILAR 2</h3>
-                                <p className="text-sm font-bold leading-tight">Learning & Leadership Development</p>
-                            </div>
-                            <div className="p-5 space-y-3 bg-gray-50">
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">2.1</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Holistic Learning & Capability Development</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">2.2</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Learning Technology Acceleration</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">2.3</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">HC Team Capability Mastery</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pilar 3 */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-teal-900 p-5 text-center">
-                                <h3 className="font-extrabold text-2xl mb-2">PILAR 3</h3>
-                                <p className="text-sm font-bold leading-tight">Talent Management</p>
-                            </div>
-                            <div className="p-5 space-y-3 bg-gray-50">
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">3.1</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Strategic Workforce Planning & Capability Alignment</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">3.2</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Integrated Talent Management System</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">3.3</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">High-Impact Talent Mobility & Leadership Acceleration</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pilar 4 */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-teal-900 p-5 text-center">
-                                <h3 className="font-extrabold text-2xl mb-2">PILAR 4</h3>
-                                <p className="text-sm font-bold leading-tight">Performance Management & Reward</p>
-                            </div>
-                            <div className="p-5 space-y-3 bg-gray-50">
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">4.1</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Integrated Performance Management System</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">4.2</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Excellence Performance Driven Culture</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">4.3</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Competitive Remuneration & Total Reward</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pilar 5 */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-teal-900 p-5 text-center">
-                                <h3 className="font-extrabold text-2xl mb-2">PILAR 5</h3>
-                                <p className="text-sm font-bold leading-tight">HC Governance, IR & Policy</p>
-                            </div>
-                            <div className="p-5 space-y-3 bg-gray-50">
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">5.1</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Integrated HCIS</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">5.2</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Industrial Relations Management</div>
-                                </div>
-                                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:shadow-md transition-all duration-200">
-                                    <div className="text-red-600 font-bold text-xs mb-1">5.3</div>
-                                    <div className="text-gray-700 text-xs italic font-medium leading-snug">Policy & Regulatory Compliance</div>
-                                </div>
-                            </div>
+                {/* HC Pillars Header */}
+                <section id="hc-pillars" className="bg-[#0A5F6F] text-white py-3">
+                    <div className="container mx-auto px-8">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold uppercase tracking-wide">HC Pillars</span>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                {/* 5 Pillars Section */}
+                <section className="bg-[#0D7589] py-12">
+                    <div className="container mx-auto px-8">
+                        <div className="text-center mb-10">
+                            <h2 className="text-4xl font-bold text-white mb-2">5 Pilar HC PTPN III (Persero)</h2>
+                        </div>
+
+                        <div className="grid grid-cols-5 gap-6">
+                            {pillars.map((pillar) => (
+                                <div key={pillar.number} className="bg-white overflow-hidden">
+                                    {/* Header dengan gradient kuning-orange */}
+                                    <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-center py-5 px-4">
+                                        <div className="text-[#0A5F6F] font-black text-3xl mb-2">
+                                            PILAR {pillar.number}
+                                        </div>
+                                        <div className="text-[#0A5F6F] font-bold text-xs leading-tight uppercase">
+                                            {pillar.title}
+                                        </div>
+                                    </div>
+
+                                    {/* Content items */}
+                                    <div className="p-4 space-y-3 bg-gray-50">
+                                        {pillar.items.map((item) => (
+                                            <div key={item.code} className="bg-white border border-gray-200 p-3">
+                                                <div className="text-red-600 font-bold text-xs mb-1">
+                                                    {item.code}
+                                                </div>
+                                                <div className="text-gray-800 text-xs italic font-medium leading-tight">
+                                                    {item.title}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Footer */}
+                <section className="bg-[#0A5F6F] py-6">
+                    <div className="container mx-auto px-8">
+                        <div className="text-center text-white text-sm">
+                            <p>© 2024 PTPN IV PALMCO - Human Capital Division</p>
+                        </div>
+                    </div>
+                </section>
             </div>
         </AppLayoutFull>
     );
