@@ -30,7 +30,7 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'HC PalmCo') }}</title>
 
         <link rel="icon" href="{{asset('images/palmco-logo.png')}}" sizes="any">
         <link rel="icon" href="{{asset('images/palmco-logo.png')}}" type="image/svg+xml">
