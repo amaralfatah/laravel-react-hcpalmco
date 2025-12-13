@@ -32,42 +32,48 @@ export default function InitiativeDetail() {
             activity: 'Pembentukan Struktur PalmCo Knowledge Management Center',
             pm: 'blue',
             dueDate: 'Jan-Mar 2026',
-            achievement: 85
+            currentMonth: 8,
+            cumulative: 92
         },
         {
             no: 2,
             activity: 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia',
             pm: 'green',
             dueDate: 'Jan-Feb 2026',
-            achievement: 100
+            currentMonth: 0,
+            cumulative: 100
         },
         {
             no: 3,
             activity: 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)',
             pm: 'blue',
             dueDate: 'Mei - Juni 2026',
-            achievement: 60
+            currentMonth: 12,
+            cumulative: 68
         },
         {
             no: 4,
             activity: 'Pelaksanaan Supervisory Bootcamp (Mandor I)',
             pm: 'green',
             dueDate: 'Juli - Ags 2026',
-            achievement: 75
+            currentMonth: 18,
+            cumulative: 42
         },
         {
             no: 5,
             activity: 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran',
             pm: 'yellow',
             dueDate: 'Jan - Des 2026',
-            achievement: 45
+            currentMonth: 6,
+            cumulative: 38
         },
         {
             no: 6,
             activity: 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol',
             pm: 'green',
             dueDate: 'Sep - Des 2026',
-            achievement: 30
+            currentMonth: 3,
+            cumulative: 15
         }
     ];
 
@@ -246,17 +252,18 @@ export default function InitiativeDetail() {
                                     <TableHeader>
                                         <TableRow className="bg-muted">
                                             <TableHead className="w-16">No</TableHead>
-                                            <TableHead>Activity</TableHead>
+                                            <TableHead className="w-96">Activity</TableHead>
                                             <TableHead className="w-16 text-center">PM</TableHead>
                                             <TableHead className="w-24 text-center">Due Date</TableHead>
-                                            <TableHead className="w-24 text-center">Capaian</TableHead>
+                                            <TableHead className="w-24 text-center">Bulan Ini</TableHead>
+                                            <TableHead className="w-24 text-center">sd. Bulan Ini</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {actionPlan.map((item, index) => (
                                             <TableRow key={index}>
                                                 <TableCell className="text-center">{item.no}</TableCell>
-                                                <TableCell>{item.activity}</TableCell>
+                                                <TableCell className="max-w-xs whitespace-normal">{item.activity}</TableCell>
                                                 <TableCell className="text-center">
                                                     <div className={`inline-block w-3 h-3 rounded-full ${
                                                         item.pm === 'green' ? 'bg-green-500' :
@@ -265,7 +272,10 @@ export default function InitiativeDetail() {
                                                 </TableCell>
                                                 <TableCell className="text-center">{item.dueDate}</TableCell>
                                                 <TableCell className="text-center">
-                                                    {item.achievement}%
+                                                    {item.currentMonth}%
+                                                </TableCell>
+                                                <TableCell className="text-center">
+                                                    {item.cumulative}%
                                                 </TableCell>
                                             </TableRow>
                                         ))}
