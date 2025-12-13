@@ -11,7 +11,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('home');
     
-    Route::get('dashboard', [App\Http\Controllers\DashboardsController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('list', [App\Http\Controllers\DashboardController::class, 'list'])->name('list');
+    Route::get('detail', [App\Http\Controllers\DashboardController::class, 'detail'])->name('detail');
 });
 
 require __DIR__ . '/settings.php';

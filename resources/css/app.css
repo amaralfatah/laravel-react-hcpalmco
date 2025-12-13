@@ -62,72 +62,86 @@
 }
 
 :root {
+    /* Background: Putih bersih */
     --background:
-        oklch(0.9911 0 0);
+        oklch(1 0 0);
+    /* Foreground: Coklat tua profesional */
     --foreground:
-        oklch(0.2046 0 0);
+        oklch(0.22 0.025 50);
+    /* Card: Putih bersih */
     --card:
-        oklch(0.9911 0 0);
+        oklch(1 0 0);
     --card-foreground:
-        oklch(0.2046 0 0);
+        oklch(0.22 0.025 50);
+    /* Popover: Putih bersih */
     --popover:
-        oklch(0.9911 0 0);
+        oklch(1 0 0);
     --popover-foreground:
-        oklch(0.4386 0 0);
+        oklch(0.30 0.025 50);
+    /* Primary: Hijau kelapa sawit profesional */
     --primary:
-        oklch(0.8348 0.1302 160.9080);
+        oklch(0.48 0.16 145);
+    /* Primary foreground: Putih bersih */
     --primary-foreground:
-        oklch(0.2626 0.0147 166.4589);
+        oklch(0.99 0.005 145);
+    /* Secondary: Oranye keemasan buah sawit */
     --secondary:
-        oklch(0.9940 0 0);
+        oklch(0.68 0.15 45);
     --secondary-foreground:
-        oklch(0.2046 0 0);
+        oklch(0.15 0.02 50);
+    /* Muted: Coklat muda tanah */
     --muted:
-        oklch(0.9461 0 0);
+        oklch(0.90 0.018 65);
     --muted-foreground:
-        oklch(0.2435 0 0);
+        oklch(0.48 0.025 55);
+    /* Accent: Kuning emas minyak sawit */
     --accent:
-        oklch(0.9461 0 0);
+        oklch(0.78 0.13 75);
     --accent-foreground:
-        oklch(0.2435 0 0);
+        oklch(0.20 0.025 50);
+    /* Destructive: Merah peringatan */
     --destructive:
-        oklch(0.5523 0.1927 32.7272);
+        oklch(0.52 0.22 25);
     --destructive-foreground:
-        oklch(0.9934 0.0032 17.2118);
+        oklch(0.99 0.008 25);
+    /* Border: Coklat muda natural */
     --border:
-        oklch(0.9037 0 0);
+        oklch(0.85 0.025 60);
     --input:
-        oklch(0.9731 0 0);
+        oklch(0.92 0.015 70);
+    /* Ring: Hijau sawit fokus */
     --ring:
-        oklch(0.8348 0.1302 160.9080);
+        oklch(0.58 0.16 150);
+    /* Charts: Palette kelapa sawit */
     --chart-1:
-        oklch(0.8348 0.1302 160.9080);
+        oklch(0.58 0.16 150); /* Hijau daun sawit */
     --chart-2:
-        oklch(0.6231 0.1880 259.8145);
+        oklch(0.65 0.15 42); /* Oranye buah */
     --chart-3:
-        oklch(0.6056 0.2189 292.7172);
+        oklch(0.52 0.10 55); /* Coklat tanah */
     --chart-4:
-        oklch(0.7686 0.1647 70.0804);
+        oklch(0.72 0.14 80); /* Kuning minyak */
     --chart-5:
-        oklch(0.6959 0.1491 162.4796);
+        oklch(0.42 0.14 160); /* Hijau tua perkebunan */
     --radius:
         0.5rem;
+    /* Sidebar */
     --sidebar:
-        oklch(0.9911 0 0);
+        oklch(1 0 0);
     --sidebar-foreground:
-        oklch(0.5452 0 0);
+        oklch(0.38 0.025 55);
     --sidebar-primary:
-        oklch(0.8348 0.1302 160.9080);
+        oklch(0.58 0.16 150);
     --sidebar-primary-foreground:
-        oklch(0.2626 0.0147 166.4589);
+        oklch(0.99 0.005 145);
     --sidebar-accent:
-        oklch(0.9461 0 0);
+        oklch(0.90 0.018 65);
     --sidebar-accent-foreground:
-        oklch(0.2435 0 0);
+        oklch(0.22 0.025 50);
     --sidebar-border:
-        oklch(0.9037 0 0);
+        oklch(0.85 0.025 60);
     --sidebar-ring:
-        oklch(0.8348 0.1302 160.9080);
+        oklch(0.58 0.16 150);
     --font-sans:
         Outfit, sans-serif;
     --font-serif:
@@ -135,9 +149,9 @@
     --font-mono:
         monospace;
     --shadow-color:
-        #000000;
+        #3d3426;
     --shadow-opacity:
-        0.17;
+        0.12;
     --shadow-blur:
         3px;
     --shadow-spread:
@@ -151,90 +165,103 @@
     --spacing:
         0.25rem;
     --shadow-2xs:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.09);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.08);
     --shadow-xs:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.09);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.08);
     --shadow-sm:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 1px 2px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.12), 0px 1px 2px -1px hsl(40 20% 18% / 0.12);
     --shadow:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 1px 2px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.12), 0px 1px 2px -1px hsl(40 20% 18% / 0.12);
     --shadow-md:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 2px 4px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.12), 0px 2px 4px -1px hsl(40 20% 18% / 0.12);
     --shadow-lg:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 4px 6px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.12), 0px 4px 6px -1px hsl(40 20% 18% / 0.12);
     --shadow-xl:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 8px 10px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.12), 0px 8px 10px -1px hsl(40 20% 18% / 0.12);
     --shadow-2xl:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.43);
+        0px 1px 3px 0px hsl(40 20% 18% / 0.28);
     --tracking-normal:
         0.025em;
 }
 
 .dark {
+    /* Background: Hijau gelap perkebunan malam */
     --background:
-        oklch(0.1822 0 0);
+        oklch(0.18 0.035 150);
+    /* Foreground: Cream terang */
     --foreground:
-        oklch(0.9288 0.0126 255.5078);
+        oklch(0.94 0.012 75);
+    /* Card: Hijau gelap sedikit lebih terang */
     --card:
-        oklch(0.2046 0 0);
+        oklch(0.22 0.035 148);
     --card-foreground:
-        oklch(0.9288 0.0126 255.5078);
+        oklch(0.94 0.012 75);
+    /* Popover: Hijau gelap dengan warmth */
     --popover:
-        oklch(0.2603 0 0);
+        oklch(0.24 0.035 145);
     --popover-foreground:
-        oklch(0.7348 0 0);
+        oklch(0.88 0.012 75);
+    /* Primary: Hijau sawit cerah untuk dark */
     --primary:
-        oklch(0.4365 0.1044 156.7556);
+        oklch(0.55 0.18 145);
     --primary-foreground:
-        oklch(0.9213 0.0135 167.1556);
+        oklch(0.12 0.025 145);
+    /* Secondary: Oranye buah lebih vibrant */
     --secondary:
-        oklch(0.2603 0 0);
+        oklch(0.58 0.16 40);
     --secondary-foreground:
-        oklch(0.9851 0 0);
+        oklch(0.96 0.010 75);
+    /* Muted: Hijau coklat gelap */
     --muted:
-        oklch(0.2393 0 0);
+        oklch(0.30 0.030 140);
     --muted-foreground:
-        oklch(0.7122 0 0);
+        oklch(0.72 0.020 75);
+    /* Accent: Kuning keemasan medium */
     --accent:
-        oklch(0.3132 0 0);
+        oklch(0.52 0.12 72);
     --accent-foreground:
-        oklch(0.9851 0 0);
+        oklch(0.96 0.010 75);
+    /* Destructive: Merah gelap */
     --destructive:
-        oklch(0.3123 0.0852 29.7877);
+        oklch(0.42 0.18 25);
     --destructive-foreground:
-        oklch(0.9368 0.0045 34.3092);
+        oklch(0.96 0.010 25);
+    /* Border: Hijau coklat gelap */
     --border:
-        oklch(0.2809 0 0);
+        oklch(0.35 0.035 145);
     --input:
-        oklch(0.2603 0 0);
+        oklch(0.30 0.030 145);
+    /* Ring: Hijau cerah fokus */
     --ring:
-        oklch(0.8003 0.1821 151.7110);
+        oklch(0.68 0.18 155);
+    /* Charts dark mode */
     --chart-1:
-        oklch(0.8003 0.1821 151.7110);
+        oklch(0.62 0.18 152); /* Hijau sawit cerah */
     --chart-2:
-        oklch(0.7137 0.1434 254.6240);
+        oklch(0.68 0.16 42); /* Oranye vibrant */
     --chart-3:
-        oklch(0.7090 0.1592 293.5412);
+        oklch(0.58 0.10 58); /* Coklat medium */
     --chart-4:
-        oklch(0.8369 0.1644 84.4286);
+        oklch(0.72 0.14 78); /* Kuning emas */
     --chart-5:
-        oklch(0.7845 0.1325 181.9120);
+        oklch(0.48 0.14 165); /* Hijau cyan */
+    /* Sidebar dark */
     --sidebar:
-        oklch(0.1822 0 0);
+        oklch(0.16 0.035 150);
     --sidebar-foreground:
-        oklch(0.6301 0 0);
+        oklch(0.78 0.018 75);
     --sidebar-primary:
-        oklch(0.4365 0.1044 156.7556);
+        oklch(0.62 0.18 152);
     --sidebar-primary-foreground:
-        oklch(0.9213 0.0135 167.1556);
+        oklch(0.12 0.025 145);
     --sidebar-accent:
-        oklch(0.3132 0 0);
+        oklch(0.30 0.030 140);
     --sidebar-accent-foreground:
-        oklch(0.9851 0 0);
+        oklch(0.96 0.010 75);
     --sidebar-border:
-        oklch(0.2809 0 0);
+        oklch(0.35 0.035 145);
     --sidebar-ring:
-        oklch(0.8003 0.1821 151.7110);
+        oklch(0.68 0.18 155);
     --radius:
         0.5rem;
     --font-sans:
@@ -244,9 +271,9 @@
     --font-mono:
         monospace;
     --shadow-color:
-        #000000;
+        #0d1f12;
     --shadow-opacity:
-        0.17;
+        0.30;
     --shadow-blur:
         3px;
     --shadow-spread:
@@ -260,21 +287,21 @@
     --spacing:
         0.25rem;
     --shadow-2xs:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.09);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.15);
     --shadow-xs:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.09);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.15);
     --shadow-sm:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 1px 2px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.30), 0px 1px 2px -1px hsl(150 40% 8% / 0.30);
     --shadow:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 1px 2px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.30), 0px 1px 2px -1px hsl(150 40% 8% / 0.30);
     --shadow-md:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 2px 4px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.30), 0px 2px 4px -1px hsl(150 40% 8% / 0.30);
     --shadow-lg:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 4px 6px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.30), 0px 4px 6px -1px hsl(150 40% 8% / 0.30);
     --shadow-xl:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 8px 10px -1px hsl(0 0% 0% / 0.17);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.30), 0px 8px 10px -1px hsl(150 40% 8% / 0.30);
     --shadow-2xl:
-        0px 1px 3px 0px hsl(0 0% 0% / 0.43);
+        0px 1px 3px 0px hsl(150 40% 8% / 0.50);
 }
 
 @layer base {
