@@ -31,37 +31,43 @@ export default function InitiativeDetail() {
             no: 1,
             activity: 'Pembentukan Struktur PalmCo Knowledge Management Center',
             pm: 'blue',
-            dueDate: 'Jan-Mar 2026'
+            dueDate: 'Jan-Mar 2026',
+            achievement: 85
         },
         {
             no: 2,
             activity: 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia',
             pm: 'green',
-            dueDate: 'Jan-Feb 2026'
+            dueDate: 'Jan-Feb 2026',
+            achievement: 100
         },
         {
             no: 3,
             activity: 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)',
             pm: 'blue',
-            dueDate: 'Mei - Juni 2026'
+            dueDate: 'Mei - Juni 2026',
+            achievement: 60
         },
         {
             no: 4,
             activity: 'Pelaksanaan Supervisory Bootcamp (Mandor I)',
             pm: 'green',
-            dueDate: 'Juli - Ags 2026'
+            dueDate: 'Juli - Ags 2026',
+            achievement: 75
         },
         {
             no: 5,
             activity: 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran',
             pm: 'yellow',
-            dueDate: 'Jan - Des 2026'
+            dueDate: 'Jan - Des 2026',
+            achievement: 45
         },
         {
             no: 6,
             activity: 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol',
             pm: 'green',
-            dueDate: 'Sep - Des 2026'
+            dueDate: 'Sep - Des 2026',
+            achievement: 30
         }
     ];
 
@@ -243,6 +249,7 @@ export default function InitiativeDetail() {
                                             <TableHead>Activity</TableHead>
                                             <TableHead className="w-16 text-center">PM</TableHead>
                                             <TableHead className="w-24 text-center">Due Date</TableHead>
+                                            <TableHead className="w-24 text-center">Capaian</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -257,6 +264,9 @@ export default function InitiativeDetail() {
                                                     }`}></div>
                                                 </TableCell>
                                                 <TableCell className="text-center">{item.dueDate}</TableCell>
+                                                <TableCell className="text-center">
+                                                    {item.achievement}%
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
