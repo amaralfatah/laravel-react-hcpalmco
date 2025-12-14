@@ -16,6 +16,8 @@ interface Kpi {
     metric_name: string;
     uom: string;
     target: string;
+    current_value?: number;
+    achievement_percentage?: number;
 }
 
 interface ActionPlan {
@@ -270,72 +272,54 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
 
                                         {/* KPIs Section */}
                                         <TableRow>
-                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top text-center w-16 whitespace-normal" rowSpan={4}>
+                                            <TableCell className="bg-accent px-3 py-2 border font-bold text-accent-foreground align-top text-center w-16 whitespace-normal" rowSpan={4}>
                                                 KPI's
                                             </TableCell>
-                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 align-top text-center whitespace-normal">
+                                            <TableHead className="bg-gray-200 px-3 py-2 border font-bold text-gray-900 align-top text-center whitespace-normal">
                                                 Metric
                                             </TableHead>
-                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 align-top text-center whitespace-normal">
-                                                Value
-                                            </TableHead>
-                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top w-16 whitespace-normal">
+                                            <TableHead className="bg-gray-200 px-3 py-2 border font-bold text-gray-900 text-center align-top w-16 whitespace-normal">
                                                 UOM
                                             </TableHead>
-                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top w-16 whitespace-normal">
-                                                Value
-                                            </TableHead>
-                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top w-32 whitespace-normal">
+                                            <TableHead className="bg-gray-200 px-3 py-2 border font-bold text-gray-900 text-center align-top w-32 whitespace-normal">
                                                 Target
                                             </TableHead>
-                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top whitespace-normal">
-                                                Value
-                                            </TableHead>
                                         </TableRow>
 
                                         <TableRow>
-                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-gray-800 align-top whitespace-normal">
                                                 {initiative.kpis[0]?.metric_name}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal"></TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-center text-gray-800 align-top whitespace-normal">
                                                 {initiative.kpis[0]?.uom}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center font-bold text-gray-900 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-center font-bold text-gray-900 align-top whitespace-normal">
                                                 {initiative.kpis[0]?.target}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
                                         </TableRow>
 
                                         <TableRow>
-                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-gray-800 align-top whitespace-normal">
                                                 {initiative.kpis[1]?.metric_name}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal"></TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-center text-gray-800 align-top whitespace-normal">
                                                 {initiative.kpis[1]?.uom}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center font-bold text-gray-900 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-center font-bold text-gray-900 align-top whitespace-normal">
                                                 {initiative.kpis[1]?.target}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
                                         </TableRow>
 
                                         <TableRow>
-                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-gray-800 align-top whitespace-normal">
                                                 {initiative.kpis[2]?.metric_name}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal"></TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-center text-gray-800 align-top whitespace-normal">
                                                 {initiative.kpis[2]?.uom}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center font-bold text-gray-900 align-top whitespace-normal">
+                                            <TableCell className="px-3 py-2 border text-center font-bold text-gray-900 align-top whitespace-normal">
                                                 {initiative.kpis[2]?.target}
                                             </TableCell>
-                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
