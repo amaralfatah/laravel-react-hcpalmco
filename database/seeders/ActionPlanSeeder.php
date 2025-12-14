@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\ActionPlan;
 use App\Models\Initiative;
+use App\Models\MonthlyProgress;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class ActionPlanSeeder extends Seeder
 {
@@ -29,7 +30,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'HR Process Team',
                 'start_date' => '2026-01-01',
                 'end_date' => '2026-03-31',
-                'progress_percentage' => 100
+                'progress_percentage' => 100,
             ],
             [
                 'title' => 'HC Transformation Program',
@@ -45,7 +46,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'IT Integration Team',
                 'start_date' => '2026-04-01',
                 'end_date' => '2026-09-30',
-                'progress_percentage' => 50
+                'progress_percentage' => 50,
             ],
             [
                 'title' => 'Digital HR Implementation',
@@ -61,7 +62,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'Digital Transformation Team',
                 'start_date' => '2026-01-01',
                 'end_date' => '2026-02-28',
-                'progress_percentage' => 100
+                'progress_percentage' => 100,
             ],
             [
                 'title' => 'Digital HR Implementation',
@@ -77,7 +78,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'HRIS Team',
                 'start_date' => '2026-03-01',
                 'end_date' => '2026-08-31',
-                'progress_percentage' => 30
+                'progress_percentage' => 30,
             ],
             [
                 'title' => 'Leadership Development Program',
@@ -93,7 +94,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'HR Development Team',
                 'start_date' => '2026-01-01',
                 'end_date' => '2026-03-31',
-                'progress_percentage' => 100
+                'progress_percentage' => 100,
             ],
             [
                 'title' => 'Leadership Development Program',
@@ -109,7 +110,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'Training Team',
                 'start_date' => '2026-04-01',
                 'end_date' => '2026-11-30',
-                'progress_percentage' => 60
+                'progress_percentage' => 60,
             ],
             [
                 'title' => 'Talent Management System',
@@ -125,7 +126,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'HRIS Team',
                 'start_date' => '2027-01-01',
                 'end_date' => '2027-02-28',
-                'progress_percentage' => 0
+                'progress_percentage' => 0,
             ],
             [
                 'title' => 'Employee Engagement Enhancement',
@@ -141,7 +142,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'HR Analytics Team',
                 'start_date' => '2027-01-01',
                 'end_date' => '2027-03-31',
-                'progress_percentage' => 0
+                'progress_percentage' => 0,
             ],
             [
                 'title' => 'Performance Management Optimization',
@@ -157,7 +158,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'Performance Management Team',
                 'start_date' => '2027-01-01',
                 'end_date' => '2027-06-30',
-                'progress_percentage' => 0
+                'progress_percentage' => 0,
             ],
             [
                 'title' => 'Compensation & Benefits Review',
@@ -173,7 +174,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'Compensation & Benefits Team',
                 'start_date' => '2028-01-01',
                 'end_date' => '2028-02-28',
-                'progress_percentage' => 0
+                'progress_percentage' => 0,
             ],
             [
                 'title' => 'Workforce Planning System',
@@ -189,7 +190,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'Workforce Planning Team',
                 'start_date' => '2028-01-01',
                 'end_date' => '2028-06-30',
-                'progress_percentage' => 0
+                'progress_percentage' => 0,
             ],
             [
                 'title' => 'HR Analytics Dashboard',
@@ -205,7 +206,7 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'HR Analytics Team',
                 'start_date' => '2029-01-01',
                 'end_date' => '2029-03-31',
-                'progress_percentage' => 0
+                'progress_percentage' => 0,
             ],
             [
                 'title' => 'Succession Planning Framework',
@@ -221,13 +222,13 @@ class ActionPlanSeeder extends Seeder
                 'assigned_to' => 'Talent Management Team',
                 'start_date' => '2029-01-01',
                 'end_date' => '2029-06-30',
-                'progress_percentage' => 0
-            ]
+                'progress_percentage' => 0,
+            ],
         ];
 
         foreach ($actionPlans as $actionPlan) {
             $initiative = Initiative::where('title', $actionPlan['title'])
-                ->where('pillar_id', function($query) use ($actionPlan) {
+                ->where('pillar_id', function ($query) use ($actionPlan) {
                     $query->select('id')
                         ->from('pillars')
                         ->where('pillar_number', $actionPlan['pillar_number']);
@@ -235,23 +236,43 @@ class ActionPlanSeeder extends Seeder
                 ->where('year', $actionPlan['year'])
                 ->where('row_number', $actionPlan['initiative_number'])
                 ->first();
-            
+
             if ($initiative) {
-                ActionPlan::updateOrCreate(
+                $actionPlanModel = ActionPlan::updateOrCreate(
                     [
                         'initiative_id' => $initiative->id,
-                        'activity_number' => $actionPlan['action_number']
+                        'activity_number' => $actionPlan['action_number'],
                     ],
                     [
                         'activity_name' => $actionPlan['action_name'],
                         'project_manager_status' => $actionPlan['status'] === 'completed' ? 'green' : ($actionPlan['status'] === 'in_progress' ? 'yellow' : 'blue'),
                         'start_date' => $actionPlan['start_date'],
                         'end_date' => $actionPlan['end_date'],
-                        'current_month_progress' => $actionPlan['progress_percentage'],
                         'cumulative_progress' => $actionPlan['progress_percentage'],
-                        'display_order' => $actionPlan['action_number']
+                        'display_order' => $actionPlan['action_number'],
                     ]
                 );
+
+                // Create MonthlyProgress to back it up
+                if ($actionPlan['progress_percentage'] > 0) {
+                    $startDate = Carbon::parse($actionPlan['start_date']);
+                    MonthlyProgress::updateOrCreate(
+                        [
+                            'action_plan_id' => $actionPlanModel->id,
+                            'year' => $startDate->year,
+                            'month' => $startDate->month,
+                        ],
+                        [
+                            'progress' => $actionPlan['progress_percentage'],
+                        ]
+                    );
+                }
+
+                // Trigger calculations
+                $actionPlanModel->calculateDurationMonths();
+                $actionPlanModel->calculateWeightPercentage();
+                $actionPlanModel->updateCumulativeProgress();
+                $actionPlanModel->save();
             }
         }
     }

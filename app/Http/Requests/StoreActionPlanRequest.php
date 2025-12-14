@@ -22,17 +22,20 @@ class StoreActionPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'activity_number' => 'required|integer|min:1',
+            // activity_number dan display_order nullable karena bisa di-generate otomatis oleh sistem
+            'activity_number' => 'nullable|integer|min:1',
             'activity_name' => 'required|string|max:255',
             'project_manager_status' => 'required|in:green,yellow,red,blue',
-            'current_month_progress' => 'required|numeric|min:0|max:100',
-            'cumulative_progress' => 'required|numeric|min:0|max:100',
-            'display_order' => 'required|integer|min:1',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'display_order' => 'nullable|integer|min:1',
             // initiative_id bersifat nullable karena controller akan mengisi otomatis dari URL parameter
             'initiative_id' => 'nullable|exists:initiatives,id',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'milestone_id' => 'nullable|exists:milestones,id'
+            'milestone_id' => 'nullable|exists:milestones,id',
+            
+            // Monthly progress validation
+            'monthly_progress' => 'nullable|array',
+            'monthly_progress.*' => 'numeric|min:0|max:100'
         ];
     }
     
@@ -83,22 +86,16 @@ class StoreActionPlanRequest extends FormRequest
     
     /**
      * Configure the validator instance.
+     * CATATAN: current_month_progress dan cumulative_progress adalah nilai INDEPENDEN
+     * - current_month_progress = progress kegiatan di bulan tersebut (bisa 100%)
+     * - cumulative_progress = total progress keseluruhan project (bisa 50% jika baru 1 dari 2 bulan)
      *
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
     public function withValidator($validator): void
     {
-        $validator->after(function ($validator) {
-            // Custom validation: cumulative progress must be >= current month progress
-            if ($this->has('current_month_progress') && $this->has('cumulative_progress')) {
-                $currentMonth = (float) $this->input('current_month_progress');
-                $cumulative = (float) $this->input('cumulative_progress');
-                
-                if ($cumulative < $currentMonth) {
-                    $validator->errors()->add('cumulative_progress', 'Cumulative progress must be greater than or equal to current month progress');
-                }
-            }
-        });
+        // Tidak ada custom validation untuk hubungan antara current_month_progress dan cumulative_progress
+        // karena keduanya adalah nilai yang independen
     }
 }

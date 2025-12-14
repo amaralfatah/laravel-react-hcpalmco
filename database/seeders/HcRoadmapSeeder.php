@@ -10,12 +10,13 @@ use App\Models\Pillar;
 use App\Models\Initiative;
 use App\Models\Kpi;
 use App\Models\ActionPlan;
-use App\Models\MonthlyProgress;
 use App\Models\Risk;
 use App\Models\RiskMitigation;
 use App\Models\Dependency;
 use App\Models\SupportSystem;
 use App\Models\ParentingModel;
+use App\Models\MonthlyProgress;
+
 use Carbon\Carbon;
 
 class HcRoadmapSeeder extends Seeder
@@ -332,31 +333,27 @@ class HcRoadmapSeeder extends Seeder
 
         // Action Plans
         $actionPlans = [
-            ['activity_number' => 1, 'activity_name' => 'Pembentukan Struktur PalmCo Knowledge Management Center', 'project_manager_status' => 'blue', 'current_month_progress' => 8.00, 'cumulative_progress' => 92.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.67, 'display_order' => 1, 'start_date' => '2026-01-01', 'end_date' => '2026-03-31'],
-            ['activity_number' => 2, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia', 'project_manager_status' => 'green', 'current_month_progress' => 0.00, 'cumulative_progress' => 100.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.00, 'display_order' => 2, 'start_date' => '2026-01-01', 'end_date' => '2026-03-31'],
-            ['activity_number' => 3, 'activity_name' => 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)', 'project_manager_status' => 'blue', 'current_month_progress' => 12.00, 'cumulative_progress' => 68.00, 'monthly_target' => 8.33, 'yearly_impact' => 1.00, 'display_order' => 3, 'start_date' => '2026-01-01', 'end_date' => '2026-06-30'],
-            ['activity_number' => 4, 'activity_name' => 'Pelaksanaan Supervisory Bootcamp (Mandor I)', 'project_manager_status' => 'green', 'current_month_progress' => 18.00, 'cumulative_progress' => 42.00, 'monthly_target' => 8.33, 'yearly_impact' => 1.50, 'display_order' => 4, 'start_date' => '2026-04-01', 'end_date' => '2026-09-30'],
-            ['activity_number' => 5, 'activity_name' => 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran', 'project_manager_status' => 'yellow', 'current_month_progress' => 6.00, 'cumulative_progress' => 38.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.50, 'display_order' => 5, 'start_date' => '2026-07-01', 'end_date' => '2026-12-31'],
-            ['activity_number' => 6, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol', 'project_manager_status' => 'green', 'current_month_progress' => 3.00, 'cumulative_progress' => 15.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.25, 'display_order' => 6, 'start_date' => '2026-10-01', 'end_date' => '2026-12-31'],
+            ['activity_number' => 1, 'activity_name' => 'Pembentukan Struktur PalmCo Knowledge Management Center', 'project_manager_status' => 'blue', 'progress' => 8.00, 'cumulative_progress' => 92.00, 'display_order' => 1, 'start_date' => '2026-01-01', 'end_date' => '2026-03-31'],
+            ['activity_number' => 2, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia', 'project_manager_status' => 'green', 'progress' => 0.00, 'cumulative_progress' => 100.00, 'display_order' => 2, 'start_date' => '2026-01-01', 'end_date' => '2026-03-31'],
+            ['activity_number' => 3, 'activity_name' => 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)', 'project_manager_status' => 'blue', 'progress' => 12.00, 'cumulative_progress' => 68.00, 'display_order' => 3, 'start_date' => '2026-01-01', 'end_date' => '2026-06-30'],
+            ['activity_number' => 4, 'activity_name' => 'Pelaksanaan Supervisory Bootcamp (Mandor I)', 'project_manager_status' => 'green', 'progress' => 18.00, 'cumulative_progress' => 42.00, 'display_order' => 4, 'start_date' => '2026-04-01', 'end_date' => '2026-09-30'],
+            ['activity_number' => 5, 'activity_name' => 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran', 'project_manager_status' => 'yellow', 'progress' => 6.00, 'cumulative_progress' => 38.00, 'display_order' => 5, 'start_date' => '2026-07-01', 'end_date' => '2026-12-31'],
+            ['activity_number' => 6, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol', 'project_manager_status' => 'green', 'progress' => 3.00, 'cumulative_progress' => 15.00, 'display_order' => 6, 'start_date' => '2026-10-01', 'end_date' => '2026-12-31'],
         ];
         
-        $createdActionPlans = [];
-        foreach ($actionPlans as $plan) {
-            $actionPlan = ActionPlan::updateOrCreate(
-                ['initiative_id' => $initiative->id, 'activity_number' => $plan['activity_number']],
-                array_merge($plan, ['initiative_id' => $initiative->id])
-            );
-            
-            $actionPlan->save();
-            
-            $createdActionPlans[] = $actionPlan;
-        }
-        
-        // Create monthly progress records for current year
         $currentYear = now()->year;
         $currentMonth = now()->month;
-        
-        foreach ($createdActionPlans as $actionPlan) {
+
+        foreach ($actionPlans as $plan) {
+            // Remove progress from plan array for ActionPlan creation
+            $planData = $plan;
+            unset($planData['progress']);
+
+            $actionPlan = ActionPlan::updateOrCreate(
+                ['initiative_id' => $initiative->id, 'activity_number' => $plan['activity_number']],
+                array_merge($planData, ['initiative_id' => $initiative->id])
+            );
+            
             // Create monthly progress for current month
             MonthlyProgress::updateOrCreate(
                 [
@@ -365,8 +362,7 @@ class HcRoadmapSeeder extends Seeder
                     'month' => $currentMonth
                 ],
                 [
-                    'progress' => $actionPlan->current_month_progress,
-                    'yearly_impact' => $actionPlan->yearly_impact
+                    'progress' => $plan['progress']
                 ]
             );
             
@@ -374,7 +370,6 @@ class HcRoadmapSeeder extends Seeder
             for ($month = 1; $month < $currentMonth; $month++) {
                 // Generate random progress between 0-100
                 $randomProgress = rand(0, 100);
-                $yearlyImpact = ($randomProgress / 100) * 8.33;
                 
                 MonthlyProgress::updateOrCreate(
                     [
@@ -383,11 +378,16 @@ class HcRoadmapSeeder extends Seeder
                         'month' => $month
                     ],
                     [
-                        'progress' => $randomProgress,
-                        'yearly_impact' => $yearlyImpact
+                        'progress' => $randomProgress
                     ]
                 );
             }
+
+            // Trigger calculations
+            $actionPlan->calculateDurationMonths();
+            $actionPlan->calculateWeightPercentage();
+            $actionPlan->updateCumulativeProgress();
+            $actionPlan->save();
         }
 
         // Risks
@@ -524,7 +524,7 @@ class HcRoadmapSeeder extends Seeder
         $cumulativeProgress = 0;
         foreach ($quarters as $index => $quarter) {
             $cumulativeProgress += $quarter['progress'];
-            ActionPlan::updateOrCreate(
+            $actionPlanModel = ActionPlan::updateOrCreate(
                 ['initiative_id' => $initiative->id, 'activity_number' => $index + 1],
                 [
                     'initiative_id' => $initiative->id,
@@ -533,11 +533,31 @@ class HcRoadmapSeeder extends Seeder
                     'project_manager_status' => $quarter['status'],
                     'start_date' => $quarter['start_date'],
                     'end_date' => $quarter['end_date'],
-                    'current_month_progress' => $quarter['progress'],
                     'cumulative_progress' => $cumulativeProgress,
                     'display_order' => $index + 1,
                 ]
             );
+
+            // Create MonthlyProgress
+            if ($quarter['progress'] > 0) {
+                $startDate = Carbon::parse($quarter['start_date']);
+                MonthlyProgress::updateOrCreate(
+                    [
+                        'action_plan_id' => $actionPlanModel->id,
+                        'year' => $startDate->year,
+                        'month' => $startDate->month
+                    ],
+                    [
+                        'progress' => $quarter['progress']
+                    ]
+                );
+            }
+
+            // Trigger calculations
+            $actionPlanModel->calculateDurationMonths();
+            $actionPlanModel->calculateWeightPercentage();
+            $actionPlanModel->updateCumulativeProgress();
+            $actionPlanModel->save();
         }
 
         // Generate 3-4 generic risks

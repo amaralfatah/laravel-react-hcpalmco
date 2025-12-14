@@ -15,19 +15,15 @@ class ActionPlan extends Model
         'project_manager_status',
         'start_date',
         'end_date',
-        'current_month_progress',
+        'duration_months',
+        'weight_percentage',
         'cumulative_progress',
-        'current_month',
-        'monthly_target',
-        'yearly_impact',
         'display_order'
     ];
 
     protected $casts = [
-        'current_month_progress' => 'decimal:2',
+        'weight_percentage' => 'decimal:2',
         'cumulative_progress' => 'decimal:2',
-        'monthly_target' => 'decimal:2',
-        'yearly_impact' => 'decimal:2',
         'start_date' => 'date',
         'end_date' => 'date'
     ];
@@ -43,21 +39,69 @@ class ActionPlan extends Model
     }
 
     /**
-     * Calculate yearly impact based on current month progress
+     * Calculate duration in months
      */
-    public function calculateYearlyImpact(): float
+    public function calculateDurationMonths(): int
     {
-        // Rumus: Impact Tahunan = (Progress Bulan Tertentu / 100) × 8.33%
-        return ($this->current_month_progress / 100) * 8.33;
+        if (!$this->start_date || !$this->end_date) {
+            return 0;
+        }
+        
+        // Hitung selisih bulan + 1 (inklusif)
+        // Contoh: Jan - Mar = 2 bulan selisih + 1 = 3 bulan durasi
+        $start = $this->start_date;
+        $end = $this->end_date;
+        
+        // Menggunakan Carbon diffInMonths
+        // diffInMonths menghitung selisih penuh, jadi perlu penyesuaian
+        // Cara paling aman: (Year2 - Year1) * 12 + (Month2 - Month1) + 1
+        $months = ($end->year - $start->year) * 12 + ($end->month - $start->month) + 1;
+        
+        return max(1, $months);
     }
 
     /**
-     * Save the model with calculated yearly impact
+     * Calculate weight percentage based on duration
+     */
+    public function calculateWeightPercentage(): float
+    {
+        $duration = $this->calculateDurationMonths();
+        
+        // Rumus: Durasi / 12 bulan * 100
+        // Max 100% jika durasi >= 12 bulan
+        return min(100, ($duration / 12) * 100);
+    }
+
+    /**
+     * Calculate yearly impact based on monthly contributions
+     */
+    public function calculateYearlyImpact(): float
+    {
+        // Sum of all monthly contributions
+        return $this->monthlyProgress()->sum('monthly_contribution');
+    }
+
+    /**
+     * Update cumulative progress based on average of monthly progress
+     */
+    public function updateCumulativeProgress(): void
+    {
+        // Cumulative progress = Rata-rata progress bulanan
+        $avgProgress = $this->monthlyProgress()->avg('progress') ?? 0;
+        $this->cumulative_progress = $avgProgress;
+        $this->saveQuietly();
+    }
+
+    /**
+     * Save the model with calculated fields
      */
     public function save(array $options = [])
     {
-        // Calculate yearly impact before saving
-        $this->yearly_impact = $this->calculateYearlyImpact();
+        // Calculate duration and weight before saving
+        if ($this->start_date && $this->end_date) {
+            $this->duration_months = $this->calculateDurationMonths();
+            $this->weight_percentage = $this->calculateWeightPercentage();
+        }
         
         return parent::save($options);
     }
@@ -91,8 +135,6 @@ class ActionPlan extends Model
     {
         return $this->monthlyProgress()
             ->where('year', $year)
-            ->sum('yearly_impact');
+            ->sum('monthly_contribution');
     }
-
-
 }

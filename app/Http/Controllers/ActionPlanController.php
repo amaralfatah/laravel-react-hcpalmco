@@ -10,6 +10,7 @@ use App\Models\MonthlyProgress;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class ActionPlanController extends Controller
 {
@@ -19,6 +20,7 @@ class ActionPlanController extends Controller
     public function index(Initiative $initiative): JsonResponse
     {
         $actionPlans = $initiative->actionPlans()
+            ->with('monthlyProgress')
             ->orderBy('display_order')
             ->get();
             
@@ -44,39 +46,27 @@ class ActionPlanController extends Controller
         
         $validated = $request->validated();
         
-        // Business logic validation
-        if ($validated['current_month_progress'] > 100) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => [
-                    'current_month_progress' => 'Progress cannot exceed 100%'
-                ]
-            ], 422);
-        }
-        
-        if ($validated['cumulative_progress'] < $validated['current_month_progress']) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => [
-                    'cumulative_progress' => 'Cumulative progress must be greater than or equal to current month progress'
-                ]
-            ], 422);
-        }
-        
-        // Set initiative_id
+        // Mengisi field yang di-generate otomatis oleh sistem
         $validated['initiative_id'] = $initiative->id;
         
+        // activity_number dan display_order
+        $nextNumber = $initiative->actionPlans()->count() + 1;
+        $validated['activity_number'] = $validated['activity_number'] ?? $nextNumber;
+        $validated['display_order'] = $validated['display_order'] ?? $nextNumber;
+        
         try {
-            // Membuat action plan baru di database
+            // Membuat action plan baru
+            // Model events will handle duration and weight calculation
             $actionPlan = ActionPlan::create($validated);
             
-            // Membuat atau update catatan progress bulanan untuk bulan ini
-            $this->createOrUpdateMonthlyProgress($actionPlan);
+            // Process monthly progress if provided
+            if (isset($validated['monthly_progress']) && is_array($validated['monthly_progress'])) {
+                $this->processMonthlyProgress($actionPlan, $validated['monthly_progress']);
+            }
             
-            // Mengembalikan redirect dengan flash message untuk toast notification
+            // Mengembalikan redirect dengan flash message
             return back()->with('success', 'Action Plan berhasil dibuat');
         } catch (\Exception $e) {
-            // Mengembalikan redirect dengan pesan error
             return back()->with('error', 'Gagal membuat action plan: ' . $e->getMessage());
         }
     }
@@ -86,12 +76,13 @@ class ActionPlanController extends Controller
      */
     public function show(Initiative $initiative, ActionPlan $actionPlan): JsonResponse
     {
-        // Verify that the action plan belongs to the initiative
         if ($actionPlan->initiative_id !== $initiative->id) {
             return response()->json([
                 'message' => 'Action Plan not found for this initiative'
             ], 404);
         }
+        
+        $actionPlan->load('monthlyProgress');
         
         return response()->json($actionPlan);
     }
@@ -103,41 +94,23 @@ class ActionPlanController extends Controller
     {
         $validated = $request->validated();
         
-        // Business logic validation
-        if ($validated['current_month_progress'] > 100) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => [
-                    'current_month_progress' => 'Progress cannot exceed 100%'
-                ]
-            ], 422);
-        }
-        
-        if ($validated['cumulative_progress'] < $validated['current_month_progress']) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => [
-                    'cumulative_progress' => 'Cumulative progress must be greater than or equal to current month progress'
-                ]
-            ], 422);
-        }
-        
         try {
-            // Melakukan update action plan di database
+            // Update action plan
+            // Model events will handle recalculation of duration and weight if dates change
             $actionPlan->update($validated);
             
-            // Membuat atau update catatan progress bulanan untuk bulan ini
-            $this->createOrUpdateMonthlyProgress($actionPlan);
+            // Process monthly progress if provided
+            if (isset($validated['monthly_progress']) && is_array($validated['monthly_progress'])) {
+                $this->processMonthlyProgress($actionPlan, $validated['monthly_progress']);
+            }
             
-            // Update status milestone jika ada relasi milestone
+            // Update milestone status if exists
             if ($actionPlan->milestone) {
                 $this->updateMilestoneStatus($actionPlan->milestone);
             }
             
-            // Mengembalikan redirect dengan flash message untuk toast notification
             return back()->with('success', 'Action Plan berhasil diupdate');
         } catch (\Exception $e) {
-            // Mengembalikan redirect dengan pesan error
             return back()->with('error', 'Gagal mengupdate action plan: ' . $e->getMessage());
         }
     }
@@ -148,15 +121,44 @@ class ActionPlanController extends Controller
     public function destroy(ActionPlan $actionPlan)
     {
         try {
-            // Menghapus action plan dari database
             $actionPlan->delete();
-            
-            // Mengembalikan redirect dengan flash message untuk toast notification
             return back()->with('success', 'Action Plan berhasil dihapus');
         } catch (\Exception $e) {
-            // Mengembalikan redirect dengan pesan error
             return back()->with('error', 'Gagal menghapus action plan: ' . $e->getMessage());
         }
+    }
+    
+    /**
+     * Process monthly progress data
+     * Format: ['YYYY-MM' => progress_value]
+     */
+    private function processMonthlyProgress(ActionPlan $actionPlan, array $monthlyProgressData)
+    {
+        foreach ($monthlyProgressData as $monthKey => $progress) {
+            try {
+                // Parse YYYY-MM
+                $date = Carbon::createFromFormat('Y-m', $monthKey);
+                $year = $date->year;
+                $month = $date->month;
+                
+                // Find or create monthly progress record
+                $monthlyProgress = MonthlyProgress::firstOrNew([
+                    'action_plan_id' => $actionPlan->id,
+                    'year' => $year,
+                    'month' => $month
+                ]);
+                
+                $monthlyProgress->progress = $progress;
+                $monthlyProgress->save(); // This will trigger calculateMonthlyContribution
+                
+            } catch (\Exception $e) {
+                // Ignore invalid date formats
+                continue;
+            }
+        }
+        
+        // Update cumulative progress on action plan after all updates
+        $actionPlan->updateCumulativeProgress();
     }
     
     /**
@@ -166,68 +168,70 @@ class ActionPlanController extends Controller
     {
         $metrics = [];
         
-        // Rumus 1: Achievement Rate
+        // Rumus 1: Achievement Rate (Cumulative Progress)
         $achievementRate = $actionPlan->cumulative_progress;
         $metrics['achievement_rate'] = [
             'name' => 'Achievement Rate',
-            'formula' => '(Cumulative Progress / Target Progress) × 100%',
+            'formula' => 'Average Monthly Progress',
             'value' => $achievementRate,
             'unit' => '%',
             'status' => $this->getKpiStatus($achievementRate, [100, 75, 50])
         ];
         
-        // Rumus 2: Monthly Progress Rate
-        $monthlyProgressRate = $actionPlan->current_month_progress;
-        $metrics['monthly_progress_rate'] = [
-            'name' => 'Monthly Progress Rate',
-            'formula' => 'Current Month Progress',
-            'value' => $monthlyProgressRate,
+        // Rumus 2: Yearly Impact Contribution
+        $yearlyImpact = $actionPlan->calculateYearlyImpact();
+        $metrics['yearly_impact'] = [
+            'name' => 'Yearly Impact',
+            'formula' => '(Avg Progress) × (Duration / 12)',
+            'value' => $yearlyImpact,
             'unit' => '%',
-            'status' => $this->getKpiStatus($monthlyProgressRate, [20, 15, 10])
+            'status' => $this->getKpiStatus($yearlyImpact, [20, 15, 10]) // Threshold adjusted
         ];
         
-        // Rumus 3: Progress Consistency
-        $progressConsistency = $actionPlan->current_month_progress > 0 
-            ? ($actionPlan->current_month_progress / $actionPlan->cumulative_progress) * 100 
-            : 0;
-        $metrics['progress_consistency'] = [
-            'name' => 'Progress Consistency',
-            'formula' => '(Current Month Progress / Cumulative Progress) × 100%',
-            'value' => $progressConsistency,
-            'unit' => '%',
-            'status' => $this->getKpiStatus($progressConsistency, [80, 60, 40])
-        ];
-        
-        // Rumus 4: Time Efficiency
-        if ($actionPlan->end_date) {
-            $today = now();
-            $endDate = \Carbon\Carbon::parse($actionPlan->end_date);
-            $totalDays = $today->diffInDays($endDate, false);
+        // Rumus 3: Time Efficiency
+        // (Cumulative Progress / Expected Progress based on time elapsed) * 100
+        $timeEfficiency = 0;
+        if ($actionPlan->start_date && $actionPlan->end_date) {
+            $totalDuration = $actionPlan->duration_months;
             
-            if ($totalDays > 0) {
-                $timeEfficiency = min(100, ($actionPlan->cumulative_progress * 365) / $totalDays);
+            // Calculate elapsed months
+            $start = $actionPlan->start_date;
+            $now = now();
+            
+            if ($now < $start) {
+                $elapsedMonths = 0;
             } else {
-                $timeEfficiency = $actionPlan->cumulative_progress >= 100 ? 100 : 0;
+                $elapsedMonths = ($now->year - $start->year) * 12 + ($now->month - $start->month) + 1;
+                $elapsedMonths = min($elapsedMonths, $totalDuration);
             }
             
-            $metrics['time_efficiency'] = [
-                'name' => 'Time Efficiency',
-                'formula' => '(Cumulative Progress × 365) / Remaining Days',
-                'value' => $timeEfficiency,
-                'unit' => '%',
-                'status' => $this->getKpiStatus($timeEfficiency, [80, 60, 40])
-            ];
+            if ($elapsedMonths > 0) {
+                // Expected progress: 100% if time elapsed >= duration
+                // Or proportional? Let's assume linear expectation
+                // But since we input progress manually, maybe we just compare actual vs expected?
+                // Let's keep it simple: if we are 50% through time, we expect 50% progress.
+                $expectedProgress = ($elapsedMonths / $totalDuration) * 100;
+                $timeEfficiency = $expectedProgress > 0 ? ($achievementRate / $expectedProgress) * 100 : 100;
+                $timeEfficiency = min(100, $timeEfficiency);
+            }
         }
         
-        // Rumus 5: Performance Index
+        $metrics['time_efficiency'] = [
+            'name' => 'Time Efficiency',
+            'formula' => '(Actual Progress / Expected Progress) × 100%',
+            'value' => $timeEfficiency,
+            'unit' => '%',
+            'status' => $this->getKpiStatus($timeEfficiency, [80, 60, 40])
+        ];
+        
+        // Rumus 4: Performance Index
         $performanceIndex = (
-            ($achievementRate * 0.4) + 
-            ($monthlyProgressRate * 0.3) + 
-            ($progressConsistency * 0.3)
+            ($achievementRate * 0.6) + 
+            ($timeEfficiency * 0.4)
         );
         $metrics['performance_index'] = [
             'name' => 'Performance Index',
-            'formula' => '(Achievement Rate × 0.4) + (Monthly Progress Rate × 0.3) + (Progress Consistency × 0.3)',
+            'formula' => '(Achievement × 0.6) + (Time Efficiency × 0.4)',
             'value' => $performanceIndex,
             'unit' => '',
             'status' => $this->getKpiStatus($performanceIndex, [80, 60, 40])
@@ -277,42 +281,7 @@ class ActionPlanController extends Controller
     }
     
     /**
-     * Create or update monthly progress record for current month
-     */
-    protected function createOrUpdateMonthlyProgress(ActionPlan $actionPlan): void
-    {
-        $currentYear = now()->year;
-        $currentMonth = now()->month;
-        
-        // Check if monthly progress record already exists
-        $monthlyProgress = MonthlyProgress::where('action_plan_id', $actionPlan->id)
-            ->where('year', $currentYear)
-            ->where('month', $currentMonth)
-            ->first();
-            
-        if (!$monthlyProgress) {
-            // Create new monthly progress record
-            MonthlyProgress::create([
-                'action_plan_id' => $actionPlan->id,
-                'year' => $currentYear,
-                'month' => $currentMonth,
-                'progress' => $actionPlan->current_month_progress,
-                'yearly_impact' => $actionPlan->calculateYearlyImpact()
-            ]);
-        } else {
-            // Update existing monthly progress record
-            $monthlyProgress->progress = $actionPlan->current_month_progress;
-            $monthlyProgress->yearly_impact = $actionPlan->calculateYearlyImpact();
-            $monthlyProgress->save();
-        }
-        
-        // Update current_month in action plan
-        $actionPlan->current_month = $currentMonth;
-        $actionPlan->save();
-    }
-    
-    /**
-     * Get monthly progress data for an action plan
+     * Get monthly progress for an action plan
      */
     public function getMonthlyProgress(ActionPlan $actionPlan, int $year = null): JsonResponse
     {
@@ -325,46 +294,6 @@ class ActionPlanController extends Controller
             'year' => $year,
             'monthly_progress' => $monthlyProgress,
             'total_yearly_impact' => $actionPlan->getTotalYearlyImpactForYear($year)
-        ]);
-    }
-    
-    /**
-     * Update monthly progress for a specific month
-     */
-    public function updateMonthlyProgress(Request $request, ActionPlan $actionPlan, int $year, int $month): JsonResponse
-    {
-        $validated = $request->validate([
-            'progress' => 'required|numeric|min:0|max:100',
-            'notes' => 'nullable|string'
-        ]);
-        
-        // Find or create monthly progress record
-        $monthlyProgress = MonthlyProgress::firstOrCreate(
-            [
-                'action_plan_id' => $actionPlan->id,
-                'year' => $year,
-                'month' => $month
-            ],
-            [
-                'progress' => 0,
-                'yearly_impact' => 0
-            ]
-        );
-        
-        // Update progress and calculate yearly impact
-        $monthlyProgress->progress = $validated['progress'];
-        $monthlyProgress->notes = $validated['notes'] ?? null;
-        $monthlyProgress->save();
-        
-        // Update action plan's current_month_progress if this is the current month
-        if ($year == now()->year && $month == now()->month) {
-            $actionPlan->current_month_progress = $validated['progress'];
-            $actionPlan->save();
-        }
-        
-        return response()->json([
-            'message' => 'Monthly progress updated successfully',
-            'monthly_progress' => $monthlyProgress
         ]);
     }
     
@@ -397,7 +326,6 @@ class ActionPlanController extends Controller
             'year' => $year,
             'metrics' => $metrics,
             'total_yearly_impact' => $totalYearlyImpact,
-            'average_monthly_progress' => $actionPlans->avg('current_month_progress'),
             'average_cumulative_progress' => $actionPlans->avg('cumulative_progress')
         ]);
     }

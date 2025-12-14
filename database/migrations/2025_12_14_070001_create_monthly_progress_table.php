@@ -16,8 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('action_plan_id');
             $table->integer('year');
             $table->integer('month'); // 1-12
-            $table->decimal('progress', 5, 2)->default(0.00);
-            $table->decimal('yearly_impact', 5, 2)->default(0.00);
+            $table->decimal('progress', 5, 2)->default(0.00); // Progress bulan ini
+            $table->decimal('target_progress', 5, 2)->default(0.00); // Expected progress
+            $table->decimal('monthly_contribution', 5, 2)->default(0.00); // Kontribusi ke yearly impact
             $table->text('notes')->nullable();
             $table->timestamps();
             

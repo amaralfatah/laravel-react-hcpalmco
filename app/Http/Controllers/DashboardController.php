@@ -76,7 +76,7 @@ class DashboardController extends Controller
         $initiativeCode = $request->get('code', 'P2.1.1');
         
         $initiative = Initiative::with([
-            'pillar', 'year', 'kpis', 'actionPlans', 
+            'pillar', 'year', 'kpis', 'actionPlans.monthlyProgress', 
             'risks.riskMitigations', 'dependencies', 
             'supportSystems', 'parentingModels'
         ])->where('code', $initiativeCode)->firstOrFail();
