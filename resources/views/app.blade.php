@@ -30,6 +30,9 @@
             }
         </style>
 
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <title inertia>{{ config('app.name', 'HC PalmCo') }}</title>
 
         <link rel="icon" href="{{asset('images/palmco-logo.png')}}" sizes="any">

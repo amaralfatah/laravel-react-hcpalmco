@@ -1,11 +1,15 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import AppLayoutFull from '@/layouts/app-layout-full';
 import { Head } from '@inertiajs/react';
 import HcSubHeader from '@/components/hc-sub-header';
 import HcFooter from '@/components/hc-footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Link } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Link, router } from '@inertiajs/react';
+import { useState } from 'react';
+import ActionPlanModal from '@/components/ActionPlanModal';
+import { useFlashMessages } from '@/hooks/use-flash-messages';
 
 // Define TypeScript interfaces for the data structure
 interface Kpi {
@@ -15,12 +19,14 @@ interface Kpi {
 }
 
 interface ActionPlan {
+    id?: number;
     activity_number: string;
     activity_name: string;
     project_manager_status: string;
     due_date: string;
     current_month_progress: string;
     cumulative_progress: string;
+    display_order?: number;
 }
 
 interface Risk {
@@ -66,12 +72,106 @@ interface InitiativeDetailProps {
 }
 
 export default function InitiativeDetail({ initiative }: InitiativeDetailProps) {
+    // Initialize flash messages hook
+    useFlashMessages();
+    
     // Extract data from initiative object
     const actionPlan = initiative.actionPlans || [];
     const risks = initiative.risks?.map(risk => risk.risk_description) || [];
     const mitigations = initiative.riskMitigations?.map(mitigation => mitigation.mitigation_description) || [];
     const dependencies = initiative.dependencies?.map(dep => dep.dependency_description) || [];
     const supportSystems = initiative.supportSystems?.map(system => system.system_description) || [];
+    
+    // State untuk modal operasional Action Plan
+    const [showModal, setShowModal] = useState(false);
+    const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create' | 'delete'>('view');
+    const [selectedActionPlan, setSelectedActionPlan] = useState<ActionPlan | null>(null);
+    
+    // Fungsi handler untuk operasi modal
+    const handleRowClick = (item: ActionPlan) => {
+        setSelectedActionPlan(item);
+        setModalMode('view');
+        setShowModal(true);
+    };
+    
+    const handleAddNew = () => {
+        setSelectedActionPlan(null);
+        setModalMode('create');
+        setShowModal(true);
+    };
+    
+    const handleEdit = (item: ActionPlan) => {
+        setSelectedActionPlan(item);
+        setModalMode('edit');
+        setShowModal(true);
+    };
+    
+    const handleDelete = (item: ActionPlan) => {
+        setSelectedActionPlan(item);
+        setModalMode('delete');
+        setShowModal(true);
+    };
+    
+    const handleSave = async (data: ActionPlan) => {
+        // Konversi tipe data untuk API
+        const apiData = {
+            ...data,
+            activity_number: typeof data.activity_number === 'string' 
+                ? parseInt(data.activity_number) 
+                : data.activity_number,
+            current_month_progress: typeof data.current_month_progress === 'string' 
+                ? parseFloat(data.current_month_progress) 
+                : data.current_month_progress,
+            cumulative_progress: typeof data.cumulative_progress === 'string' 
+                ? parseFloat(data.cumulative_progress) 
+                : data.cumulative_progress,
+        };
+        
+        try {
+            if (modalMode === 'create') {
+                router.post(`/initiatives/${initiative.code}/action-plans`, apiData, {
+                    onSuccess: () => {
+                        setShowModal(false);
+                        // Refresh data using Inertia's reload method
+                        router.reload({ only: ['initiative'] });
+                    },
+                    onError: (errors) => {
+                        console.error('Error saving action plan:', errors);
+                    }
+                });
+            } else {
+                router.put(`/action-plans/${data.id}`, apiData, {
+                    onSuccess: () => {
+                        setShowModal(false);
+                        // Refresh data using Inertia's reload method
+                        router.reload({ only: ['initiative'] });
+                    },
+                    onError: (errors) => {
+                        console.error('Error saving action plan:', errors);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
+    const handleDeleteConfirm = async (id: number) => {
+        try {
+            router.delete(`/action-plans/${id}`, {
+                onSuccess: () => {
+                    setShowModal(false);
+                    // Refresh data using Inertia's reload method
+                    router.reload({ only: ['initiative'] });
+                },
+                onError: (errors) => {
+                    console.error('Error deleting action plan:', errors);
+                }
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     const parentingModel = [
         { label: 'Sentralisasi', color: 'bg-blue-600' },
@@ -244,8 +344,12 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
 
                         {/* Action Plan */}
                         <Card className="mb-6">
-                            <CardHeader>
+                            <CardHeader className="flex flex-row items-center justify-between">
                                 <CardTitle>Action Plan, Roadmap, and Milestones</CardTitle>
+                                <Button onClick={handleAddNew} className="flex items-center gap-2">
+                                    <Plus className="w-4 h-4" />
+                                    Add Action Plan
+                                </Button>
                             </CardHeader>
                             <CardContent>
                                 <Table className='border'>
@@ -257,25 +361,74 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                                             <TableHead className="w-24 text-center border border-gray-300">Due Date</TableHead>
                                             <TableHead className="w-24 text-center border border-gray-300">Bulan Ini</TableHead>
                                             <TableHead className="w-24 text-center border border-gray-300">sd. Bulan Ini</TableHead>
+                                            <TableHead className="w-24 text-center border border-gray-300">Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {actionPlan.map((item, index) => (
-                                            <TableRow key={index}>
-                                                <TableCell className="text-center border border-gray-300">{item.activity_number}</TableCell>
-                                                <TableCell className="max-w-xs whitespace-normal border border-gray-300">{item.activity_name}</TableCell>
-                                                <TableCell className="text-center border border-gray-300">
+                                            <TableRow key={index} className="cursor-pointer hover:bg-gray-50">
+                                                <TableCell 
+                                                    className="text-center border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
+                                                    {item.activity_number}
+                                                </TableCell>
+                                                <TableCell 
+                                                    className="max-w-xs whitespace-normal border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
+                                                    {item.activity_name}
+                                                </TableCell>
+                                                <TableCell 
+                                                    className="text-center border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
                                                     <div className={`inline-block w-3 h-3 rounded-full ${
                                                         item.project_manager_status === 'green' ? 'bg-green-500' :
                                                         item.project_manager_status === 'yellow' ? 'bg-yellow-400' : 'bg-blue-500'
                                                     }`}></div>
                                                 </TableCell>
-                                                <TableCell className="text-center border border-gray-300">{item.due_date}</TableCell>
-                                                <TableCell className="text-center border border-gray-300">
+                                                <TableCell 
+                                                    className="text-center border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
+                                                    {item.due_date}
+                                                </TableCell>
+                                                <TableCell 
+                                                    className="text-center border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
                                                     {item.current_month_progress}%
                                                 </TableCell>
-                                                <TableCell className="text-center border border-gray-300">
+                                                <TableCell 
+                                                    className="text-center border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
                                                     {item.cumulative_progress}%
+                                                </TableCell>
+                                                <TableCell className="text-center border border-gray-300">
+                                                    <div className="flex justify-center gap-2">
+                                                        <Button 
+                                                            variant="outline" 
+                                                            size="sm" 
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleEdit(item);
+                                                            }}
+                                                        >
+                                                            Edit
+                                                        </Button>
+                                                        <Button 
+                                                            variant="outline" 
+                                                            size="sm" 
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDelete(item);
+                                                            }}
+                                                        >
+                                                            Delete
+                                                        </Button>
+                                                    </div>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
@@ -376,7 +529,18 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                     </div>
                 </div>
             </main>
-
+            
+            {/* Action Plan Modal */}
+            <ActionPlanModal
+                show={showModal}
+                mode={modalMode}
+                actionPlan={selectedActionPlan}
+                initiativeKpis={initiative.kpis}
+                onClose={() => setShowModal(false)}
+                onSave={handleSave as any}
+                onDelete={handleDeleteConfirm}
+            />
+            
             <HcFooter />
         </AppLayoutFull>
     );
