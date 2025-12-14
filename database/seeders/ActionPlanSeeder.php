@@ -245,7 +245,8 @@ class ActionPlanSeeder extends Seeder
                     [
                         'activity_name' => $actionPlan['action_name'],
                         'project_manager_status' => $actionPlan['status'] === 'completed' ? 'green' : ($actionPlan['status'] === 'in_progress' ? 'yellow' : 'blue'),
-                        'due_date' => $actionPlan['end_date'],
+                        'start_date' => $actionPlan['start_date'],
+                        'end_date' => $actionPlan['end_date'],
                         'current_month_progress' => $actionPlan['progress_percentage'],
                         'cumulative_progress' => $actionPlan['progress_percentage'],
                         'display_order' => $actionPlan['action_number']

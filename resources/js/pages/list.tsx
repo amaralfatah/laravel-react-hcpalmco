@@ -61,15 +61,21 @@ export default function List({ roadmapData, years, phases }: ListProps) {
                                         {/* Phase Row */}
                                         <tr>
                                             <th className="border border-gray-300 p-3 bg-muted" colSpan={2}></th>
-                                            <th className={`border border-gray-300 p-3 text-xs sm:text-sm font-bold text-accent-foreground bg-accent`} colSpan={1}>
-                                                {phases[0].title}
-                                            </th>
-                                            <th className={`border border-gray-300 p-3 text-xs sm:text-sm font-bold text-primary-foreground bg-sidebar-primary`} colSpan={2}>
-                                                {phases[1].title}
-                                            </th>
-                                            <th className={`border border-gray-300 p-3 text-xs sm:text-sm font-bold text-primary-foreground bg-primary`} colSpan={2}>
-                                                {phases[2].title}
-                                            </th>
+                                            {phases && phases.length > 0 && (
+                                                <th className={`border border-gray-300 p-3 text-xs sm:text-sm font-bold text-accent-foreground bg-accent`} colSpan={1}>
+                                                    {phases[0]?.title || 'Phase 1'}
+                                                </th>
+                                            )}
+                                            {phases && phases.length > 1 && (
+                                                <th className={`border border-gray-300 p-3 text-xs sm:text-sm font-bold text-primary-foreground bg-sidebar-primary`} colSpan={2}>
+                                                    {phases[1]?.title || 'Phase 2'}
+                                                </th>
+                                            )}
+                                            {phases && phases.length > 2 && (
+                                                <th className={`border border-gray-300 p-3 text-xs sm:text-sm font-bold text-primary-foreground bg-primary`} colSpan={2}>
+                                                    {phases[2]?.title || 'Phase 3'}
+                                                </th>
+                                            )}
                                         </tr>
                                         {/* Year Headers Row */}
                                         <tr className="bg-primary text-primary-foreground">

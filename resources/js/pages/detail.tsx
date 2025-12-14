@@ -25,10 +25,13 @@ interface ActionPlan {
     activity_number: string;
     activity_name: string;
     project_manager_status: string;
-    due_date: string;
+    start_date?: string;
+    end_date?: string;
     current_month_progress: string;
     cumulative_progress: string;
+    yearly_impact?: string;
     display_order?: number;
+    initiative_id?: number;
 }
 
 interface Risk {
@@ -89,6 +92,51 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
     const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create' | 'delete'>('view');
     const [selectedActionPlan, setSelectedActionPlan] = useState<ActionPlan | null>(null);
     
+    // Fungsi untuk menghitung impact tahunan
+    const calculateYearlyImpact = (currentMonthProgress: string | number): string => {
+        const progress = parseFloat(String(currentMonthProgress)) || 0;
+        const impact = (progress / 100) * 8.33;
+        return impact.toFixed(2);
+    };
+    
+    // Fungsi untuk memformat tanggal menjadi format 'Jan-Mar 2026' atau 'Jan 2026'
+    const formatDueDate = (startDate?: string, endDate?: string): string => {
+        if (!endDate) return '-';
+        
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        try {
+            const end = new Date(endDate);
+            const endMonth = monthNames[end.getMonth()];
+            const endYear = end.getFullYear();
+            
+            // Jika ada start_date, format sebagai rentang
+            if (startDate) {
+                const start = new Date(startDate);
+                const startMonth = monthNames[start.getMonth()];
+                const startYear = start.getFullYear();
+                
+                // Jika tahun sama, tampilkan 'Jan-Mar 2026'
+                if (startYear === endYear) {
+                    // Jika bulan sama, tampilkan 'Jan 2026'
+                    if (startMonth === endMonth) {
+                        return `${startMonth} ${startYear}`;
+                    }
+                    return `${startMonth}-${endMonth} ${endYear}`;
+                } else {
+                    // Jika tahun berbeda, tampilkan 'Jan 2025-Mar 2026'
+                    return `${startMonth} ${startYear}-${endMonth} ${endYear}`;
+                }
+            } else {
+                // Jika hanya ada end_date, tampilkan 'Mar 2026'
+                return `${endMonth} ${endYear}`;
+            }
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return endDate;
+        }
+    };
+    
     // Fungsi handler untuk operasi modal
     const handleRowClick = (item: ActionPlan) => {
         setSelectedActionPlan(item);
@@ -103,18 +151,33 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
     };
     
     const handleEdit = (item: ActionPlan) => {
+        console.log('Editing action plan:', item);
+        // Ensure the item has an ID before proceeding
+        if (!item.id) {
+            console.error('Action plan does not have an ID:', item);
+            return;
+        }
         setSelectedActionPlan(item);
         setModalMode('edit');
         setShowModal(true);
     };
     
     const handleDelete = (item: ActionPlan) => {
+        console.log('Deleting action plan:', item);
+        // Ensure the item has an ID before proceeding
+        if (!item.id) {
+            console.error('Action plan does not have an ID:', item);
+            return;
+        }
         setSelectedActionPlan(item);
         setModalMode('delete');
         setShowModal(true);
     };
     
     const handleSave = async (data: ActionPlan) => {
+        // Get initiative ID from the URL or initiative data
+        const initiativeCode = initiative.code;
+        
         // Konversi tipe data untuk API
         const apiData = {
             ...data,
@@ -127,11 +190,16 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
             cumulative_progress: typeof data.cumulative_progress === 'string' 
                 ? parseFloat(data.cumulative_progress) 
                 : data.cumulative_progress,
+            display_order: typeof data.display_order === 'string' 
+                ? parseInt(data.display_order) 
+                : data.display_order,
+            // Remove initiative_id from data for create operation since it's set in the controller
+            initiative_id: modalMode === 'create' ? undefined : data.initiative_id
         };
         
         try {
             if (modalMode === 'create') {
-                router.post(`/initiatives/${initiative.code}/action-plans`, apiData, {
+                router.post(`/initiatives/${initiativeCode}/action-plans`, apiData, {
                     onSuccess: () => {
                         setShowModal(false);
                         // Refresh data using Inertia's reload method
@@ -139,6 +207,12 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                     },
                     onError: (errors) => {
                         console.error('Error saving action plan:', errors);
+                        // Show error messages to user
+                        if (errors) {
+                            Object.keys(errors).forEach(key => {
+                                console.error(`${key}: ${errors[key]}`);
+                            });
+                        }
                     }
                 });
             } else {
@@ -150,6 +224,12 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                     },
                     onError: (errors) => {
                         console.error('Error saving action plan:', errors);
+                        // Show error messages to user
+                        if (errors) {
+                            Object.keys(errors).forEach(key => {
+                                console.error(`${key}: ${errors[key]}`);
+                            });
+                        }
                     }
                 });
             }
@@ -159,6 +239,12 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
     };
     
     const handleDeleteConfirm = async (id: number) => {
+        // Validate ID before proceeding
+        if (!id || id === undefined || id === null) {
+            console.error('Invalid action plan ID:', id);
+            return;
+        }
+        
         try {
             router.delete(`/action-plans/${id}`, {
                 onSuccess: () => {
@@ -345,6 +431,7 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                                             <TableHead className="w-24 text-center border border-gray-300">Due Date</TableHead>
                                             <TableHead className="w-24 text-center border border-gray-300">Bulan Ini</TableHead>
                                             <TableHead className="w-24 text-center border border-gray-300">sd. Bulan Ini</TableHead>
+                                            <TableHead className="w-24 text-center border border-gray-300">Impact Tahunan</TableHead>
                                             <TableHead className="w-24 text-center border border-gray-300">Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -355,13 +442,13 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                                                     className="text-center border border-gray-300"
                                                     onClick={() => handleRowClick(item)}
                                                 >
-                                                    {item.activity_number}
+                                                    {item.activity_number || ''}
                                                 </TableCell>
                                                 <TableCell 
                                                     className="max-w-xs whitespace-normal border border-gray-300"
                                                     onClick={() => handleRowClick(item)}
                                                 >
-                                                    {item.activity_name}
+                                                    {item.activity_name || ''}
                                                 </TableCell>
                                                 <TableCell 
                                                     className="text-center border border-gray-300"
@@ -369,26 +456,33 @@ export default function InitiativeDetail({ initiative }: InitiativeDetailProps) 
                                                 >
                                                     <div className={`inline-block w-3 h-3 rounded-full ${
                                                         item.project_manager_status === 'green' ? 'bg-green-500' :
-                                                        item.project_manager_status === 'yellow' ? 'bg-yellow-400' : 'bg-blue-500'
+                                                        item.project_manager_status === 'yellow' ? 'bg-yellow-400' : 
+                                                        item.project_manager_status === 'red' ? 'bg-red-500' : 'bg-blue-500'
                                                     }`}></div>
                                                 </TableCell>
                                                 <TableCell 
                                                     className="text-center border border-gray-300"
                                                     onClick={() => handleRowClick(item)}
                                                 >
-                                                    {item.due_date}
+                                                    {formatDueDate(item.start_date || '', item.end_date || '')}
                                                 </TableCell>
                                                 <TableCell 
                                                     className="text-center border border-gray-300"
                                                     onClick={() => handleRowClick(item)}
                                                 >
-                                                    {item.current_month_progress}%
+                                                    {item.current_month_progress || 0}%
                                                 </TableCell>
                                                 <TableCell 
                                                     className="text-center border border-gray-300"
                                                     onClick={() => handleRowClick(item)}
                                                 >
-                                                    {item.cumulative_progress}%
+                                                    {item.cumulative_progress || 0}%
+                                                </TableCell>
+                                                <TableCell 
+                                                    className="text-center border border-gray-300"
+                                                    onClick={() => handleRowClick(item)}
+                                                >
+                                                    {item.yearly_impact || calculateYearlyImpact(item.current_month_progress || 0)}%
                                                 </TableCell>
                                                 <TableCell className="text-center border border-gray-300">
                                                     <div className="flex justify-center gap-2">

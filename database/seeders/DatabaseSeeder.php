@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // $this->call([
+        $this->call([
+        HcRoadmapSeeder::class
         //     PhaseSeeder::class,
         //     YearSeeder::class,
         //     PillarSeeder::class,
@@ -35,6 +36,6 @@ class DatabaseSeeder extends Seeder
         //     InitiativeDependencySeeder::class,
         //     MilestoneSeeder::class,
         //     InitiativeStakeholderSeeder::class,
-        // ]);
+        ]);
     }
 }

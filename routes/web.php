@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Action Plan Routes
     Route::get('initiatives/{initiative}/action-plans', [App\Http\Controllers\ActionPlanController::class, 'index'])->name('action-plans.index');
-    Route::post('initiatives/{initiative}/action-plans', [App\Http\Controllers\ActionPlanController::class, 'store'])->name('action-plans.store');
+    Route::post('initiatives/{code}/action-plans', [App\Http\Controllers\ActionPlanController::class, 'store'])->name('action-plans.store');
     Route::get('initiatives/{initiative}/action-plans/{actionPlan}', [App\Http\Controllers\ActionPlanController::class, 'show'])->name('action-plans.show');
     Route::put('action-plans/{actionPlan}', [App\Http\Controllers\ActionPlanController::class, 'update'])->name('action-plans.update');
     Route::delete('action-plans/{actionPlan}', [App\Http\Controllers\ActionPlanController::class, 'destroy'])->name('action-plans.destroy');

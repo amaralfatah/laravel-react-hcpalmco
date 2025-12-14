@@ -10,6 +10,7 @@ use App\Models\Pillar;
 use App\Models\Initiative;
 use App\Models\Kpi;
 use App\Models\ActionPlan;
+use App\Models\MonthlyProgress;
 use App\Models\Risk;
 use App\Models\RiskMitigation;
 use App\Models\Dependency;
@@ -331,18 +332,62 @@ class HcRoadmapSeeder extends Seeder
 
         // Action Plans
         $actionPlans = [
-            ['activity_number' => 1, 'activity_name' => 'Pembentukan Struktur PalmCo Knowledge Management Center', 'project_manager_status' => 'blue', 'due_date' => 'Jan-Mar 2026', 'current_month_progress' => 8.00, 'cumulative_progress' => 92.00, 'display_order' => 1],
-            ['activity_number' => 2, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia', 'project_manager_status' => 'green', 'due_date' => 'Jan-Feb 2026', 'current_month_progress' => 0.00, 'cumulative_progress' => 100.00, 'display_order' => 2],
-            ['activity_number' => 3, 'activity_name' => 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)', 'project_manager_status' => 'blue', 'due_date' => 'Mei - Juni 2026', 'current_month_progress' => 12.00, 'cumulative_progress' => 68.00, 'display_order' => 3],
-            ['activity_number' => 4, 'activity_name' => 'Pelaksanaan Supervisory Bootcamp (Mandor I)', 'project_manager_status' => 'green', 'due_date' => 'Juli - Ags 2026', 'current_month_progress' => 18.00, 'cumulative_progress' => 42.00, 'display_order' => 4],
-            ['activity_number' => 5, 'activity_name' => 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran', 'project_manager_status' => 'yellow', 'due_date' => 'Jan - Des 2026', 'current_month_progress' => 6.00, 'cumulative_progress' => 38.00, 'display_order' => 5],
-            ['activity_number' => 6, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol', 'project_manager_status' => 'green', 'due_date' => 'Sep - Des 2026', 'current_month_progress' => 3.00, 'cumulative_progress' => 15.00, 'display_order' => 6],
+            ['activity_number' => 1, 'activity_name' => 'Pembentukan Struktur PalmCo Knowledge Management Center', 'project_manager_status' => 'blue', 'current_month_progress' => 8.00, 'cumulative_progress' => 92.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.67, 'display_order' => 1, 'start_date' => '2026-01-01', 'end_date' => '2026-03-31'],
+            ['activity_number' => 2, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia', 'project_manager_status' => 'green', 'current_month_progress' => 0.00, 'cumulative_progress' => 100.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.00, 'display_order' => 2, 'start_date' => '2026-01-01', 'end_date' => '2026-03-31'],
+            ['activity_number' => 3, 'activity_name' => 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)', 'project_manager_status' => 'blue', 'current_month_progress' => 12.00, 'cumulative_progress' => 68.00, 'monthly_target' => 8.33, 'yearly_impact' => 1.00, 'display_order' => 3, 'start_date' => '2026-01-01', 'end_date' => '2026-06-30'],
+            ['activity_number' => 4, 'activity_name' => 'Pelaksanaan Supervisory Bootcamp (Mandor I)', 'project_manager_status' => 'green', 'current_month_progress' => 18.00, 'cumulative_progress' => 42.00, 'monthly_target' => 8.33, 'yearly_impact' => 1.50, 'display_order' => 4, 'start_date' => '2026-04-01', 'end_date' => '2026-09-30'],
+            ['activity_number' => 5, 'activity_name' => 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran', 'project_manager_status' => 'yellow', 'current_month_progress' => 6.00, 'cumulative_progress' => 38.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.50, 'display_order' => 5, 'start_date' => '2026-07-01', 'end_date' => '2026-12-31'],
+            ['activity_number' => 6, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol', 'project_manager_status' => 'green', 'current_month_progress' => 3.00, 'cumulative_progress' => 15.00, 'monthly_target' => 8.33, 'yearly_impact' => 0.25, 'display_order' => 6, 'start_date' => '2026-10-01', 'end_date' => '2026-12-31'],
         ];
+        
+        $createdActionPlans = [];
         foreach ($actionPlans as $plan) {
-            ActionPlan::updateOrCreate(
+            $actionPlan = ActionPlan::updateOrCreate(
                 ['initiative_id' => $initiative->id, 'activity_number' => $plan['activity_number']],
                 array_merge($plan, ['initiative_id' => $initiative->id])
             );
+            
+            $actionPlan->save();
+            
+            $createdActionPlans[] = $actionPlan;
+        }
+        
+        // Create monthly progress records for current year
+        $currentYear = now()->year;
+        $currentMonth = now()->month;
+        
+        foreach ($createdActionPlans as $actionPlan) {
+            // Create monthly progress for current month
+            MonthlyProgress::updateOrCreate(
+                [
+                    'action_plan_id' => $actionPlan->id,
+                    'year' => $currentYear,
+                    'month' => $currentMonth
+                ],
+                [
+                    'progress' => $actionPlan->current_month_progress,
+                    'yearly_impact' => $actionPlan->yearly_impact
+                ]
+            );
+            
+            // Create sample monthly progress for previous months of this year
+            for ($month = 1; $month < $currentMonth; $month++) {
+                // Generate random progress between 0-100
+                $randomProgress = rand(0, 100);
+                $yearlyImpact = ($randomProgress / 100) * 8.33;
+                
+                MonthlyProgress::updateOrCreate(
+                    [
+                        'action_plan_id' => $actionPlan->id,
+                        'year' => $currentYear,
+                        'month' => $month
+                    ],
+                    [
+                        'progress' => $randomProgress,
+                        'yearly_impact' => $yearlyImpact
+                    ]
+                );
+            }
         }
 
         // Risks
@@ -470,10 +515,10 @@ class HcRoadmapSeeder extends Seeder
 
         // Generate 4 generic action plans
         $quarters = [
-            ['name' => 'Fase Perencanaan & Desain', 'months' => 'Jan-Mar ' . $year, 'status' => 'blue', 'progress' => 15],
-            ['name' => 'Fase Implementasi Awal', 'months' => 'Apr-Jun ' . $year, 'status' => 'green', 'progress' => 35],
-            ['name' => 'Fase Implementasi Lanjutan', 'months' => 'Jul-Sep ' . $year, 'status' => 'yellow', 'progress' => 30],
-            ['name' => 'Fase Evaluasi & Penutupan', 'months' => 'Okt-Des ' . $year, 'status' => 'green', 'progress' => 20],
+            ['name' => 'Fase Perencanaan & Desain', 'months' => 'Jan-Mar ' . $year, 'status' => 'blue', 'progress' => 15, 'start_date' => $year . '-01-01', 'end_date' => $year . '-03-31'],
+            ['name' => 'Fase Implementasi Awal', 'months' => 'Apr-Jun ' . $year, 'status' => 'green', 'progress' => 35, 'start_date' => $year . '-04-01', 'end_date' => $year . '-06-30'],
+            ['name' => 'Fase Implementasi Lanjutan', 'months' => 'Jul-Sep ' . $year, 'status' => 'yellow', 'progress' => 30, 'start_date' => $year . '-07-01', 'end_date' => $year . '-09-30'],
+            ['name' => 'Fase Evaluasi & Penutupan', 'months' => 'Okt-Des ' . $year, 'status' => 'green', 'progress' => 20, 'start_date' => $year . '-10-01', 'end_date' => $year . '-12-31'],
         ];
         
         $cumulativeProgress = 0;
@@ -486,7 +531,8 @@ class HcRoadmapSeeder extends Seeder
                     'activity_number' => $index + 1,
                     'activity_name' => $quarter['name'],
                     'project_manager_status' => $quarter['status'],
-                    'due_date' => $quarter['months'],
+                    'start_date' => $quarter['start_date'],
+                    'end_date' => $quarter['end_date'],
                     'current_month_progress' => $quarter['progress'],
                     'cumulative_progress' => $cumulativeProgress,
                     'display_order' => $index + 1,

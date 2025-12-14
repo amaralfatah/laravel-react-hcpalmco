@@ -17,9 +17,13 @@ return new class extends Migration
             $table->integer('activity_number');
             $table->text('activity_name');
             $table->enum('project_manager_status', ['green', 'yellow', 'red', 'blue'])->default('blue');
-            $table->string('due_date')->nullable();
             $table->decimal('current_month_progress', 5, 2)->default(0.00);
             $table->decimal('cumulative_progress', 5, 2)->default(0.00);
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->integer('current_month')->nullable();
+            $table->decimal('monthly_target', 5, 2)->default(8.33);
+            $table->decimal('yearly_impact', 5, 2)->nullable();
             $table->integer('display_order');
             $table->timestamps();
             

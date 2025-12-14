@@ -25,10 +25,11 @@ class UpdateActionPlanRequest extends FormRequest
             'activity_number' => 'sometimes|required|integer|min:1',
             'activity_name' => 'sometimes|required|string|max:255',
             'project_manager_status' => 'sometimes|required|in:green,yellow,red,blue',
-            'due_date' => 'nullable|string|max:50',
             'current_month_progress' => 'sometimes|required|numeric|min:0|max:100',
             'cumulative_progress' => 'sometimes|required|numeric|min:0|max:100',
             'display_order' => 'sometimes|required|integer|min:1',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'milestone_id' => 'nullable|exists:milestones,id'
         ];
     }
@@ -51,7 +52,7 @@ class UpdateActionPlanRequest extends FormRequest
             'project_manager_status.required' => 'PM status is required',
             'project_manager_status.in' => 'PM status must be one of: green, yellow, red, blue',
             
-            'due_date.max' => 'Due date may not be greater than 50 characters',
+
             
             'current_month_progress.required' => 'Current month progress is required',
             'current_month_progress.numeric' => 'Current month progress must be a number',

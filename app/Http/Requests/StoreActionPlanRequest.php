@@ -25,10 +25,13 @@ class StoreActionPlanRequest extends FormRequest
             'activity_number' => 'required|integer|min:1',
             'activity_name' => 'required|string|max:255',
             'project_manager_status' => 'required|in:green,yellow,red,blue',
-            'due_date' => 'nullable|string|max:50',
             'current_month_progress' => 'required|numeric|min:0|max:100',
             'cumulative_progress' => 'required|numeric|min:0|max:100',
             'display_order' => 'required|integer|min:1',
+            // initiative_id bersifat nullable karena controller akan mengisi otomatis dari URL parameter
+            'initiative_id' => 'nullable|exists:initiatives,id',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'milestone_id' => 'nullable|exists:milestones,id'
         ];
     }
@@ -51,7 +54,7 @@ class StoreActionPlanRequest extends FormRequest
             'project_manager_status.required' => 'PM status is required',
             'project_manager_status.in' => 'PM status must be one of: green, yellow, red, blue',
             
-            'due_date.max' => 'Due date may not be greater than 50 characters',
+
             
             'current_month_progress.required' => 'Current month progress is required',
             'current_month_progress.numeric' => 'Current month progress must be a number',
@@ -66,6 +69,13 @@ class StoreActionPlanRequest extends FormRequest
             'display_order.required' => 'Display order is required',
             'display_order.integer' => 'Display order must be an integer',
             'display_order.min' => 'Display order must be at least 1',
+            
+            // initiative_id sekarang nullable, hanya perlu pesan jika ID tidak valid
+            'initiative_id.exists' => 'Selected initiative does not exist',
+            
+            'start_date.date' => 'Start date must be a valid date',
+            'end_date.date' => 'End date must be a valid date',
+            'end_date.after_or_equal' => 'End date must be after or equal to start date',
             
             'milestone_id.exists' => 'Selected milestone does not exist'
         ];
