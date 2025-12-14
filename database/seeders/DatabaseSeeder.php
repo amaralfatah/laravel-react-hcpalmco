@@ -24,17 +24,17 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $this->call([
-            PhaseSeeder::class,
-            YearSeeder::class,
-            PillarSeeder::class,
-            InitiativeSeeder::class,
-            KpiSeeder::class,
-            ActionPlanSeeder::class,
-            RiskSeeder::class,
-            InitiativeDependencySeeder::class,
-            MilestoneSeeder::class,
-            InitiativeStakeholderSeeder::class,
-        ]);
+        // $this->call([
+        //     PhaseSeeder::class,
+        //     YearSeeder::class,
+        //     PillarSeeder::class,
+        //     InitiativeSeeder::class,
+        //     KpiSeeder::class,
+        //     ActionPlanSeeder::class,
+        //     RiskSeeder::class,
+        //     InitiativeDependencySeeder::class,
+        //     MilestoneSeeder::class,
+        //     InitiativeStakeholderSeeder::class,
+        // ]);
     }
 }

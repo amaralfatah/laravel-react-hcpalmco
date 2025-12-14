@@ -21,6 +21,6 @@ class Year extends Model
 
     public function initiatives(): HasMany
     {
-        return $this->hasMany(Initiative::class);
+        return $this->hasMany(Initiative::class, 'year', 'year');
     }
 }

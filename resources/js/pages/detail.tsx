@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import AppLayoutFull from '@/layouts/app-layout-full';
 import { Head } from '@inertiajs/react';
@@ -8,103 +7,71 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Link } from '@inertiajs/react';
 
-export default function InitiativeDetail() {
-    const initiative = {
-        code: 'P2.1.1',
-        title: 'Foundational Capability Acceleration',
-        pilar: 'Pilar #2 - Learning & Leadership Development',
-        duration: 'Januari 2026 - Desember 2026',
-        streamLead: 'Stream Lead',
-        pic: 'Kasubdiv Pengembangan SDM',
-        budgetType: 'OPEX or CAPEX',
-        budgetAmount: 'OPEX = Rp. 1 M',
-        description: 'Program penguatan kapabilitas karyawan dan lini pengawasan melalui finalisasi peta kompetensi, penyusunan kurikulum pembelajaran berbasis kompetensi (role-based), serta implementasi pelatihan untuk meningkatkan kesiapan organisasi menghadapi tuntutan produktivitas dan transformasi perusahaan dengan tujuan meningkatnya kompetensi kerja, keseragaman standar peran, peningkatan produktivitas, dan terciptanya budaya kinerja kuat.',
-        kpis: [
-            { metric: 'CLI Karpel', uom: '%', target: '100% Terlaksana' },
-            { metric: 'Jumlah modul pelatihan teknis yang selesai', uom: 'Modul', target: '> 24 modul prioritas' },
-            { metric: 'Jam pelatihan Mandor I', uom: 'Hours', target: '> 20 JPL/Orang' }
-        ]
-    };
+// Define TypeScript interfaces for the data structure
+interface Kpi {
+    metric_name: string;
+    uom: string;
+    target: string;
+}
 
-    const actionPlan = [
-        {
-            no: 1,
-            activity: 'Pembentukan Struktur PalmCo Knowledge Management Center',
-            pm: 'blue',
-            dueDate: 'Jan-Mar 2026',
-            currentMonth: 8,
-            cumulative: 92
-        },
-        {
-            no: 2,
-            activity: 'Pengukuran CLI Karyawan Pelaksana Bidang Keuangan dan Personalia',
-            pm: 'green',
-            dueDate: 'Jan-Feb 2026',
-            currentMonth: 0,
-            cumulative: 100
-        },
-        {
-            no: 3,
-            activity: 'Penyusunan kurikulum pembelajaran berbasis kompetensi (role-based learning path)',
-            pm: 'blue',
-            dueDate: 'Mei - Juni 2026',
-            currentMonth: 12,
-            cumulative: 68
-        },
-        {
-            no: 4,
-            activity: 'Pelaksanaan Supervisory Bootcamp (Mandor I)',
-            pm: 'green',
-            dueDate: 'Juli - Ags 2026',
-            currentMonth: 18,
-            cumulative: 42
-        },
-        {
-            no: 5,
-            activity: 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran',
-            pm: 'yellow',
-            dueDate: 'Jan - Des 2026',
-            currentMonth: 6,
-            cumulative: 38
-        },
-        {
-            no: 6,
-            activity: 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol',
-            pm: 'green',
-            dueDate: 'Sep - Des 2026',
-            currentMonth: 3,
-            cumulative: 15
-        }
-    ];
+interface ActionPlan {
+    activity_number: string;
+    activity_name: string;
+    project_manager_status: string;
+    due_date: string;
+    current_month_progress: string;
+    cumulative_progress: string;
+}
 
-    const risks = [
-        'Resistensi dari lini operasional akibat perubahan program pembelajaran',
-        'Keterbatasan instruktur internal pada unit kebun/pabrik',
-        'Keterbatasan waktu peserta untuk mengikuti pelatihan',
-        'Ketidaksiapan data kompetensi yang terintegrasi'
-    ];
+interface Risk {
+    risk_description: string;
+}
 
-    const mitigations = [
-        'Sosialisasi intensif manfaat kurikulum baru ke Regional',
-        'Team of Trainer bagi Trainer regional untuk melatih Karyawan',
-        'Penjadwalan pelatihan secara terstruktur dan fleksibel',
-        'Komitmen Penggunaan Aplikasi Pengembangan SDM'
-    ];
+interface RiskMitigation {
+    mitigation_description: string;
+}
 
-    const dependencies = [
-        'Seluruh Divisi PTPN IV',
-        'Bagian SDM dan Sistem Manajemen Regional dan Anper',
-        'PT LPP Agro Nusantara dan Learning Partner PTPN IV lainnya'
-    ];
+interface Dependency {
+    dependency_description: string;
+}
 
-    const supportSystems = [
-        'Integrated LMS–PALMS (LinkedIn Learning, AgroNow, PALAPA)',
-        'Anggaran Pengembangan SDM',
-        'Resources (Modul, Lokasi Pelaksanaan)',
-        'Trainer/Narasumber Internal dan Eksternal',
-        'Tim fasilitator internal dan master trainer',
-        'Dukungan komunikasi internal (sosialisasi ke seluruh unit)'
-    ];
+interface SupportSystem {
+    system_description: string;
+}
+
+interface ParentingModel {
+    model_name: string;
+}
+
+interface Initiative {
+    code: string;
+    title: string;
+    description: string;
+    pilar: string;
+    duration: string;
+    pic: string;
+    budgetType: string;
+    budgetAmount: string;
+    kpis: Kpi[];
+    actionPlans: ActionPlan[];
+    risks: Risk[];
+    riskMitigations: RiskMitigation[];
+    dependencies: Dependency[];
+    supportSystems: SupportSystem[];
+    parentingModels: ParentingModel[];
+}
+
+interface InitiativeDetailProps {
+    initiative: Initiative;
+}
+
+export default function InitiativeDetail({ initiative }: InitiativeDetailProps) {
+    // Extract data from initiative object
+    const actionPlan = initiative.actionPlans || [];
+    const risks = initiative.risks?.map(risk => risk.risk_description) || [];
+    const mitigations = initiative.riskMitigations?.map(mitigation => mitigation.mitigation_description) || [];
+    const dependencies = initiative.dependencies?.map(dep => dep.dependency_description) || [];
+    const supportSystems = initiative.supportSystems?.map(system => system.system_description) || [];
 
     const parentingModel = [
         { label: 'Sentralisasi', color: 'bg-blue-600' },
@@ -148,97 +115,130 @@ export default function InitiativeDetail() {
                             <CardHeader>
                                 <CardTitle>Initiative Details</CardTitle>
                             </CardHeader>
-                            <CardContent className="p-0">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-[11px] border-collapse">
-                                        <tbody>
-                                            {/* Row 1 */}
-                                            <tr>
-                                                <td className="bg-accent px-3 py-2 border border-gray-800 font-bold text-accent-foreground align-top w-28">
-                                                    Inisiatif<br />Strategis
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 font-bold text-gray-900 align-top" colSpan={3}>
-                                                    {initiative.title}
-                                                </td>
-                                                <td className="bg-accent px-3 py-2 border border-gray-800 font-bold text-accent-foreground align-top text-center w-16" rowSpan={4}>
-                                                    KPI's
-                                                </td>
-                                                <td className="bg-white px-3 py-2 border border-gray-800 font-bold text-gray-900 align-top">
-                                                    Metric
-                                                </td>
-                                                <td className="bg-white px-3 py-2 border border-gray-800 font-bold text-gray-900 text-center align-top w-16">
-                                                    UOM
-                                                </td>
-                                                <td className="bg-white px-3 py-2 border border-gray-800 font-bold text-gray-900 text-center align-top w-32">
-                                                    Target
-                                                </td>
-                                            </tr>
+                            <CardContent>
+                                <Table className="text-[11px] border-collapse">
+                                    <TableBody>
+                                        {/* Initiative Strategic */}
+                                        <TableRow>
+                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top w-28 whitespace-normal">
+                                                Inisiatif<br />Strategis
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  font-bold text-gray-900 align-top whitespace-normal" colSpan={6}>
+                                                {initiative.title}
+                                            </TableCell>
+                                        </TableRow>
 
-                                            {/* Row 2 */}
-                                            <tr>
-                                                <td className="bg-accent px-3 py-2 border border-gray-800 font-bold text-accent-foreground align-top" rowSpan={3}>
-                                                    Deskripsi<br />Inisiatif &<br />Manfaat
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-gray-800 leading-relaxed text-justify align-top" rowSpan={3}>
-                                                    {initiative.description}
-                                                </td>
-                                                <td className="bg-accent px-3 py-2 border border-gray-800 font-bold text-accent-foreground align-top w-24">
-                                                    Duration
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-gray-900 align-top italic w-48">
-                                                    {initiative.duration}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-gray-800 align-top">
-                                                    {initiative.kpis[0].metric}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-center text-gray-800 align-top">
-                                                    {initiative.kpis[0].uom}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-center font-bold text-gray-900 align-top">
-                                                    {initiative.kpis[0].target}
-                                                </td>
-                                            </tr>
+                                        {/* Initiative Description */}
+                                        <TableRow>
+                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top whitespace-normal">
+                                                Deskripsi<br />Inisiatif &<br />Manfaat
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 leading-relaxed text-justify align-top whitespace-normal" colSpan={6}>
+                                                {initiative.description}
+                                            </TableCell>
+                                        </TableRow>
 
-                                            {/* Row 3 */}
-                                            <tr>
-                                                <td className="bg-accent px-3 py-2 border border-gray-800 font-bold text-accent-foreground align-top">
-                                                    Stream Lead
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 font-bold text-gray-900 align-top">
-                                                    {initiative.pic}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-gray-800 align-top">
-                                                    {initiative.kpis[1].metric}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-center text-gray-800 align-top">
-                                                    {initiative.kpis[1].uom}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-center font-bold text-gray-900 align-top">
-                                                    {initiative.kpis[1].target}
-                                                </td>
-                                            </tr>
+                                        {/* Duration */}
+                                        <TableRow>
+                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top whitespace-normal">
+                                                Duration
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-gray-900 align-top italic whitespace-normal" colSpan={6}>
+                                                {initiative.duration}
+                                            </TableCell>
+                                        </TableRow>
 
-                                            {/* Row 4 */}
-                                            <tr>
-                                                <td className="bg-accent px-3 py-2 border border-gray-800 font-bold text-accent-foreground align-top">
-                                                    {initiative.budgetType}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 font-bold text-gray-900 align-top italic">
-                                                    {initiative.budgetAmount}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-gray-800 align-top">
-                                                    {initiative.kpis[2].metric}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-center text-gray-800 align-top">
-                                                    {initiative.kpis[2].uom}
-                                                </td>
-                                                <td className="px-3 py-2 border border-gray-800 text-center font-bold text-gray-900 align-top">
-                                                    {initiative.kpis[2].target}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        {/* Stream Lead */}
+                                        <TableRow>
+                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top whitespace-normal">
+                                                Stream Lead
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  font-bold text-gray-900 align-top whitespace-normal" colSpan={6}>
+                                                {initiative.pic}
+                                            </TableCell>
+                                        </TableRow>
+
+                                        {/* Budget Type */}
+                                        <TableRow>
+                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top whitespace-normal">
+                                                {initiative.budgetType}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  font-bold text-gray-900 align-top italic whitespace-normal" colSpan={6}>
+                                                {initiative.budgetAmount}
+                                            </TableCell>
+                                        </TableRow>
+
+                                        {/* KPIs Section */}
+                                        <TableRow>
+                                            <TableCell className="bg-accent px-3 py-2 border  font-bold text-accent-foreground align-top text-center w-16 whitespace-normal" rowSpan={4}>
+                                                KPI's
+                                            </TableCell>
+                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 align-top text-center whitespace-normal">
+                                                Metric
+                                            </TableHead>
+                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 align-top text-center whitespace-normal">
+                                                Value
+                                            </TableHead>
+                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top w-16 whitespace-normal">
+                                                UOM
+                                            </TableHead>
+                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top w-16 whitespace-normal">
+                                                Value
+                                            </TableHead>
+                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top w-32 whitespace-normal">
+                                                Target
+                                            </TableHead>
+                                            <TableHead className="bg-gray-200 px-3 py-2 border  font-bold text-gray-900 text-center align-top whitespace-normal">
+                                                Value
+                                            </TableHead>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal">
+                                                {initiative.kpis[0]?.metric_name}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal"></TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal">
+                                                {initiative.kpis[0]?.uom}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center font-bold text-gray-900 align-top whitespace-normal">
+                                                {initiative.kpis[0]?.target}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal">
+                                                {initiative.kpis[1]?.metric_name}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal"></TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal">
+                                                {initiative.kpis[1]?.uom}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center font-bold text-gray-900 align-top whitespace-normal">
+                                                {initiative.kpis[1]?.target}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal">
+                                                {initiative.kpis[2]?.metric_name}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-gray-800 align-top whitespace-normal"></TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal">
+                                                {initiative.kpis[2]?.uom}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center font-bold text-gray-900 align-top whitespace-normal">
+                                                {initiative.kpis[2]?.target}
+                                            </TableCell>
+                                            <TableCell className="px-3 py-2 border  text-center text-gray-800 align-top whitespace-normal"></TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
                             </CardContent>
                         </Card>
 
@@ -248,34 +248,34 @@ export default function InitiativeDetail() {
                                 <CardTitle>Action Plan, Roadmap, and Milestones</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <Table>
+                                <Table className='border'>
                                     <TableHeader>
-                                        <TableRow className="bg-muted">
-                                            <TableHead className="w-16">No</TableHead>
-                                            <TableHead className="w-96">Activity</TableHead>
-                                            <TableHead className="w-16 text-center">PM</TableHead>
-                                            <TableHead className="w-24 text-center">Due Date</TableHead>
-                                            <TableHead className="w-24 text-center">Bulan Ini</TableHead>
-                                            <TableHead className="w-24 text-center">sd. Bulan Ini</TableHead>
+                                        <TableRow className="bg-accent">
+                                            <TableHead className="w-16 border border-gray-300">No</TableHead>
+                                            <TableHead className="w-96 border border-gray-300">Activity</TableHead>
+                                            <TableHead className="w-16 text-center border border-gray-300">PM</TableHead>
+                                            <TableHead className="w-24 text-center border border-gray-300">Due Date</TableHead>
+                                            <TableHead className="w-24 text-center border border-gray-300">Bulan Ini</TableHead>
+                                            <TableHead className="w-24 text-center border border-gray-300">sd. Bulan Ini</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {actionPlan.map((item, index) => (
                                             <TableRow key={index}>
-                                                <TableCell className="text-center">{item.no}</TableCell>
-                                                <TableCell className="max-w-xs whitespace-normal">{item.activity}</TableCell>
-                                                <TableCell className="text-center">
+                                                <TableCell className="text-center border border-gray-300">{item.activity_number}</TableCell>
+                                                <TableCell className="max-w-xs whitespace-normal border border-gray-300">{item.activity_name}</TableCell>
+                                                <TableCell className="text-center border border-gray-300">
                                                     <div className={`inline-block w-3 h-3 rounded-full ${
-                                                        item.pm === 'green' ? 'bg-green-500' :
-                                                        item.pm === 'yellow' ? 'bg-yellow-400' : 'bg-blue-500'
+                                                        item.project_manager_status === 'green' ? 'bg-green-500' :
+                                                        item.project_manager_status === 'yellow' ? 'bg-yellow-400' : 'bg-blue-500'
                                                     }`}></div>
                                                 </TableCell>
-                                                <TableCell className="text-center">{item.dueDate}</TableCell>
-                                                <TableCell className="text-center">
-                                                    {item.currentMonth}%
+                                                <TableCell className="text-center border border-gray-300">{item.due_date}</TableCell>
+                                                <TableCell className="text-center border border-gray-300">
+                                                    {item.current_month_progress}%
                                                 </TableCell>
-                                                <TableCell className="text-center">
-                                                    {item.cumulative}%
+                                                <TableCell className="text-center border border-gray-300">
+                                                    {item.cumulative_progress}%
                                                 </TableCell>
                                             </TableRow>
                                         ))}
