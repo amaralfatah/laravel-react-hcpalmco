@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import AppLayoutFull from '@/layouts/app-layout-full';
-import HcHeader from '@/components/hc-header';
+import HcHeader from '@/components/hc/HcHeader';
 
 import { Link } from '@inertiajs/react';
-import HcFooter from '@/components/hc-footer';
+import HcFooter from '@/components/hc/HcFooter';
 
-export default function Dashboards() {
+export default function Dashboard() {
     const navigation = [
         { title: 'Corporate Vision', href: '#corporate-vision' },
         { title: 'Value Creation', href: '#value-creation' },

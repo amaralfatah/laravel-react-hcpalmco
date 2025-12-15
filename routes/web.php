@@ -6,7 +6,7 @@ use Laravel\Fortify\Features;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
-        return Inertia::render('dashboards', [
+        return Inertia::render('hc/Dashboard', [
             'canRegister' => Features::enabled(Features::registration()),
         ]);
     })->name('home');

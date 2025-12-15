@@ -13,22 +13,22 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return Inertia::render('dashboards');
+        return Inertia::render('hc/Dashboard');
     }
 
     public function list()
     {
         // Get pillars with their initiatives
-        $pillars = Pillar::with(['initiatives' => function($query) {
+        $pillars = Pillar::with(['initiatives' => function ($query) {
             $query->orderBy('row_number')->orderBy('year');
         }])->orderBy('pillar_number')->get();
-        
+
         // Get years with their phases
         $years = Year::with('phase')->orderBy('year')->get();
-        
+
         // Get phases
         $phases = Phase::orderBy('phase_number')->get();
-        
+
         // Transform data to match the structure expected by the frontend
         $roadmapData = [];
         foreach ($pillars as $pillar) {
@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 'no' => $pillar->pillar_number,
                 'rows' => []
             ];
-            
+
             // Group initiatives by row_number
             $initiativesByRow = [];
             foreach ($pillar->initiatives as $initiative) {
@@ -51,7 +51,7 @@ class DashboardController extends Controller
                     'title' => $initiative->title
                 ];
             }
-            
+
             // Sort by row number and create rows structure
             ksort($initiativesByRow);
             foreach ($initiativesByRow as $rowNumber => $items) {
@@ -60,11 +60,11 @@ class DashboardController extends Controller
                     'items' => $items
                 ];
             }
-            
+
             $roadmapData[] = $pillarData;
         }
-        
-        return Inertia::render('list', [
+
+        return Inertia::render('hc/RoadmapList', [
             'roadmapData' => $roadmapData,
             'years' => $years,
             'phases' => $phases
@@ -74,13 +74,18 @@ class DashboardController extends Controller
     public function detail(Request $request)
     {
         $initiativeCode = $request->get('code', 'P2.1.1');
-        
+
         $initiative = Initiative::with([
-            'pillar', 'year', 'kpis', 'actionPlans.monthlyProgress', 
-            'risks.riskMitigations', 'dependencies', 
-            'supportSystems', 'parentingModels'
+            'pillar',
+            'year',
+            'kpis',
+            'actionPlans.monthlyProgress',
+            'risks.riskMitigations',
+            'dependencies',
+            'supportSystems',
+            'parentingModels'
         ])->where('code', $initiativeCode)->firstOrFail();
-        
+
         // Transform data to match the structure expected by the frontend
         $initiativeData = [
             'code' => $initiative->code,
@@ -94,15 +99,15 @@ class DashboardController extends Controller
             'kpis' => $initiative->kpis,
             'actionPlans' => $initiative->actionPlans,
             'risks' => $initiative->risks,
-            'riskMitigations' => $initiative->risks->flatMap(function($risk) {
+            'riskMitigations' => $initiative->risks->flatMap(function ($risk) {
                 return $risk->riskMitigations;
             }),
             'dependencies' => $initiative->dependencies,
             'supportSystems' => $initiative->supportSystems,
             'parentingModels' => $initiative->parentingModels
         ];
-        
-        return Inertia::render('detail', [
+
+        return Inertia::render('hc/InitiativeDetail', [
             'initiative' => $initiativeData
         ]);
     }

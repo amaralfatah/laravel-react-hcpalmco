@@ -1,45 +1,13 @@
 import React from 'react';
 import AppLayoutFull from '@/layouts/app-layout-full';
 import { Head } from '@inertiajs/react';
-import HcSubHeader from '@/components/hc-sub-header';
+import HcSubHeader from '@/components/hc/HcSubHeader';
 import { Link } from '@inertiajs/react';
-import HcFooter from '@/components/hc-footer';
+import HcFooter from '@/components/hc/HcFooter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ListProps, RoadmapItem, RoadmapRow, RoadmapSection, Year } from '@/types/hc';
 
-// Define TypeScript interfaces for the data structure
-interface RoadmapItem {
-    code: string;
-    year: number;
-    title: string;
-}
-
-interface RoadmapRow {
-    no: number;
-    items: RoadmapItem[];
-}
-
-interface RoadmapSection {
-    pilar: string;
-    no: number;
-    rows: RoadmapRow[];
-}
-
-interface Year {
-    year: number;
-    theme: string;
-}
-
-interface Phase {
-    title: string;
-}
-
-interface ListProps {
-    roadmapData: RoadmapSection[];
-    years: Year[];
-    phases: Phase[];
-}
-
-export default function List({ roadmapData, years, phases }: ListProps) {
+export default function RoadmapList({ roadmapData, years, phases }: ListProps) {
 
     return (
         <AppLayoutFull title="HC Roadmap PTPN IV Palmco 2026 - 2030" description="Human Capital Roadmap list view">

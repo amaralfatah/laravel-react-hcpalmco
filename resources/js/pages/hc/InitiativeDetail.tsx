@@ -1,6 +1,6 @@
-import ActionPlanModal from '@/components/ActionPlanModal';
-import HcFooter from '@/components/hc-footer';
-import HcSubHeader from '@/components/hc-sub-header';
+import ActionPlanModal from '@/components/hc/ActionPlanModal';
+import HcFooter from '@/components/hc/HcFooter';
+import HcSubHeader from '@/components/hc/HcSubHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -16,74 +16,7 @@ import AppLayoutFull from '@/layouts/app-layout-full';
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { useState } from 'react';
-
-// Define TypeScript interfaces for the data structure
-interface Kpi {
-    metric_name: string;
-    uom: string;
-    target: string;
-    current_value?: number;
-    achievement_percentage?: number;
-}
-
-interface ActionPlan {
-    id?: number;
-    activity_number: string;
-    activity_name: string;
-    project_manager_status: string;
-    start_date?: string;
-    end_date?: string;
-    duration_months?: number;
-    weight_percentage?: number;
-    cumulative_progress?: number; // This is now Avg Progress
-    yearly_impact?: number;
-    display_order?: number;
-    initiative_id?: number;
-    monthly_progress?: any[];
-    monthly_progress_inputs?: Record<string, number>;
-}
-
-interface Risk {
-    risk_description: string;
-}
-
-interface RiskMitigation {
-    mitigation_description: string;
-}
-
-interface Dependency {
-    dependency_description: string;
-}
-
-interface SupportSystem {
-    system_description: string;
-}
-
-interface ParentingModel {
-    model_name: string;
-}
-
-interface Initiative {
-    code: string;
-    title: string;
-    description: string;
-    pilar: string;
-    duration: string;
-    pic: string;
-    budgetType: string;
-    budgetAmount: string;
-    kpis: Kpi[];
-    actionPlans: ActionPlan[];
-    risks: Risk[];
-    riskMitigations: RiskMitigation[];
-    dependencies: Dependency[];
-    supportSystems: SupportSystem[];
-    parentingModels: ParentingModel[];
-}
-
-interface InitiativeDetailProps {
-    initiative: Initiative;
-}
+import { ActionPlan, InitiativeDetailProps } from '@/types/hc';
 
 export default function InitiativeDetail({
     initiative,
