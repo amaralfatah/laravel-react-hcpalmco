@@ -561,6 +561,7 @@ class HcRoadmapSeeder extends Seeder
             $actionPlan->calculateDurationMonths();
             $actionPlan->calculateWeightPercentage();
             $actionPlan->updateCumulativeProgress();
+            $actionPlan->updateYearlyImpact();
             $actionPlan->save();
         }
 
@@ -731,6 +732,7 @@ class HcRoadmapSeeder extends Seeder
             $actionPlanModel->calculateDurationMonths();
             $actionPlanModel->calculateWeightPercentage();
             $actionPlanModel->updateCumulativeProgress();
+            $actionPlanModel->updateYearlyImpact();
             $actionPlanModel->save();
         }
 

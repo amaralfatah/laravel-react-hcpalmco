@@ -92,6 +92,7 @@ class DashboardController extends Controller
             'title' => $initiative->title,
             'description' => $initiative->description,
             'pilar' => $initiative->pillar->name,
+            'pilar_number' => $initiative->pillar->pillar_number,
             'duration' => $initiative->duration_start->format('M Y') . ' - ' . $initiative->duration_end->format('M Y'),
             'pic' => $initiative->pic,
             'budgetType' => $initiative->budget_type,
