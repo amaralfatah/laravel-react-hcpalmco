@@ -99,10 +99,12 @@ export default function InitiativeDetail({
     };
 
     // Mock current date untuk testing - ubah tanggal sesuai kebutuhan testing
-    // Untuk production: comment out atau hapus baris ini
-    const MOCK_CURRENT_DATE = new Date('2026-04-15'); // Testing Januari 2026
+    // ==================== START TESTING BLOCK ====================
+    // Untuk production: comment out seluruh block ini sampai END TESTING BLOCK
+    // const MOCK_CURRENT_DATE = new Date('2026-01-15'); // Testing Januari 2026
     // const MOCK_CURRENT_DATE = new Date('2025-12-15'); // Testing Desember 2025
     // const MOCK_CURRENT_DATE = new Date('2026-02-15'); // Testing Februari 2026
+    // ===================== END TESTING BLOCK =====================
 
     // Fungsi untuk mengambil progress bulan ini
     const getCurrentMonthProgress = (item: ActionPlan): number => {
@@ -111,7 +113,8 @@ export default function InitiativeDetail({
         }
 
         // Gunakan mock date untuk testing, atau current date untuk production
-        const currentDate = MOCK_CURRENT_DATE || new Date();
+        // @ts-ignore - MOCK_CURRENT_DATE mungkin undefined di production
+        const currentDate = (typeof MOCK_CURRENT_DATE !== 'undefined') ? MOCK_CURRENT_DATE : new Date();
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-indexed
 
