@@ -24,31 +24,40 @@ class HcRoadmapSeeder extends Seeder
     public function run()
     {
         $this->command->info('🌱 Seeding HC Roadmap data...');
-        
+
         // Seed Master Data
         $this->command->info('📋 Seeding Phases...');
         $this->seedPhases();
-        
+
         $this->command->info('📅 Seeding Years...');
         $this->seedYears();
-        
+
         $this->command->info('🏛️ Seeding Pillars...');
         $this->seedPillars();
-        
+
         $this->command->info('🔄 Seeding Parenting Models...');
         $this->seedParentingModels();
-        
+
         // Seed Initiatives
         $this->command->info('💼 Seeding Pillar 1 Initiatives...');
         $this->seedPillar1Initiatives();
-        
+
         $this->command->info('📚 Seeding Pillar 2 Initiatives...');
         $this->seedPillar2Initiatives();
-        
+
+        $this->command->info('👥 Seeding Pillar 3 Initiatives...');
+        $this->seedPillar3Initiatives();
+
+        $this->command->info('📊 Seeding Pillar 4 Initiatives...');
+        $this->seedPillar4Initiatives();
+
+        $this->command->info('⚖️ Seeding Pillar 5 Initiatives...');
+        $this->seedPillar5Initiatives();
+
         // Seed Detail Data for ALL Initiatives
         $this->command->info('🔍 Seeding Detail Data for All Initiatives...');
         $this->seedAllInitiativesDetailData();
-        
+
         $this->command->info('✅ HC Roadmap seeding completed!');
     }
 
@@ -143,6 +152,24 @@ class HcRoadmapSeeder extends Seeder
                 'description' => 'Initiatives focused on capability building, learning systems, and leadership development',
                 'display_order' => 2,
             ],
+            [
+                'pillar_number' => 3,
+                'name' => 'Talent Management',
+                'description' => 'Strategic workforce planning, talent acquisition, development, and mobility initiatives',
+                'display_order' => 3,
+            ],
+            [
+                'pillar_number' => 4,
+                'name' => 'Performance & Reward Management',
+                'description' => 'Performance management systems, reward structures, and compensation strategies',
+                'display_order' => 4,
+            ],
+            [
+                'pillar_number' => 5,
+                'name' => 'HC Governance, IR & Policy',
+                'description' => 'HR information systems, industrial relations, and governance frameworks',
+                'display_order' => 5,
+            ],
         ];
 
         foreach ($pillars as $pillar) {
@@ -195,28 +222,28 @@ class HcRoadmapSeeder extends Seeder
             ['code' => 'P1.3.1', 'title' => 'Established Culture Governance & Standardized Cultural Practices Across Units', 'year' => 2028, 'row_number' => 1],
             ['code' => 'P1.4.1', 'title' => 'Digital Culture Transformation for Sustainable Growth', 'year' => 2029, 'row_number' => 1],
             ['code' => 'P1.5.1', 'title' => 'Global Innovation and Culture Excellence', 'year' => 2030, 'row_number' => 1],
-            
+
             // Row 2
             ['code' => 'P1.1.2', 'title' => 'Corporate Strategy Alignment & Structure Optimization', 'year' => 2026, 'row_number' => 2],
             ['code' => 'P1.2.2', 'title' => 'Digital Strategic Alignment & HCBP Deployment', 'year' => 2027, 'row_number' => 2],
             ['code' => 'P1.3.2', 'title' => 'Harmonized Digital Culture Practices Across the Organization', 'year' => 2028, 'row_number' => 2],
             ['code' => 'P1.4.2', 'title' => 'Agile Organization for Business Excellence', 'year' => 2029, 'row_number' => 2],
             ['code' => 'P1.5.2', 'title' => 'Strategic Partnership and Ecosystem Development', 'year' => 2030, 'row_number' => 2],
-            
+
             // Row 3
             ['code' => 'P1.1.3', 'title' => 'Culture Foundation and Change Management', 'year' => 2026, 'row_number' => 3],
             ['code' => 'P1.2.3', 'title' => 'Strengthened Organization Structure (Shared Service and Digital Organization)', 'year' => 2027, 'row_number' => 3],
             ['code' => 'P1.3.3', 'title' => 'Digital adoption & innovation to enable business expansion', 'year' => 2028, 'row_number' => 3],
             ['code' => 'P1.4.3', 'title' => 'HC Change Enablement & Adoption Excellence', 'year' => 2029, 'row_number' => 3],
             ['code' => 'P1.5.3', 'title' => 'Talent Mobility and Knowledge Management', 'year' => 2030, 'row_number' => 3],
-            
+
             // Row 4
             ['code' => 'P1.1.4', 'title' => 'Digital Readiness Assessment', 'year' => 2026, 'row_number' => 4],
             ['code' => 'P1.2.4', 'title' => 'Strengthened Organization Structure (Agile Organization)', 'year' => 2027, 'row_number' => 4],
             ['code' => 'P1.3.4', 'title' => 'Winning Culture for Global Competitiveness', 'year' => 2028, 'row_number' => 4],
             ['code' => 'P1.4.4', 'title' => 'Digital Transformation Excellence', 'year' => 2029, 'row_number' => 4],
             ['code' => 'P1.5.4', 'title' => 'Future-Ready Workforce Architecture', 'year' => 2030, 'row_number' => 4],
-            
+
             // Row 5
             ['code' => 'P1.1.5', 'title' => 'Performance Management Integration', 'year' => 2026, 'row_number' => 5],
             ['code' => 'P1.2.5', 'title' => 'Strengthened Organization Structure (Organization Excellence Validation)', 'year' => 2027, 'row_number' => 5],
@@ -244,28 +271,28 @@ class HcRoadmapSeeder extends Seeder
             ['code' => 'P2.3.1', 'title' => 'Enhanced HC Team Capability', 'year' => 2028, 'row_number' => 1],
             ['code' => 'P2.4.1', 'title' => 'Leadership Excellence and Succession Planning', 'year' => 2029, 'row_number' => 1],
             ['code' => 'P2.5.1', 'title' => 'Global Leadership Development Program', 'year' => 2030, 'row_number' => 1],
-            
+
             // Row 2
             ['code' => 'P2.1.2', 'title' => 'Strategic Skills & Certification', 'year' => 2026, 'row_number' => 2],
             ['code' => 'P2.2.2', 'title' => 'LMS Implementation & Content Digitalization', 'year' => 2027, 'row_number' => 2],
             ['code' => 'P2.3.2', 'title' => 'HC Business Partner Plantation Foundation', 'year' => 2028, 'row_number' => 2],
             ['code' => 'P2.4.2', 'title' => 'Advanced Leadership Analytics', 'year' => 2029, 'row_number' => 2],
             ['code' => 'P2.5.2', 'title' => 'Executive Coaching and Mentorship', 'year' => 2030, 'row_number' => 2],
-            
+
             // Row 3
             ['code' => 'P2.1.3', 'title' => 'Integrated Productivity Learning Program', 'year' => 2026, 'row_number' => 3],
             ['code' => 'P2.2.3', 'title' => 'Integrated Digital Learning System', 'year' => 2027, 'row_number' => 3],
             ['code' => 'P2.3.3', 'title' => 'Advanced HCBP Plantation Capability', 'year' => 2028, 'row_number' => 3],
             ['code' => 'P2.4.3', 'title' => 'Talent Development and Career Pathing', 'year' => 2029, 'row_number' => 3],
             ['code' => 'P2.5.3', 'title' => 'Innovation and Entrepreneurship Program', 'year' => 2030, 'row_number' => 3],
-            
+
             // Row 4
             ['code' => 'P2.1.4', 'title' => 'Competency & Career Integration', 'year' => 2026, 'row_number' => 4],
             ['code' => 'P2.2.4', 'title' => 'AI-Enabled Learning Analytics', 'year' => 2027, 'row_number' => 4],
             ['code' => 'P2.3.4', 'title' => 'Data-Driven HCBP Plantation', 'year' => 2028, 'row_number' => 4],
             ['code' => 'P2.4.4', 'title' => 'Skills Gap Analysis and Development', 'year' => 2029, 'row_number' => 4],
             ['code' => 'P2.5.4', 'title' => 'Continuous Learning Culture', 'year' => 2030, 'row_number' => 4],
-            
+
             // Row 5
             ['code' => 'P2.1.5', 'title' => 'Future Skills for Global Readiness', 'year' => 2026, 'row_number' => 5],
             ['code' => 'P2.2.5', 'title' => 'Next-Gen Learning Experience', 'year' => 2027, 'row_number' => 5],
@@ -278,6 +305,153 @@ class HcRoadmapSeeder extends Seeder
             Initiative::updateOrCreate(
                 ['code' => $initiative['code']],
                 array_merge($initiative, ['pillar_id' => $pillar2->id])
+            );
+        }
+    }
+
+    private function seedPillar3Initiatives()
+    {
+        $pillar3 = Pillar::where('pillar_number', 3)->first();
+
+        $initiatives = [
+            // Row 1 - Strategic Workforce Planning & Capability Alignment
+            ['code' => 'P3.1.1', 'title' => 'Workforce Planning Foundation & Capability Mapping', 'year' => 2026, 'row_number' => 1],
+            ['code' => 'P3.2.1', 'title' => 'Strategic Workforce Analytics Implementation', 'year' => 2027, 'row_number' => 1],
+            ['code' => 'P3.3.1', 'title' => 'Advanced Capability Alignment System', 'year' => 2028, 'row_number' => 1],
+            ['code' => 'P3.4.1', 'title' => 'Predictive Workforce Planning Platform', 'year' => 2029, 'row_number' => 1],
+            ['code' => 'P3.5.1', 'title' => 'AI-Driven Strategic Workforce Optimization', 'year' => 2030, 'row_number' => 1],
+
+            // Row 2 - Integrated Talent Management System
+            ['code' => 'P3.1.2', 'title' => 'Talent Management System Foundation', 'year' => 2026, 'row_number' => 2],
+            ['code' => 'P3.2.2', 'title' => 'Integrated Talent Acquisition Platform', 'year' => 2027, 'row_number' => 2],
+            ['code' => 'P3.3.2', 'title' => 'Comprehensive Talent Development System', 'year' => 2028, 'row_number' => 2],
+            ['code' => 'P3.4.2', 'title' => 'Advanced Talent Analytics & Intelligence', 'year' => 2029, 'row_number' => 2],
+            ['code' => 'P3.5.2', 'title' => 'Next-Gen Integrated Talent Ecosystem', 'year' => 2030, 'row_number' => 2],
+
+            // Row 3 - High-Impact Talent Mobility & Leadership Acceleration
+            ['code' => 'P3.1.3', 'title' => 'Talent Mobility Framework Development', 'year' => 2026, 'row_number' => 3],
+            ['code' => 'P3.2.3', 'title' => 'Leadership Acceleration Program Launch', 'year' => 2027, 'row_number' => 3],
+            ['code' => 'P3.3.3', 'title' => 'Dynamic Talent Mobility System', 'year' => 2028, 'row_number' => 3],
+            ['code' => 'P3.4.3', 'title' => 'Advanced Leadership Pipeline Management', 'year' => 2029, 'row_number' => 3],
+            ['code' => 'P3.5.3', 'title' => 'Global Talent Mobility & Leadership Excellence', 'year' => 2030, 'row_number' => 3],
+
+            // Row 4 - Succession Planning & Career Development
+            ['code' => 'P3.1.4', 'title' => 'Succession Planning Framework', 'year' => 2026, 'row_number' => 4],
+            ['code' => 'P3.2.4', 'title' => 'Career Path Development System', 'year' => 2027, 'row_number' => 4],
+            ['code' => 'P3.3.4', 'title' => 'Integrated Succession Management', 'year' => 2028, 'row_number' => 4],
+            ['code' => 'P3.4.4', 'title' => 'AI-Powered Career Development Platform', 'year' => 2029, 'row_number' => 4],
+            ['code' => 'P3.5.4', 'title' => 'Strategic Succession & Career Excellence', 'year' => 2030, 'row_number' => 4],
+
+            // Row 5 - Employee Engagement & Retention
+            ['code' => 'P3.1.5', 'title' => 'Employee Engagement Assessment', 'year' => 2026, 'row_number' => 5],
+            ['code' => 'P3.2.5', 'title' => 'Retention Strategy Implementation', 'year' => 2027, 'row_number' => 5],
+            ['code' => 'P3.3.5', 'title' => 'Advanced Engagement & Retention Analytics', 'year' => 2028, 'row_number' => 5],
+            ['code' => 'P3.4.5', 'title' => 'Predictive Retention Management System', 'year' => 2029, 'row_number' => 5],
+            ['code' => 'P3.5.5', 'title' => 'Excellence in Employee Experience & Retention', 'year' => 2030, 'row_number' => 5],
+        ];
+
+        foreach ($initiatives as $initiative) {
+            Initiative::updateOrCreate(
+                ['code' => $initiative['code']],
+                array_merge($initiative, ['pillar_id' => $pillar3->id])
+            );
+        }
+    }
+
+    private function seedPillar4Initiatives()
+    {
+        $pillar4 = Pillar::where('pillar_number', 4)->first();
+
+        $initiatives = [
+            // Row 1 - Integrated Performance Management System
+            ['code' => 'P4.1.1', 'title' => 'Performance Management System Foundation', 'year' => 2026, 'row_number' => 1],
+            ['code' => 'P4.2.1', 'title' => 'Digital Performance Management Implementation', 'year' => 2027, 'row_number' => 1],
+            ['code' => 'P4.3.1', 'title' => 'Advanced Performance Analytics Platform', 'year' => 2028, 'row_number' => 1],
+            ['code' => 'P4.4.1', 'title' => 'AI-Driven Performance Intelligence System', 'year' => 2029, 'row_number' => 1],
+            ['code' => 'P4.5.1', 'title' => 'Next-Gen Integrated Performance Excellence', 'year' => 2030, 'row_number' => 1],
+
+            // Row 2 - Excellence Performance Driven Culture
+            ['code' => 'P4.1.2', 'title' => 'Performance Culture Assessment & Framework', 'year' => 2026, 'row_number' => 2],
+            ['code' => 'P4.2.2', 'title' => 'High-Performance Culture Development', 'year' => 2027, 'row_number' => 2],
+            ['code' => 'P4.3.2', 'title' => 'Performance Recognition System Implementation', 'year' => 2028, 'row_number' => 2],
+            ['code' => 'P4.4.2', 'title' => 'Advanced Performance Culture Analytics', 'year' => 2029, 'row_number' => 2],
+            ['code' => 'P4.5.2', 'title' => 'Excellence in Performance-Driven Culture', 'year' => 2030, 'row_number' => 2],
+
+            // Row 3 - Competitive Remuneration & Total Reward
+            ['code' => 'P4.1.3', 'title' => 'Compensation Structure Review & Alignment', 'year' => 2026, 'row_number' => 3],
+            ['code' => 'P4.2.3', 'title' => 'Total Rewards Strategy Implementation', 'year' => 2027, 'row_number' => 3],
+            ['code' => 'P4.3.3', 'title' => 'Market-Competitive Compensation System', 'year' => 2028, 'row_number' => 3],
+            ['code' => 'P4.4.3', 'title' => 'Advanced Total Rewards Analytics', 'year' => 2029, 'row_number' => 3],
+            ['code' => 'P4.5.3', 'title' => 'Strategic Total Rewards Excellence', 'year' => 2030, 'row_number' => 3],
+
+            // Row 4 - Variable Pay & Incentive Management
+            ['code' => 'P4.1.4', 'title' => 'Variable Pay Framework Development', 'year' => 2026, 'row_number' => 4],
+            ['code' => 'P4.2.4', 'title' => 'Performance-Based Incentive System', 'year' => 2027, 'row_number' => 4],
+            ['code' => 'P4.3.4', 'title' => 'Advanced Incentive Management Platform', 'year' => 2028, 'row_number' => 4],
+            ['code' => 'P4.4.4', 'title' => 'AI-Powered Incentive Optimization', 'year' => 2029, 'row_number' => 4],
+            ['code' => 'P4.5.4', 'title' => 'Strategic Incentive & Reward Excellence', 'year' => 2030, 'row_number' => 4],
+
+            // Row 5 - Benefits & Wellness Management
+            ['code' => 'P4.1.5', 'title' => 'Benefits Program Assessment & Redesign', 'year' => 2026, 'row_number' => 5],
+            ['code' => 'P4.2.5', 'title' => 'Comprehensive Wellness Program Launch', 'year' => 2027, 'row_number' => 5],
+            ['code' => 'P4.3.5', 'title' => 'Integrated Benefits & Wellness Platform', 'year' => 2028, 'row_number' => 5],
+            ['code' => 'P4.4.5', 'title' => 'Advanced Benefits Analytics System', 'year' => 2029, 'row_number' => 5],
+            ['code' => 'P4.5.5', 'title' => 'Excellence in Total Benefits & Wellness', 'year' => 2030, 'row_number' => 5],
+        ];
+
+        foreach ($initiatives as $initiative) {
+            Initiative::updateOrCreate(
+                ['code' => $initiative['code']],
+                array_merge($initiative, ['pillar_id' => $pillar4->id])
+            );
+        }
+    }
+
+    private function seedPillar5Initiatives()
+    {
+        $pillar5 = Pillar::where('pillar_number', 5)->first();
+
+        $initiatives = [
+            // Row 1 - Integrated HCIS
+            ['code' => 'P5.1.1', 'title' => 'HCIS Foundation & System Integration', 'year' => 2026, 'row_number' => 1],
+            ['code' => 'P5.2.1', 'title' => 'Digital HCIS Platform Implementation', 'year' => 2027, 'row_number' => 1],
+            ['code' => 'P5.3.1', 'title' => 'Advanced HCIS Analytics & Intelligence', 'year' => 2028, 'row_number' => 1],
+            ['code' => 'P5.4.1', 'title' => 'AI-Driven HCIS Optimization', 'year' => 2029, 'row_number' => 1],
+            ['code' => 'P5.5.1', 'title' => 'Next-Gen Integrated HCIS Excellence', 'year' => 2030, 'row_number' => 1],
+
+            // Row 2 - Employee & Industrial Relations
+            ['code' => 'P5.1.2', 'title' => 'Industrial Relations Framework Development', 'year' => 2026, 'row_number' => 2],
+            ['code' => 'P5.2.2', 'title' => 'Employee Relations Enhancement Program', 'year' => 2027, 'row_number' => 2],
+            ['code' => 'P5.3.2', 'title' => 'Harmonized Professional Productive System', 'year' => 2028, 'row_number' => 2],
+            ['code' => 'P5.4.2', 'title' => 'Advanced Employee Engagement Platform', 'year' => 2029, 'row_number' => 2],
+            ['code' => 'P5.5.2', 'title' => 'Excellence in Employee & Industrial Relations', 'year' => 2030, 'row_number' => 2],
+
+            // Row 3 - HC Good Governance & Policy
+            ['code' => 'P5.1.3', 'title' => 'HC Governance Framework Assessment', 'year' => 2026, 'row_number' => 3],
+            ['code' => 'P5.2.3', 'title' => 'Policy Standardization & Implementation', 'year' => 2027, 'row_number' => 3],
+            ['code' => 'P5.3.3', 'title' => 'Advanced Governance & Compliance System', 'year' => 2028, 'row_number' => 3],
+            ['code' => 'P5.4.3', 'title' => 'AI-Powered Governance Analytics', 'year' => 2029, 'row_number' => 3],
+            ['code' => 'P5.5.3', 'title' => 'Strategic Governance & Policy Excellence', 'year' => 2030, 'row_number' => 3],
+
+            // Row 4 - Data Management & Analytics
+            ['code' => 'P5.1.4', 'title' => 'HR Data Management Foundation', 'year' => 2026, 'row_number' => 4],
+            ['code' => 'P5.2.4', 'title' => 'Advanced HR Analytics Platform', 'year' => 2027, 'row_number' => 4],
+            ['code' => 'P5.3.4', 'title' => 'Predictive HR Analytics System', 'year' => 2028, 'row_number' => 4],
+            ['code' => 'P5.4.4', 'title' => 'AI-Driven People Analytics', 'year' => 2029, 'row_number' => 4],
+            ['code' => 'P5.5.4', 'title' => 'Strategic People Intelligence Excellence', 'year' => 2030, 'row_number' => 4],
+
+            // Row 5 - Compliance & Risk Management
+            ['code' => 'P5.1.5', 'title' => 'HR Compliance Framework Development', 'year' => 2026, 'row_number' => 5],
+            ['code' => 'P5.2.5', 'title' => 'Risk Management System Implementation', 'year' => 2027, 'row_number' => 5],
+            ['code' => 'P5.3.5', 'title' => 'Advanced Compliance & Risk Analytics', 'year' => 2028, 'row_number' => 5],
+            ['code' => 'P5.4.5', 'title' => 'AI-Powered Compliance Monitoring', 'year' => 2029, 'row_number' => 5],
+            ['code' => 'P5.5.5', 'title' => 'Excellence in Compliance & Risk Management', 'year' => 2030, 'row_number' => 5],
+        ];
+
+        foreach ($initiatives as $initiative) {
+            Initiative::updateOrCreate(
+                ['code' => $initiative['code']],
+                array_merge($initiative, ['pillar_id' => $pillar5->id])
             );
         }
     }
@@ -340,7 +514,7 @@ class HcRoadmapSeeder extends Seeder
             ['activity_number' => 5, 'activity_name' => 'Digitalisasi Pembelajaran dan Evaluasi Pembelajaran', 'project_manager_status' => 'yellow', 'progress' => 6.00, 'cumulative_progress' => 38.00, 'display_order' => 5, 'start_date' => '2026-07-01', 'end_date' => '2026-12-31'],
             ['activity_number' => 6, 'activity_name' => 'Pengukuran CLI Karyawan Pelaksana Bidang Tanaman dan Tekpol', 'project_manager_status' => 'green', 'progress' => 3.00, 'cumulative_progress' => 15.00, 'display_order' => 6, 'start_date' => '2026-10-01', 'end_date' => '2026-12-31'],
         ];
-        
+
         $currentYear = now()->year;
         $currentMonth = now()->month;
 
@@ -353,7 +527,7 @@ class HcRoadmapSeeder extends Seeder
                 ['initiative_id' => $initiative->id, 'activity_number' => $plan['activity_number']],
                 array_merge($planData, ['initiative_id' => $initiative->id])
             );
-            
+
             // Create monthly progress for current month
             MonthlyProgress::updateOrCreate(
                 [
@@ -365,12 +539,12 @@ class HcRoadmapSeeder extends Seeder
                     'progress' => $plan['progress']
                 ]
             );
-            
+
             // Create sample monthly progress for previous months of this year
             for ($month = 1; $month < $currentMonth; $month++) {
                 // Generate random progress between 0-100
                 $randomProgress = rand(0, 100);
-                
+
                 MonthlyProgress::updateOrCreate(
                     [
                         'action_plan_id' => $actionPlan->id,
@@ -411,14 +585,14 @@ class HcRoadmapSeeder extends Seeder
             ['mitigation_description' => 'Penjadwalan pelatihan secara terstruktur dan fleksibel', 'status' => 'planned', 'display_order' => 3],
             ['mitigation_description' => 'Komitmen Penggunaan Aplikasi Pengembangan SDM', 'status' => 'planned', 'display_order' => 4],
         ];
-        
+
         // Get all risks for this initiative to associate with mitigations
         $risks = Risk::where('initiative_id', $initiative->id)->get();
-        
+
         foreach ($mitigations as $index => $mitigation) {
             // Associate each mitigation with a risk (cycle through risks if needed)
             $riskId = $risks[$index % $risks->count()]->id;
-            
+
             RiskMitigation::updateOrCreate(
                 ['risk_id' => $riskId, 'display_order' => $mitigation['display_order']],
                 [
@@ -483,8 +657,8 @@ class HcRoadmapSeeder extends Seeder
         $budgetAmount = $baseBudget + $yearMultiplier;
 
         // Determine PIC based on pillar
-        $pic = $initiative->pillar->pillar_number == 1 
-            ? 'Kasubdiv Strategi & Budaya Korporat' 
+        $pic = $initiative->pillar->pillar_number == 1
+            ? 'Kasubdiv Strategi & Budaya Korporat'
             : 'Kasubdiv Pengembangan SDM';
 
         // Update initiative with generic data
@@ -520,7 +694,7 @@ class HcRoadmapSeeder extends Seeder
             ['name' => 'Fase Implementasi Lanjutan', 'months' => 'Jul-Sep ' . $year, 'status' => 'yellow', 'progress' => 30, 'start_date' => $year . '-07-01', 'end_date' => $year . '-09-30'],
             ['name' => 'Fase Evaluasi & Penutupan', 'months' => 'Okt-Des ' . $year, 'status' => 'green', 'progress' => 20, 'start_date' => $year . '-10-01', 'end_date' => $year . '-12-31'],
         ];
-        
+
         $cumulativeProgress = 0;
         foreach ($quarters as $index => $quarter) {
             $cumulativeProgress += $quarter['progress'];
@@ -587,14 +761,14 @@ class HcRoadmapSeeder extends Seeder
             ['desc' => 'Monitoring progress secara berkala dan proaktif', 'status' => 'in_progress'],
             ['desc' => 'Melakukan UAT dan pilot testing sebelum rollout', 'status' => 'planned'],
         ];
-        
+
         // Get all risks for this initiative to associate with mitigations
         $risks = Risk::where('initiative_id', $initiative->id)->get();
-        
+
         foreach ($mitigationTemplates as $index => $mitigation) {
             // Associate each mitigation with a risk (cycle through risks if needed)
             $riskId = $risks[$index % $risks->count()]->id;
-            
+
             RiskMitigation::updateOrCreate(
                 ['risk_id' => $riskId, 'display_order' => $index + 1],
                 [
@@ -648,7 +822,7 @@ class HcRoadmapSeeder extends Seeder
 
         // Link parenting models (generic: assign based on row_number pattern)
         $parentingModels = ParentingModel::all();
-        
+
         // Row 1-2: Sentralisasi
         // Row 3: Koordinasi
         // Row 4-5: Desentralisasi
