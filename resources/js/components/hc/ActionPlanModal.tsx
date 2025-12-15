@@ -13,14 +13,19 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Edit, Trash2, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import {
+    calculateMetrics,
+    formatMonthForInput,
+    formatMonthToStartDate,
+    formatMonthToEndDate,
+    transformMonthlyProgressToInputs,
+    getMonthsBetween,
+    CalculationParams,
+    CalculationResult,
+    MonthlyProgress,
+} from '@/utils/calculations';
 
-interface MonthlyProgress {
-    id?: number;
-    year: number;
-    month: number;
-    progress: number | string;
-    monthly_contribution?: number;
-}
+
 
 interface ActionPlan {
     id?: number;
@@ -57,62 +62,12 @@ interface ActionPlanModalProps {
     onDelete?: (id: number) => void;
 }
 
-// Fungsi untuk memformat tanggal menjadi format 'Jan-Mar 2026' atau 'Jan 2026'
-const formatDueDate = (startDate?: string, endDate?: string): string => {
-    if (!endDate) return '-';
 
-    const monthNames = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-    ];
-
-    try {
-        const end = new Date(endDate);
-        const endMonth = monthNames[end.getMonth()];
-        const endYear = end.getFullYear();
-
-        // Jika ada start_date, format sebagai rentang
-        if (startDate) {
-            const start = new Date(startDate);
-            const startMonth = monthNames[start.getMonth()];
-            const startYear = start.getFullYear();
-
-            // Jika tahun sama, tampilkan 'Jan-Mar 2026'
-            if (startYear === endYear) {
-                // Jika bulan sama, tampilkan 'Jan 2026'
-                if (startMonth === endMonth) {
-                    return `${startMonth} ${startYear}`;
-                }
-                return `${startMonth}-${endMonth} ${endYear}`;
-            } else {
-                // Jika tahun berbeda, tampilkan 'Jan 2025-Mar 2026'
-                return `${startMonth} ${startYear}-${endMonth} ${endYear}`;
-            }
-        } else {
-            // Jika hanya ada end_date, tampilkan 'Mar 2026'
-            return `${endMonth} ${endYear}`;
-        }
-    } catch (error) {
-        console.error('Error formatting date:', error);
-        return endDate;
-    }
-};
 
 export default function ActionPlanModal({
     show,
     mode,
     actionPlan,
-    initiativeKpis = [],
     onClose,
     onSave,
     onDelete,
@@ -128,60 +83,9 @@ export default function ActionPlanModal({
         monthly_progress_inputs: {},
     });
 
-    // Helper to generate list of months between start and end date
-    const getMonthsBetween = (start?: string, end?: string): string[] => {
-        if (!start || !end) return [];
-        try {
-            const months: string[] = [];
-            const startDate = new Date(start + '-01');
-            const endDate = new Date(end + '-01');
 
-            // Validate dates
-            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime()))
-                return [];
-            if (startDate > endDate) return [];
 
-            const current = new Date(startDate);
-            while (current <= endDate) {
-                const year = current.getFullYear();
-                const month = String(current.getMonth() + 1).padStart(2, '0');
-                months.push(`${year}-${month}`);
-                current.setMonth(current.getMonth() + 1);
-            }
-            return months;
-        } catch (e) {
-            return [];
-        }
-    };
-
-    // Calculate derived metrics for display
-    const calculateMetrics = (data: ActionPlan) => {
-        const months = getMonthsBetween(data.start_date, data.end_date);
-        const duration = Math.max(1, months.length);
-        const weight = Math.min(100, (duration / 12) * 100);
-
-        let totalProgress = 0;
-        let count = 0;
-
-        if (data.monthly_progress_inputs) {
-            months.forEach((month) => {
-                const progress = Number(
-                    data.monthly_progress_inputs?.[month] || 0,
-                );
-                totalProgress += progress;
-                count++;
-            });
-        }
-
-        const avgProgress = count > 0 ? totalProgress / count : 0;
-        // Rumus baru: Yearly Impact = Avg Progress * (Duration / 12)
-        // = Avg Progress * (Weight / 100)
-        const yearlyImpact = (avgProgress * weight) / 100;
-
-        return { duration, weight, avgProgress, yearlyImpact };
-    };
-
-    const [metrics, setMetrics] = useState({
+    const [metrics, setMetrics] = useState<CalculationResult>({
         duration: 0,
         weight: 0,
         avgProgress: 0,
@@ -189,8 +93,17 @@ export default function ActionPlanModal({
     });
 
     useEffect(() => {
-        setMetrics(calculateMetrics(formData));
+        // Only calculate metrics for create mode to show real-time preview
+        if (mode === 'create') {
+            const params: CalculationParams = {
+                start_date: formData.start_date,
+                end_date: formData.end_date,
+                monthly_progress_inputs: formData.monthly_progress_inputs,
+            };
+            setMetrics(calculateMetrics(params));
+        }
     }, [
+        mode,
         formData.start_date,
         formData.end_date,
         formData.monthly_progress_inputs,
@@ -199,52 +112,13 @@ export default function ActionPlanModal({
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Fungsi untuk mengkonversi format tanggal dari database (ISO 8601) ke format YYYY-MM untuk HTML month input
-    const formatMonthForInput = (dateString?: string): string => {
-        if (!dateString) return '';
-        try {
-            // Mengambil tahun dan bulan saja dari format ISO 8601 (2026-01-01T00:00:00.000000Z)
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            return `${year}-${month}`; // Format: 2026-01
-        } catch {
-            return '';
-        }
-    };
 
-    // Fungsi untuk mengkonversi format YYYY-MM ke YYYY-MM-01 (tanggal awal bulan) saat menyimpan ke database
-    const convertMonthToStartDate = (monthString?: string): string => {
-        if (!monthString) return '';
-        // Format input: 2026-01, format output: 2026-01-01
-        return `${monthString}-01`;
-    };
-
-    // Fungsi untuk mengkonversi format YYYY-MM ke tanggal akhir bulan saat menyimpan ke database
-    const convertMonthToEndDate = (monthString?: string): string => {
-        if (!monthString) return '';
-        try {
-            // Parse tahun dan bulan dari format YYYY-MM
-            const [year, month] = monthString.split('-').map(Number);
-            // Dapatkan tanggal terakhir bulan tersebut dengan membuat Date untuk bulan berikutnya lalu kurangi 1 hari
-            const lastDay = new Date(year, month, 0).getDate();
-            return `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-        } catch {
-            return `${monthString}-01`;
-        }
-    };
 
     // Initialize form data when actionPlan changes or mode changes
     useEffect(() => {
         if (actionPlan && (mode === 'edit' || mode === 'view')) {
             // Transform monthly_progress array to inputs map
-            const inputs: Record<string, number> = {};
-            if (actionPlan.monthly_progress) {
-                actionPlan.monthly_progress.forEach((mp) => {
-                    const key = `${mp.year}-${String(mp.month).padStart(2, '0')}`;
-                    inputs[key] = Number(mp.progress);
-                });
-            }
+            const inputs = transformMonthlyProgressToInputs(actionPlan.monthly_progress);
 
             setFormData({
                 id: actionPlan.id,
@@ -263,9 +137,10 @@ export default function ActionPlanModal({
                         : actionPlan.display_order || 1,
                 initiative_id: actionPlan.initiative_id,
                 monthly_progress_inputs: inputs,
-                // Keep computed values for display reference
-                cumulative_progress:
-                    Number(actionPlan.cumulative_progress) || 0,
+                // Use backend computed values to ensure consistency
+                duration_months: Number(actionPlan.duration_months) || 0,
+                weight_percentage: Number(actionPlan.weight_percentage) || 0,
+                cumulative_progress: Number(actionPlan.cumulative_progress) || 0,
                 yearly_impact: Number(actionPlan.yearly_impact) || 0,
             });
         } else if (mode === 'create') {
@@ -278,16 +153,20 @@ export default function ActionPlanModal({
                 display_order: 1,
                 initiative_id: 0,
                 monthly_progress_inputs: {},
+                duration_months: 0,
+                weight_percentage: 0,
+                cumulative_progress: 0,
+                yearly_impact: 0,
             });
         }
         setErrors({});
     }, [actionPlan, mode]);
 
-    const handleChange = (field: string, value: any) => {
+    const handleChange = (field: string, value: string | number | boolean) => {
         if (['activity_number', 'display_order'].includes(field)) {
             const numValue =
-                typeof value === 'string' ? parseInt(value) : value;
-            const validValue = isNaN(numValue) ? 1 : numValue;
+                typeof value === 'string' ? parseInt(value) : value as number;
+            const validValue = isNaN(numValue) || typeof numValue !== 'number' ? 1 : numValue;
             setFormData((prev) => ({ ...prev, [field]: validValue }));
         } else {
             setFormData((prev) => ({ ...prev, [field]: value }));
@@ -380,10 +259,17 @@ export default function ActionPlanModal({
 
             const dataToSave = {
                 ...formData,
-                start_date: convertMonthToStartDate(formData.start_date), // 2026-01 -> 2026-01-01
-                end_date: convertMonthToEndDate(formData.end_date), // 2026-03 -> 2026-03-31
+                start_date: formatMonthToStartDate(formData.start_date), // 2026-01 -> 2026-01-01
+                end_date: formatMonthToEndDate(formData.end_date), // 2026-03 -> 2026-03-31
                 monthly_progress: completeMonthlyProgress, // Send complete inputs map
-            } as any;
+                // Remove computed fields for create mode - let backend calculate them
+                ...(mode === 'create' && {
+                    duration_months: undefined,
+                    weight_percentage: undefined,
+                    cumulative_progress: undefined,
+                    yearly_impact: undefined,
+                }),
+            } as unknown as ActionPlan;
 
             await onSave(dataToSave);
             onClose();
@@ -686,9 +572,10 @@ export default function ActionPlanModal({
                                                     Monthly Progress
                                                 </h3>
                                                 <div className="text-sm text-gray-500">
-                                                    Duration: {metrics.duration}{' '}
+                                                    Duration: {mode === 'create' ? metrics.duration : (formData.duration_months || 0)}{' '}
                                                     months | Weight:{' '}
-                                                    {metrics.weight.toFixed(2)}%
+                                                    {mode === 'create' ? metrics.weight.toFixed(2) : (formData.weight_percentage || 0).toFixed(2)}% | Yearly Impact:{' '}
+                                                    {mode === 'create' ? metrics.yearlyImpact.toFixed(2) : (formData.yearly_impact || 0).toFixed(2)}%
                                                 </div>
                                             </div>
 
@@ -756,33 +643,7 @@ export default function ActionPlanModal({
                                                 </div>
                                             )}
 
-                                            <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg bg-blue-50 p-4">
-                                                <div>
-                                                    <Label className="text-blue-800">
-                                                        Average Progress
-                                                    </Label>
-                                                    <div className="text-2xl font-bold text-blue-900">
-                                                        {metrics.avgProgress.toFixed(
-                                                            2,
-                                                        )}
-                                                        %
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <Label className="text-blue-800">
-                                                        Yearly Impact
-                                                    </Label>
-                                                    <div className="text-2xl font-bold text-blue-900">
-                                                        {metrics.yearlyImpact.toFixed(
-                                                            2,
-                                                        )}
-                                                        %
-                                                    </div>
-                                                    <p className="text-xs text-blue-600">
-                                                        (Avg Progress × Weight)
-                                                    </p>
-                                                </div>
-                                            </div>
+
                                         </div>
                                         {mode !== 'view' && (
                                             <div className="flex justify-end gap-2 pt-4">

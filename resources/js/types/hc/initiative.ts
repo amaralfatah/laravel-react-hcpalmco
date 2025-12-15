@@ -8,19 +8,27 @@ export interface Kpi {
 
 export interface ActionPlan {
     id?: number;
-    activity_number: string;
+    activity_number: string | number;
     activity_name: string;
     project_manager_status: string;
     start_date?: string;
     end_date?: string;
-    duration_months?: number;
-    weight_percentage?: number;
-    cumulative_progress?: number; // This is now Avg Progress
-    yearly_impact?: number;
     display_order?: number;
     initiative_id?: number;
-    monthly_progress?: any[];
+    monthly_progress?: MonthlyProgress[];
     monthly_progress_inputs?: Record<string, number>;
+    duration_months?: number; // Computed from backend
+    weight_percentage?: number; // Computed from backend
+    cumulative_progress?: number; // Computed from backend
+    yearly_impact?: number; // Computed from backend
+}
+
+export interface MonthlyProgress {
+    id?: number;
+    year: number;
+    month: number;
+    progress: number | string;
+    monthly_contribution?: number;
 }
 
 export interface Risk {
@@ -48,6 +56,7 @@ export interface Initiative {
     title: string;
     description: string;
     pilar: string;
+    pilar_number?: number;
     duration: string;
     pic: string;
     budgetType: string;

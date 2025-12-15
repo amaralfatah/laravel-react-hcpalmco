@@ -1,6 +1,6 @@
 import React from 'react';
 import AppLayoutFull from '@/layouts/app-layout-full';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import HcSubHeader from '@/components/hc/HcSubHeader';
 import { Link } from '@inertiajs/react';
 import HcFooter from '@/components/hc/HcFooter';
@@ -8,6 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ListProps, RoadmapItem, RoadmapRow, RoadmapSection, Year } from '@/types/hc';
 
 export default function RoadmapList({ roadmapData, years, phases }: ListProps) {
+    const { url } = usePage();
+    const urlParams = new URLSearchParams(url.split('?')[1]);
+    const selectedPilar = urlParams.get('pilar');
+
+    // Filter data berdasarkan pilar yang dipilih
+    const filteredRoadmapData = selectedPilar
+        ? roadmapData.filter(section => section.no === parseInt(selectedPilar))
+        : roadmapData;
 
     return (
         <AppLayoutFull title="HC Roadmap PTPN IV Palmco 2026 - 2030" description="Human Capital Roadmap list view">
@@ -20,7 +28,14 @@ export default function RoadmapList({ roadmapData, years, phases }: ListProps) {
                 <main className="container mx-auto mt-4 px-2 sm:px-4 lg:px-6">
                     <Card>
                         <CardHeader className="py-3">
-                            <CardTitle>HC Roadmap PTPN IV Palmco 2026 - 2030</CardTitle>
+                            <CardTitle>
+                                HC Roadmap PTPN IV Palmco 2026 - 2030
+                                {selectedPilar && (
+                                    <span className="block text-sm font-normal text-gray-600 mt-1">
+                                        Pilar {selectedPilar}
+                                    </span>
+                                )}
+                            </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="overflow-x-auto">
@@ -58,7 +73,7 @@ export default function RoadmapList({ roadmapData, years, phases }: ListProps) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {roadmapData.map((section: RoadmapSection, sectionIndex: number) => (
+                                        {filteredRoadmapData.map((section: RoadmapSection, sectionIndex: number) => (
                                             <React.Fragment key={sectionIndex}>
                                                 {/* All rows for this pillar */}
                                                 {section.rows.map((row: RoadmapRow, rowIndex: number) => (

@@ -45,14 +45,7 @@ export default function InitiativeDetail({
     const [selectedActionPlan, setSelectedActionPlan] =
         useState<ActionPlan | null>(null);
 
-    // Fungsi untuk menghitung impact tahunan
-    const calculateYearlyImpact = (
-        currentMonthProgress: string | number,
-    ): string => {
-        const progress = parseFloat(String(currentMonthProgress)) || 0;
-        const impact = (progress / 100) * 8.33;
-        return impact.toFixed(2);
-    };
+
 
     // Fungsi untuk memformat tanggal menjadi format 'Jan-Mar 2026' atau 'Jan 2026'
     const formatDueDate = (startDate?: string, endDate?: string): string => {
@@ -119,7 +112,6 @@ export default function InitiativeDetail({
     };
 
     const handleEdit = (item: ActionPlan) => {
-        console.log('Editing action plan:', item);
         // Ensure the item has an ID before proceeding
         if (!item.id) {
             console.error('Action plan does not have an ID:', item);
@@ -169,7 +161,7 @@ export default function InitiativeDetail({
             if (modalMode === 'create') {
                 router.post(
                     `/initiatives/${initiativeCode}/action-plans`,
-                    apiData,
+                    apiData as any,
                     {
                         onSuccess: () => {
                             setShowModal(false);
@@ -188,7 +180,7 @@ export default function InitiativeDetail({
                     },
                 );
             } else {
-                router.put(`/action-plans/${data.id}`, apiData, {
+                router.put(`/action-plans/${data.id}`, apiData as any, {
                     onSuccess: () => {
                         setShowModal(false);
                         // Refresh data using Inertia's reload method
@@ -233,6 +225,8 @@ export default function InitiativeDetail({
         }
     };
 
+
+
     const parentingModel = [
         { label: 'Sentralisasi', color: 'bg-blue-600' },
         { label: 'Koordinasi', color: 'bg-yellow-400' },
@@ -254,7 +248,7 @@ export default function InitiativeDetail({
             <div className="border-b border-gray-200 bg-white">
                 <div className="container mx-auto px-4 py-3 sm:px-6 lg:px-8">
                     <Link
-                        href="/list"
+                        href={initiative.pilar_number ? `/list?pilar=${initiative.pilar_number}` : "/list"}
                         className="flex items-center gap-2 transition-opacity hover:opacity-70"
                     >
                         <ArrowLeft className="h-5 w-5 text-gray-600" />
@@ -741,7 +735,7 @@ export default function InitiativeDetail({
                 actionPlan={selectedActionPlan}
                 initiativeKpis={initiative.kpis}
                 onClose={() => setShowModal(false)}
-                onSave={handleSave as any}
+                onSave={handleSave}
                 onDelete={handleDeleteConfirm}
             />
 

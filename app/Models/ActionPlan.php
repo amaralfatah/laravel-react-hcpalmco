@@ -18,12 +18,14 @@ class ActionPlan extends Model
         'duration_months',
         'weight_percentage',
         'cumulative_progress',
+        'yearly_impact',
         'display_order'
     ];
 
     protected $casts = [
         'weight_percentage' => 'decimal:2',
         'cumulative_progress' => 'decimal:2',
+        'yearly_impact' => 'decimal:2',
         'start_date' => 'date',
         'end_date' => 'date'
     ];
@@ -46,17 +48,17 @@ class ActionPlan extends Model
         if (!$this->start_date || !$this->end_date) {
             return 0;
         }
-        
+
         // Hitung selisih bulan + 1 (inklusif)
         // Contoh: Jan - Mar = 2 bulan selisih + 1 = 3 bulan durasi
         $start = $this->start_date;
         $end = $this->end_date;
-        
+
         // Menggunakan Carbon diffInMonths
         // diffInMonths menghitung selisih penuh, jadi perlu penyesuaian
         // Cara paling aman: (Year2 - Year1) * 12 + (Month2 - Month1) + 1
         $months = ($end->year - $start->year) * 12 + ($end->month - $start->month) + 1;
-        
+
         return max(1, $months);
     }
 
@@ -66,7 +68,7 @@ class ActionPlan extends Model
     public function calculateWeightPercentage(): float
     {
         $duration = $this->calculateDurationMonths();
-        
+
         // Rumus: Durasi / 12 bulan * 100
         // Max 100% jika durasi >= 12 bulan
         return min(100, ($duration / 12) * 100);
@@ -102,8 +104,17 @@ class ActionPlan extends Model
             $this->duration_months = $this->calculateDurationMonths();
             $this->weight_percentage = $this->calculateWeightPercentage();
         }
-        
+
         return parent::save($options);
+    }
+
+    /**
+     * Update yearly impact after monthly progress changes
+     */
+    public function updateYearlyImpact(): void
+    {
+        $this->yearly_impact = $this->calculateYearlyImpact();
+        $this->saveQuietly();
     }
 
     /**

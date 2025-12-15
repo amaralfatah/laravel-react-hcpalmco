@@ -238,7 +238,7 @@ export default function Dashboard() {
                             {pillars.map((pillar) => (
                                 <Link
                                     key={pillar.number}
-                                    href="/list"
+                                    href={`/list?pilar=${pillar.number}`}
                                     className="block h-full"
                                 >
                                     <article className="bg-white border-2 border-transparent hover:border-yellow-400 transition-colors duration-300 overflow-hidden cursor-pointer h-full flex flex-col">

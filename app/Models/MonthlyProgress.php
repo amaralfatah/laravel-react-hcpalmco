@@ -95,6 +95,7 @@ class MonthlyProgress extends Model
         // Update cumulative progress on parent action plan
         if ($this->actionPlan) {
             $this->actionPlan->updateCumulativeProgress();
+            $this->actionPlan->updateYearlyImpact();
         }
         
         return $saved;
