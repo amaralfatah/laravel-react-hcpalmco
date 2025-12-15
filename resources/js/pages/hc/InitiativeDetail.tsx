@@ -98,6 +98,36 @@ export default function InitiativeDetail({
         }
     };
 
+    // Mock current date untuk testing - ubah tanggal sesuai kebutuhan testing
+    // Untuk production: comment out atau hapus baris ini
+    const MOCK_CURRENT_DATE = new Date('2026-04-15'); // Testing Januari 2026
+    // const MOCK_CURRENT_DATE = new Date('2025-12-15'); // Testing Desember 2025
+    // const MOCK_CURRENT_DATE = new Date('2026-02-15'); // Testing Februari 2026
+
+    // Fungsi untuk mengambil progress bulan ini
+    const getCurrentMonthProgress = (item: ActionPlan): number => {
+        if (!item.monthly_progress || item.monthly_progress.length === 0) {
+            return 0;
+        }
+
+        // Gunakan mock date untuk testing, atau current date untuk production
+        const currentDate = MOCK_CURRENT_DATE || new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-indexed
+
+        const currentMonthData = item.monthly_progress.find(
+            (progress) => progress.year === currentYear && progress.month === currentMonth
+        );
+
+        return currentMonthData ? Number(currentMonthData.progress) : 0;
+    };
+
+    // Fungsi untuk formatting persentase
+    const formatPercentage = (value: number | string | undefined): string => {
+        const numValue = Number(value) || 0;
+        return numValue.toFixed(2);
+    };
+
     // Fungsi handler untuk operasi modal
     const handleRowClick = (item: ActionPlan) => {
         setSelectedActionPlan(item);
@@ -452,17 +482,11 @@ export default function InitiativeDetail({
                                             <TableHead className="w-24 border border-gray-300 text-center">
                                                 Due Date
                                             </TableHead>
-                                            <TableHead className="w-16 border border-gray-300 text-center">
-                                                Duration (Mo)
-                                            </TableHead>
-                                            <TableHead className="w-16 border border-gray-300 text-center">
-                                                Weight (%)
+                                            <TableHead className="w-24 border border-gray-300 text-center">
+                                                Bulan Ini
                                             </TableHead>
                                             <TableHead className="w-24 border border-gray-300 text-center">
-                                                Avg Progress
-                                            </TableHead>
-                                            <TableHead className="w-24 border border-gray-300 text-center">
-                                                Yearly Impact
+                                                sd. Bulan ini
                                             </TableHead>
                                             <TableHead className="w-24 border border-gray-300 text-center">
                                                 Actions
@@ -529,7 +553,7 @@ export default function InitiativeDetail({
                                                         handleRowClick(item)
                                                     }
                                                 >
-                                                    {item.duration_months || 0}
+                                                    {formatPercentage(getCurrentMonthProgress(item))}%
                                                 </TableCell>
                                                 <TableCell
                                                     className="border border-gray-300 text-center"
@@ -537,38 +561,7 @@ export default function InitiativeDetail({
                                                         handleRowClick(item)
                                                     }
                                                 >
-                                                    {item.weight_percentage
-                                                        ? Number(
-                                                              item.weight_percentage,
-                                                          ).toFixed(2)
-                                                        : '0.00'}
-                                                    %
-                                                </TableCell>
-                                                <TableCell
-                                                    className="border border-gray-300 text-center"
-                                                    onClick={() =>
-                                                        handleRowClick(item)
-                                                    }
-                                                >
-                                                    {item.cumulative_progress
-                                                        ? Number(
-                                                              item.cumulative_progress,
-                                                          ).toFixed(2)
-                                                        : '0.00'}
-                                                    %
-                                                </TableCell>
-                                                <TableCell
-                                                    className="border border-gray-300 text-center"
-                                                    onClick={() =>
-                                                        handleRowClick(item)
-                                                    }
-                                                >
-                                                    {item.yearly_impact
-                                                        ? Number(
-                                                              item.yearly_impact,
-                                                          ).toFixed(2)
-                                                        : '0.00'}
-                                                    %
+                                                    {formatPercentage(item.cumulative_progress)}%
                                                 </TableCell>
                                                 <TableCell className="border border-gray-300 text-center">
                                                     <div className="flex justify-center gap-2">

@@ -21,6 +21,7 @@ export interface ActionPlan {
     weight_percentage?: number; // Computed from backend
     cumulative_progress?: number; // Computed from backend
     yearly_impact?: number; // Computed from backend
+    current_month_progress?: number; // Computed from frontend - progress for current month
 }
 
 export interface MonthlyProgress {
